@@ -5,21 +5,20 @@ export const Container = styled('div', {
     
     display: 'flex',
     alignItems: 'stretch',
+
+    gap: '15vw',
     
-    'div': {
+    '.form': {
       height: '100vh',
-
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-
-      padding: '0 3vw'
+ 
+      display: 'grid',
+      placeContent: 'center',
+      paddingRight: '15vw',
     }
 })
 
 export const Background = styled('div', {
-  flex: 1,
+  width: '550px',
   
   backgroundImage: `url(${coverImage.src})`,
   backgroundRepeat: 'no-repeat',
@@ -33,8 +32,10 @@ export const Form = styled('form', {
     flexDirection: 'column',
     alignItems: 'center',
 
+    margin: 'auto',
+
     gap: '24px',
-    
+
     textAlign: 'center',
 
     padding: '44px 39px',

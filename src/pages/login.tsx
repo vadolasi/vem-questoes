@@ -7,7 +7,7 @@ export default function Login() {
     return (
       <Container>
        <Background/>
-       <div>
+       <div className='form'>
        <Form>
          <Image src={Logo} alt="Logo Vem Questões"/>
        </Form>
