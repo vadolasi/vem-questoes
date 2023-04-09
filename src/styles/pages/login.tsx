@@ -1,5 +1,5 @@
 import { styled } from "..";
-
+import coverImage from '../../assets/LoginCover.png'
 export const Container = styled('div', {
     height: '100vh',
     
@@ -8,10 +8,12 @@ export const Container = styled('div', {
 })
 
 export const Background = styled('div', {
-  img: {
-    flex: 1,
-
-  }
+  flex: 1,
+  
+  backgroundImage: `url(${coverImage.src})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
 })
 
 export const Form = styled('form', {
@@ -19,5 +21,7 @@ export const Form = styled('form', {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+
+    textAlign: 'center',
 
 })

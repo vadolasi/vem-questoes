@@ -7,9 +7,7 @@ import Logo from '../assets/Logo.svg'
 export default function Login() {
     return (
       <Container>
-       <Background>
-        <Image src={CoverImage} alt="imagem de cover de uma moça escrito vem"/>
-       </Background>
+       <Background/>
        <Form>
          <Image src={Logo} alt="Logo Vem Questões"/>
        </Form>
