@@ -18,8 +18,8 @@ export const {
             red: '#FF3600',
             white_1: '#F0F0FC',
             white_2: '#FFFFFF',
-            text: '#B2BFBA',
-            border: '#990099',
+            text: '#000000',
+            border: '#B2BFBA',
         }
     }
 })

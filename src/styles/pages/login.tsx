@@ -5,6 +5,17 @@ export const Container = styled('div', {
     
     display: 'flex',
     alignItems: 'stretch',
+    
+    'div': {
+      height: '100vh',
+
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      padding: '0 3vw'
+    }
 })
 
 export const Background = styled('div', {
@@ -17,11 +28,17 @@ export const Background = styled('div', {
 })
 
 export const Form = styled('form', {
-    width: '330px',
+    width: 'clamp(200px, 250px + 10vw, 330px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
 
+    gap: '24px',
+    
     textAlign: 'center',
 
+    padding: '44px 39px',
+    backgroundColor: '$white_1', 
+    border: `1px solid $border`,
+    borderRadius: '28px',
 })
