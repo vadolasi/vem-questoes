@@ -27,7 +27,7 @@ export const Background = styled('div', {
 })
 
 export const Form = styled('form', {
-    width: 'clamp(200px, 250px + 10vw, 330px)',
+    width: 'clamp(250px, 250px + 10vw, 330px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
