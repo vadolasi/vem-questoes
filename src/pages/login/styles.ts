@@ -1,4 +1,4 @@
-import { styled } from "..";
+import { styled } from "../../styles";
 import coverImage from '../../assets/LoginCover.png'
 export const Container = styled('div', {
     height: '100vh',
@@ -27,7 +27,7 @@ export const Background = styled('div', {
 })
 
 export const Form = styled('form', {
-    width: 'clamp(250px, 250px + 10vw, 330px)',
+    width: '330px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -42,4 +42,16 @@ export const Form = styled('form', {
     backgroundColor: '$white_1', 
     border: `1px solid $border`,
     borderRadius: '28px',
+
+
+    '.InputWrapper': {
+      width: "100%",
+
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: 'center',
+
+      gap: '15px',
+    }
 })
