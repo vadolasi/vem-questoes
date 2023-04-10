@@ -43,6 +43,7 @@ export const Form = styled('form', {
     border: `1px solid $border`,
     borderRadius: '28px',
 
+    boxShadow: '0px 0px 16px rgba(0, 0, 0, 0.15)',
 
     '.InputWrapper': {
       width: "100%",
