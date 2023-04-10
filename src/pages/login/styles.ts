@@ -2,19 +2,20 @@ import { styled } from "../../styles";
 import coverImage from '../../assets/LoginCover.png'
 export const Container = styled('div', {
     height: '100vh',
-    
+    width: '100vw',
+
     display: 'flex',
     alignItems: 'stretch',
-
-    gap: '15vw',
     
     '.form': {
       height: '100vh',
+      width: '100vw',
+
  
       display: 'grid',
       placeContent: 'center',
-      paddingRight: '15vw',
-    }
+    },
+
 })
 
 export const Background = styled('div', {
@@ -24,6 +25,10 @@ export const Background = styled('div', {
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center',
   backgroundSize: 'cover',
+
+  '@media (max-width: 650px)': {
+    display: 'none',
+  }
 })
 
 export const Form = styled('form', {
@@ -32,7 +37,6 @@ export const Form = styled('form', {
     flexDirection: 'column',
     alignItems: 'center',
 
-    margin: 'auto',
 
     gap: '24px',
 
@@ -54,5 +58,7 @@ export const Form = styled('form', {
       justifyContent: 'center',
 
       gap: '15px',
-    }
+    },
+
+
 })
