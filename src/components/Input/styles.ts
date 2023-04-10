@@ -18,22 +18,15 @@ export const Container = styled('div', {
     
     '& span': {
         position: 'absolute',
-        left: '20px',
-        top: '16px',
-        fontSize: '15px',
+        left: '10px',
+        top: '-11px',
+        backgroundColor:'$white_1',
+        padding: '5px',
+        fontSize: '12px',
         color: '$text',
         textTransform: 'uppercase',
         transition: '0.2s'
     },
 
-    '& input:valid ~ span, & input:focus ~ span': {
-        color: '$text',
-        transform: 'translateX(11px) translateY(-12px)',
-        fontSize: '12px',
-        top: 0,
-        left: 0,
-        padding: '5px',
-        background: '$white_1',
-    }
 
     });

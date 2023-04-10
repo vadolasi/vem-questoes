@@ -17,8 +17,8 @@ export default function Login() {
        <Form>
          <Image src={Logo} alt="Logo Vem Questões"/>
          <div className='InputWrapper'>
-         <Input text="E-mail"/>
-         <Input text="Senha"/>
+         <Input text="E-mail"  type='text' placeholderText='exemplo@email.com'/>
+         <Input text="Senha"  type='password' placeholderText='Mínimo 8 caracteres'/>
          </div>
 
          <Button text='Entrar'/>
