@@ -5,12 +5,13 @@ interface InputInterface{
     text: string;
     placeholderText?: string;
     type: string;
+    onChange?: any;
 }
 
-export const Input: FC<InputInterface> = ({text, placeholderText, type}) =>{
+export const Input: FC<InputInterface> = ({text, placeholderText, type, onChange}) =>{
     return(
         <Container>
-            <input type={type} required placeholder={placeholderText}/>
+            <input type={type} required placeholder={placeholderText} onChange={onChange}/>
             <span>{text}</span>
         </Container>
     );

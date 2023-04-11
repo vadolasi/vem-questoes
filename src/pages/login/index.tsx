@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import  Image  from 'next/image'
 
 import { Container, Background, Form } from "./styles";
@@ -9,7 +11,13 @@ import { Button } from '@/components/Button';
 import { ButtonText } from '@/components/ButtonText';
 
 
+
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    console.log(email, password)
+
     return (
       <Container>
        <Background/>
@@ -17,8 +25,8 @@ export default function Login() {
        <Form>
          <Image src={Logo} alt="Logo Vem Questões"/>
          <div className='InputWrapper'>
-         <Input text="E-mail"  type='text' placeholderText='exemplo@email.com'/>
-         <Input text="Senha"  type='password' placeholderText='Mínimo 8 caracteres'/>
+         <Input text="E-mail" type='email' placeholderText='exemplo@email.com' onChange={(e: any) => setEmail(e.target.value)}/>
+         <Input text="Senha" type='password' placeholderText='Mínimo 8 caracteres' onChange={(e: any) => setPassword(e.target.value)}/>
          </div>
 
          <Button text='Entrar'/>
