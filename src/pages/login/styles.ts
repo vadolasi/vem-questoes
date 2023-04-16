@@ -6,6 +6,7 @@ export const Container = styled('div', {
 
     display: 'flex',
     alignItems: 'stretch',
+    gap: '10px',
     
     '.form': {
       height: '100vh',
@@ -19,7 +20,7 @@ export const Container = styled('div', {
 })
 
 export const Background = styled('div', {
-  width: '550px',
+  width: '1200px',
   
   backgroundImage: `url(${coverImage.src})`,
   backgroundRepeat: 'no-repeat',
