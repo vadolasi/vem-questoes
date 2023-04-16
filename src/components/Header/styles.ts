@@ -7,6 +7,8 @@ export const Container = styled('header', {
     display: "flex",
     justifyContent: 'space-between',
 
+    gridArea: 'header',
+
     ".show": {
         display: "flex"
     },
