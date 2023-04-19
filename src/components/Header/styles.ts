@@ -4,6 +4,8 @@ export const Container = styled('header', {
     width: '100%',
     padding: '23px 42px',
 
+    zIndex: 2,
+
     display: "flex",
     justifyContent: 'space-between',
 
