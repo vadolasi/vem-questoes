@@ -11,6 +11,8 @@ export const Container = styled('header', {
 
     gridArea: 'header',
 
+    borderBottom: '1px solid $border',
+
     ".show": {
         display: "flex"
     },
