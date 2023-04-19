@@ -20,5 +20,15 @@ export const Content = styled('main', {
 
         padding: '42px',
 
+        display: 'grid',
+        gridTemplateColumns: "1fr 1fr",
+        gridTemplateRows: "1fr 1fr",
+        gap: "50px",
 
+
+        '@media (max-width: 1050px)':{
+                gridTemplateColumns: "auto",
+                gridTemplateRows: "auto auto auto auto",
+                gap: "15px",
+        },
 })
