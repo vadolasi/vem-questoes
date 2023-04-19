@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Container } from "./styles"
+import { Container, Menu } from "./styles"
 
 interface ContentCardInterface{
     title: string,
@@ -11,9 +11,9 @@ export const ContentCard: FC<ContentCardInterface> = ({children, title}) => {
     return(
         <Container>
             <h1>{title}</h1>
-            <div>
+            <Menu>
             {children} 
-            </div>   
+            </Menu>   
         </Container>
     )
 }
