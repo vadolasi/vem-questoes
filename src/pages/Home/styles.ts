@@ -18,5 +18,7 @@ export const Container = styled('div', {
 export const Content = styled('main', {
         gridArea: 'content',
 
-        
+        padding: '42px',
+
+
 })
