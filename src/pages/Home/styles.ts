@@ -13,3 +13,10 @@ export const Container = styled('div', {
         "menu content"
         `,
 });
+
+
+export const Content = styled('main', {
+        gridArea: 'content',
+
+        
+})

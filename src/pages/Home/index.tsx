@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header"
 
-import { Container } from './styles'
+import { Container, Content } from './styles'
 import { Menu } from "@/components/Menu"
 
 export default function Home() {
@@ -8,6 +8,9 @@ export default function Home() {
     <Container>
      <Header/>
      <Menu/>
+     <Content>
+      
+     </Content>
     </Container>
   )
 }
