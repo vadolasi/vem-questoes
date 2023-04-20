@@ -1,7 +1,7 @@
 import { styled } from "@/styles";  
 
 export const Container = styled('div', {
-    width: '100%',
+    width: '500px',
     height: '500px',
 
     background: '$white_1',
@@ -14,6 +14,7 @@ export const Container = styled('div', {
 
     filter: 'drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.15))',
 
+    margin: "0 auto",
 
     'h1': {
         width: '100%', 
