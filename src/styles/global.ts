@@ -8,7 +8,8 @@ export const globalStyles = globalCss({
 },
 
 body: {
-'-webkit-font-smoothing': 'antialised',
+    '-webkit-font-smoothing': 'antialised',
+    overflowX: 'hidden',
 },
 
 
@@ -16,6 +17,15 @@ body: {
     fontFamily: 'Nunito',
     fontWeight: 400,
     
+},
+
+'*::-webkit-scrollbar': {
+    width: '7px',
+},
+
+'*::-webkit-scrollbar-thumb': {
+    backgroundColor: '$blue_1',
+    borderRadius: '20px',
 }
 
 
