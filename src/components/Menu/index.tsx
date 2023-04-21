@@ -19,7 +19,7 @@ export const Menu = () => {
                 </Link>
             </li>
             <li>
-                <Link href="/home">
+                <Link href="/banco-de-questoes">
                     <AiOutlineForm/>
                     Banco de questões
                 </Link>
