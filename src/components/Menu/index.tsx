@@ -13,7 +13,7 @@ export const Menu = () => {
                 </Link>
             </li>
             <li>
-                <Link href="/table">   
+                <Link href="/mesa-de-estudos">   
                         <AiOutlineRead/>
                         Mesa de estudos
                 </Link>
