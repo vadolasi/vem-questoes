@@ -5,13 +5,13 @@ import {AiOutlineHourglass, AiOutlineQuestionCircle} from 'react-icons/ai'
 
 import { Container } from "./styles"
 
-interface ContentCardInterface{
+interface ExamCardInterface{
     name: string,
     time: string,
     questions: number,
 }
 
-export const ExamCard: FC<ContentCardInterface> = ({name, time, questions}) => {
+export const ExamCard: FC<ExamCardInterface> = ({name, time, questions}) => {
     return(
         <Container>
             <div className="examInfo">
