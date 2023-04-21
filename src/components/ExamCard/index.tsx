@@ -18,8 +18,8 @@ export const ExamCard: FC<ExamCardInterface> = ({name, questions}) => {
         const hours = Math.floor(calcMinutesForExam/60);
         const minutes = calcMinutesForExam % 60;
         
-        const textHours = (`00${hours}`).slice(-2);
-        const textMinutes=(`00${minutes}`).slice(-2);
+        const textHours = (`0${hours}`).slice(-2);
+        const textMinutes=(`0${minutes}`).slice(-2);
 
         return `${textHours}:${textMinutes}`;
     }
