@@ -11,8 +11,6 @@ export const Container = styled('ul', {
 
     gap: '13px',
 
-    borderRight: '1px solid $border',
-
     'li a': {
         width: '100%',
 
