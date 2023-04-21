@@ -93,6 +93,7 @@ export const OfferCard = styled('div', {
                                 fontSize: '16px',
                                 lineHeight: '22px',
 
+                                cursor: "pointer",
 
                                 "& svg": {
                                         width: "24px",
