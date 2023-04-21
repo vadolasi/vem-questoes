@@ -24,7 +24,7 @@ export default function Home() {
           <OfferCard>
             <div className='Header'>
                 <div>
-                    <h1>Diagnóstico 3X</h1>
+                    <h1>Diagnóstico de Desempenho</h1>
                     <p>Saiba exatamente o que você domina!</p>
                     <button>Iniciar agora <AiOutlineRightCircle/></button>
                 </div>
