@@ -13,8 +13,11 @@ export const Container = styled('ul', {
 
     borderRight: '1px solid $border',
 
-    'li button': {
+    'li a': {
         width: '100%',
+
+        textDecoration: "none",
+        color: "$text",
 
         background: 'none',
 
@@ -36,12 +39,12 @@ export const Container = styled('ul', {
         cursor: "pointer",
     },
 
-    'li button:hover': {
+    'li a:hover': {
        color: "$blue_1",
        border: "1px solid $blue_1"
     },
 
-    'li button svg': {
+    'li a svg': {
         fontSize: '20px',
     }
 })

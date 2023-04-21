@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Container } from "./styles";
 import {AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
 
@@ -5,34 +7,34 @@ export const Menu = () => {
     return(
         <Container>
             <li>
-                <button>
-                    <AiOutlineHome/>
-                    Home
-                </button>
+                <Link href="/home">
+                        <AiOutlineHome/>
+                        Home
+                </Link>
             </li>
             <li>
-                <button>
-                    <AiOutlineRead/>
-                    Mesa de estudos
-                </button>
+                <Link href="/table">   
+                        <AiOutlineRead/>
+                        Mesa de estudos
+                </Link>
             </li>
             <li>
-                <button>
+                <Link href="/home">
                     <AiOutlineForm/>
                     Banco de questões
-                </button>
+                </Link>
             </li>
             <li>
-                <button>
+                <Link href="/home"> 
                     <AiOutlineKey/>
                     Raio-X
-                </button>
+                </Link>
             </li>
             <li>
-                <button>
+                <Link href="/home">
                     <AiOutlineBarChart/>
                     Estatísticas
-                </button>
+                </Link>
             </li>
         </Container>
     );
