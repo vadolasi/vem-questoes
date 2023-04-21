@@ -34,7 +34,7 @@ export default function Home() {
           <ContentCard title='Estatísticas'>
           </ContentCard>
           <ContentCard title='Simulados'>
-            <ExamCard name="simulado" questions={30} time='2:30'/>
+            <ExamCard name="simulado" questions={30}/>
           </ContentCard>
      </Content>
     </Container>

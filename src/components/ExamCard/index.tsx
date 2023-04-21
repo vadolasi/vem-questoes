@@ -7,11 +7,23 @@ import { Container } from "./styles"
 
 interface ExamCardInterface{
     name: string,
-    time: string,
     questions: number,
 }
 
-export const ExamCard: FC<ExamCardInterface> = ({name, time, questions}) => {
+export const ExamCard: FC<ExamCardInterface> = ({name, questions}) => {
+
+    function calcTime(questions: number){
+        const calcMinutesForExam = 3*questions;
+        
+        const hours = Math.floor(calcMinutesForExam/60);
+        const minutes = calcMinutesForExam % 60;
+        
+        const textHours = (`00${hours}`).slice(-2);
+        const textMinutes=(`00${minutes}`).slice(-2);
+
+        return `${textHours}:${textMinutes}`;
+    }
+
     return(
         <Container>
             <div className="examInfo">
@@ -19,7 +31,7 @@ export const ExamCard: FC<ExamCardInterface> = ({name, time, questions}) => {
             </div>
 
             <div className="dataInfo">
-                <span><AiOutlineHourglass/>{time}</span>
+                <span><AiOutlineHourglass/>{calcTime(questions)}</span>
                 <span><AiOutlineQuestionCircle/>{questions}</span>
             </div>
 
