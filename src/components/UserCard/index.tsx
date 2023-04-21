@@ -7,7 +7,7 @@ import { Container } from "./styles"
 
 import userProfile from '../../assets/profile/userProfile.svg'
 
-interface ContentCardInterface{
+interface UserCardInterface{
     position: number,
     picture?: any,
     name: string,
@@ -15,7 +15,7 @@ interface ContentCardInterface{
     questions: number,
 }
 
-export const UserCard: FC<ContentCardInterface> = ({position, picture, name, goals, questions}) => {
+export const UserCard: FC<UserCardInterface> = ({position, picture, name, goals, questions}) => {
     return(
         <Container>
     
