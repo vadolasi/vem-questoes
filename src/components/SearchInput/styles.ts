@@ -25,7 +25,7 @@ export const Container = styled("div", {
         border: 0,
         outline: 0,
        ' &::placeholder': {
-            color: '$white_1',
+            color: '$border',
         }
     }  
 })
