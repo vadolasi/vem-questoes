@@ -9,12 +9,13 @@ export const Container = styled("div", {
     color: '$border',
     border: '1px solid $border',
 
-    borderRadius: '23px',
-    fontSize: "20px",
+    borderRadius: '8px',
 
     padding: '12px',
 
     "svg": {
+        width: "20px",
+        height: "20px",
         marginLeft: "16px",
     },
 
