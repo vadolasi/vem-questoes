@@ -23,8 +23,26 @@ export const Container = styled('header', {
     },
     ".hidden": {
         display: "none"
-    }
+    },
        
+    '> div':{
+        display: "flex",
+        alignItems: "center",
+        gap: "15px",
+
+        'button': {
+            border: 'none',
+            background: "none",
+
+            cursor: "pointer",
+
+
+            "svg":{
+                width: "20px",
+                height:"20px",
+            }
+        }
+    }
 });
 
 export const Profile = styled('div', {
