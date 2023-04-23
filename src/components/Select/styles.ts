@@ -21,7 +21,7 @@ export const Container = styled("div", {
         border: "1px solid $border",
         borderRadius: "8px",
 
-        padding: "13px",
+        padding: "6px",
 
         outline: "none",
 
