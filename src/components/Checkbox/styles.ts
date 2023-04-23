@@ -18,5 +18,7 @@ export const Container = styled("div", {
 
         border: "1px solid $border",
         outline: "none",
+
+        cursor: "pointer",
     }
 })
