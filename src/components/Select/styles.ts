@@ -5,8 +5,6 @@ export const Container = styled("div", {
     display: 'flex',
     flexDirection: "column",
     gap: '2px',
-    cursor: "pointer",
-
 
     "label": {
         fontWeight: 700,
@@ -25,6 +23,8 @@ export const Container = styled("div", {
         padding: "6px",
 
         outline: "none",
+
+        cursor: "pointer",
 
         "svg": {
             width: "20px",
