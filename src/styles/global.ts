@@ -9,7 +9,6 @@ export const globalStyles = globalCss({
 
 body: {
     '-webkit-font-smoothing': 'antialised',
-    overflowX: 'hidden',
 },
 
 
