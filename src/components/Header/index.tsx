@@ -4,7 +4,7 @@ import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUse
 
 import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 
-import Logo from '../../assets/Logo2.png';
+import Logo from '../../assets/logo.png';
 import profilePicture from '../../assets/profile/Picture.png'
 
 export const Header = () => {
@@ -16,7 +16,7 @@ export const Header = () => {
 
     return(
             <Container>
-                <Image src={Logo} alt="Logo escrito 'Vem questões'"/>
+                <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
                     <ProfileInfo>
                         <Image src={profilePicture} alt="Foto de perfil do usuário"/>

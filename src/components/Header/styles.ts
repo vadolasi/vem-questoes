@@ -13,6 +13,11 @@ export const Container = styled('header', {
 
     borderBottom: '1px solid $white_1',
 
+    ".Logo": {
+        width: "85px",
+        height: "56px"
+    },
+
     ".show": {
         display: "flex"
     },
