@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineArrowLeft, AiOutlineArrowRight} from 'react-icons/ai'
+import { AiOutlineLeft, AiOutlineRight} from 'react-icons/ai'
 import { Container, Button, Menu } from './styles';
 
 interface PaginationBarProps {
@@ -17,7 +17,7 @@ export const PaginationBar: React.FC<PaginationBarProps> = ({pages}) => {
     return (
         <Container>
             <Button onClick={() => setCurrentPage(currentPage - 1)}  disabled={currentPage == pages[0]}>
-                <AiOutlineArrowLeft/>
+                <AiOutlineLeft/>
             </Button>
             <Menu>
                 {pages
@@ -30,7 +30,7 @@ export const PaginationBar: React.FC<PaginationBarProps> = ({pages}) => {
                 ))}
             </Menu>
             <Button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage == pages.length}>
-                <AiOutlineArrowRight/>
+                <AiOutlineRight/>
             </Button>
             
         </Container>
