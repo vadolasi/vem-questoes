@@ -11,10 +11,10 @@ export const Select: React.FC<SelectProps> = ({options, label}) => {
         <Container>
         <label htmlFor={label}>{label}</label>
         <select id={label}>
-            <option disabled selected>Selecione um valor</option> 
+            <option defaultValue=''> </option> 
 
             {options && options.map((option, index) => (
-            <option key={String(index)} label={option}>{option}</option>
+            <option key={String(index)} label={option} value={option}>{option}</option>
             ))}
 
         </select>
