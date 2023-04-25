@@ -18,7 +18,10 @@ export const Container = styled('div', {
 export const Content = styled("div", {
         width: "100%",
         gridArea: 'content',
-        padding: "33px 42px",
+        paddingTop: "33px",
+        paddingLeft: "42px",
+
+        overflowX: "hidden",
 
         '.MatterWrap':{
                 width: "1020px",
