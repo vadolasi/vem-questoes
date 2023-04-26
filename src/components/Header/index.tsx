@@ -17,10 +17,6 @@ export const Header = () => {
     return(
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
-                <div>
-                    <button>
-                        <AiOutlineBell/>
-                    </button>
                 <Profile>
                     <ProfileInfo>
                         <Image src={profilePicture} alt="Foto de perfil do usuário"/>
@@ -50,7 +46,6 @@ export const Header = () => {
                         </li>
                     </DropMenu>
                 </Profile>
-                </div>
             </Container>
     );
 } 
