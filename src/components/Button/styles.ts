@@ -9,8 +9,6 @@ export const Container = styled('button', {
     fontSize: '16px',
     fontWeight: '700',
 
-    textTransform: 'uppercase',
-
     border: 'none',
     borderRadius: '8px',
 
