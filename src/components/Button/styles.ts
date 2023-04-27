@@ -16,6 +16,10 @@ export const Container = styled('button', {
 
     transition: 'filter 0.2s',
   
+    "a": {
+        color: "$text",
+        textDecoration: "none",
+    },
     
     '&:hover': {
         filter: 'brightness(0.9)'
