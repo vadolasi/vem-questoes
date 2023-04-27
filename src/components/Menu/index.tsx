@@ -25,13 +25,13 @@ export const Menu = () => {
                 </Link>
             </li>
             <li>
-                <Link href="/home"> 
+                <Link href="/raio-x"> 
                     <AiOutlineKey/>
                     Raio-X
                 </Link>
             </li>
             <li>
-                <Link href="/home">
+                <Link href="/estatisticas">
                     <AiOutlineBarChart/>
                     Estatísticas
                 </Link>
