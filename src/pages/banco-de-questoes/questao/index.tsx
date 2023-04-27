@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
 
@@ -14,6 +14,9 @@ import { PaginationBar } from '@/components/PaginationBar';
 
 export default function Questoes() {
   const [questions, setQuestions] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+  const [page, setPage] = useState(1);
+  const [pageInput, setPageInput] = useState(1);
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
@@ -63,9 +66,9 @@ export default function Questoes() {
             <PaginationBar pages={questions}/>
 
             <GoTo>
-              <input type='number'min={questions[0]} max={questions.length}/>
+              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
               <span>Ir Para</span>
-              <button><AiOutlineRight/></button>
+              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
             </GoTo>
 
           </Navigation>
@@ -73,7 +76,7 @@ export default function Questoes() {
           <QuestionStatement>
             <div className='title'>
               <h1>
-                Questão 1
+                Questão {page}
               </h1>
               <ButtonReport>Reportar</ButtonReport>
             </div>
