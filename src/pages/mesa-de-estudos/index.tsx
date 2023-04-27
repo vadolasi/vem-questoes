@@ -15,9 +15,9 @@ export default function Table() {
      <Header/>
      <Menu/>
      <Content>
-      <TableCard title='Resolver Questões!' picture={study} link='' description='Garoto estudando em uma mesa'/>
-      <TableCard title='Meus Cadernos!' picture={notebook} link='' description='Garota estudando com um caderno aberto'/>
-      <TableCard title='Meus Simulados!' picture={teste} link='' description='Garota resolvendo uma prova'/>
+      <TableCard title='Resolver Questões!' picture={study} link='/banco-de-questoes' description='Garoto estudando em uma mesa'/>
+      <TableCard title='Meus Cadernos!' picture={notebook} link='/cadernos' description='Garota estudando com um caderno aberto'/>
+      <TableCard title='Meus Simulados!' picture={teste} link='/simulados' description='Garota resolvendo uma prova'/>
      </Content>
     </Container>
   )

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Container } from "./styles";
 
 import Link from 'next/link';
@@ -7,16 +7,20 @@ import Link from 'next/link';
 interface ButtonInterface {
     text: string,
     onClick?: any,
-    link?: any,
+    link?: string,
 }
 
 export const Button: FC<ButtonInterface> = ({text, link, onClick}) => {
+    const [linkText, setLinkText] = useState('')
+    
+    useEffect(() => {
+        link ? setLinkText(link) : setLinkText('');
+    }, [])
     return(
             <Container onClick={onClick}>
-                <Link href={link}>
+                <Link href={linkText}>
                     {text}
                 </Link>
-                
             </Container>
     );
 } 

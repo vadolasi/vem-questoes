@@ -8,7 +8,7 @@ import { Button } from "../Button"
 interface TableCardInterface{
     picture?: any,
     title: string,
-    link: string,
+    link?: string,
     description: string,
 }
 
@@ -17,7 +17,7 @@ export const TableCard: FC<TableCardInterface> = ({picture, title, link, descrip
         <Container>
             <h1>{title}</h1>
             <Image src={picture} alt={description}/>
-            <Button text="Acessar"/>
+            <Button text="Acessar" link={link}/>
         </Container>
     )
 }
