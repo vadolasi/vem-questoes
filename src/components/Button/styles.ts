@@ -1,6 +1,19 @@
 import { styled } from "@/styles";
 
-export const Container = styled('button', {
+
+export const Container = styled("div", {
+    width: "100%",
+    height: "52px",
+    "a": {
+        width: '100%',
+        height: '52px',
+        color: "$text",
+        textDecoration: "none",
+    }
+
+})
+
+export const ButtonTT = styled('button', {
     width: '100%',
     height: '52px',
 
@@ -15,11 +28,6 @@ export const Container = styled('button', {
     cursor: 'pointer',
 
     transition: 'filter 0.2s',
-  
-    "a": {
-        color: "$text",
-        textDecoration: "none",
-    },
     
     '&:hover': {
         filter: 'brightness(0.9)'

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+
 import { Container, Content } from './styles';
 
 import study from '../../assets/table/study.png';

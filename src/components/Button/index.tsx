@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Container } from "./styles";
+import { Container, ButtonTT } from "./styles";
 
 import Link from 'next/link';
 
@@ -15,12 +15,15 @@ export const Button: FC<ButtonInterface> = ({text, link, onClick}) => {
     
     useEffect(() => {
         link ? setLinkText(link) : setLinkText('');
-    }, [])
-    return(
-            <Container onClick={onClick}>
+    }, [link])
+    return( 
+            <Container>
                 <Link href={linkText}>
+                 <ButtonTT onClick={onClick}>
                     {text}
+                 </ButtonTT>
                 </Link>
             </Container>
+
     );
 } 
