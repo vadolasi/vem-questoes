@@ -240,6 +240,10 @@ export const QuestionButtons = styled("div", {
 
         gap: "18px",
 
+        'li .open':{
+            background: '$blue_2',
+        },
+
         "button": {
             height: '36px',
         
@@ -258,6 +262,7 @@ export const QuestionButtons = styled("div", {
             '&:hover': {
                 filter: 'brightness(0.9)'
             },
+
             "span": {
                 fontSize: '16px',
                 fontWeight: '700',
@@ -279,3 +284,4 @@ export const QuestionButtons = styled("div", {
         }
     }
 })
+

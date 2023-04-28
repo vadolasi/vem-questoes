@@ -16,6 +16,7 @@ import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
 
 import professor from '@/assets/professor.png';
 import typing from '@/assets/typing.png';
+import { CommentBar } from '@/components/CommentBar';
 
 export default function Questoes() {
   const [questions, setQuestions] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -95,13 +96,13 @@ export default function Questoes() {
      <Header/>
      <Menu/>
      <Content>
+
         <DefaultBoxQuestion 
         className={explicationBox ? 'show' : "hidden"}
         h1='Essa questão ainda não possui gabarito comentando' 
         strong='Estamos trabalhando nisso!' 
         picture={professor} 
-        alt='Professor dando aula'
-        />
+        alt='Professor dando aula'/>
 
         <DefaultBoxQuestion 
         className={commentBox ? 'show' : "hidden"}
@@ -110,7 +111,17 @@ export default function Questoes() {
         picture={typing} 
         alt='Rapaz digitando'
         >
-          <h1>OIIIIII</h1>
+          <CommentBar/>
+        </DefaultBoxQuestion>
+
+        <DefaultBoxQuestion 
+        className={commentBox ? 'show' : "hidden"}
+        h1='Essa questão ainda não possui comentários' 
+        strong='Seja o primeiro(a)!' 
+        picture={typing} 
+        alt='Rapaz digitando'
+        >
+          <CommentBar/>
         </DefaultBoxQuestion>
 
         <Filter/>
@@ -182,25 +193,25 @@ export default function Questoes() {
 
             <ul className='actionsButton'>
               <li>
-                <button onClick={showExplicationBox}>
+                <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""}>
                   <AiOutlineCompass/>
                   <span>Explicação</span>
                 </button>
               </li>
               <li>
-                <button onClick={showCommentBox}>
+                <button onClick={showCommentBox} className={commentBox ? 'open' : ""}>
                   <AiOutlineComment/>
                   <span>Comentários</span>
                 </button>
               </li>
               <li>
-                <button onClick={showNotebookBox}>
+                <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""}>
                   <AiOutlineBook/>
                   <span>Cadernos</span>
                 </button>
               </li>
               <li>
-                <button onClick={showXrayBox}>
+                <button onClick={showXrayBox} className={xrayBox ? 'open' : ""}>
                   <AiOutlineProfile/>
                   <span>Raio-X</span>
                 </button>
