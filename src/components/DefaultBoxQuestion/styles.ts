@@ -37,4 +37,17 @@ export const Modal = styled("div", {
         width: "300px",
         height: "300px",
     },
+
+    'div': {
+        marginTop: "0px",
+        "h1": {
+            marginBottom: "20px",
+            fontWeight: 700,
+        },
+        'img': {
+            width: "300px",
+            height: "300px",
+            margin: 0,
+        }
+    }
 })

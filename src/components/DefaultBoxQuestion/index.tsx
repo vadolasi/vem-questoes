@@ -14,12 +14,11 @@ interface DefaultBoxQuestionProps {
 export const DefaultBoxQuestion: React.FC<DefaultBoxQuestionProps> = ({className, h1, strong, picture, alt='', children}) => {
     return (
         <Modal className={className}>
-            <h1>
+           {h1 &&  <h1>
                 {h1} <br/>
             <strong>{strong}</strong>
-            </h1>
-              <Image src={picture} alt={alt}/>   
-
+            </h1>}
+            {picture && <Image src={picture} alt={alt}/>  }
               {children}    
         </Modal>
     );
