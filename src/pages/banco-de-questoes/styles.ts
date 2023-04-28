@@ -27,6 +27,12 @@ export const Content = styled("div", {
                 width: "1020px",
                 margin: "42px auto 20px",
         
+        },
+
+        position: "relative",
+
+        '.hidden': {
+                display: "none"
         }
 });
 

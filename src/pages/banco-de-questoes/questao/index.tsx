@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
 
@@ -10,7 +11,11 @@ import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { Filter } from '@/components/Filter';
 import { PaginationBar } from '@/components/PaginationBar';
+import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
 
+
+import professor from '@/assets/professor.png';
+import typing from '@/assets/typing.png';
 
 export default function Questoes() {
   const [questions, setQuestions] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -27,6 +32,11 @@ export default function Questoes() {
   const [selectB, setSelectB] = useState(false);
   const [selectC, setSelectC] = useState(false);
   const [selectD, setSelectD] = useState(false);
+
+  const [explicationBox, setExplicationBox] = useState(false);
+  const [commentBox, setCommentBox] = useState(false);
+  const [notebookBox, setNotebookBox] = useState(false);
+  const [xrayBox, setXrayBox] = useState(false);
 
   function selectedA(){
     setSelectA(true);
@@ -53,11 +63,56 @@ export default function Questoes() {
     setSelectD(true);
   }
   
+
+  function showExplicationBox(){
+    setExplicationBox(!explicationBox);
+    setCommentBox(false);
+    setNotebookBox(false);
+    setXrayBox(false);
+  }
+  function showCommentBox(){
+    setExplicationBox(false);
+    setCommentBox(!commentBox);
+    setNotebookBox(false);
+    setXrayBox(false);
+  }
+  function showNotebookBox(){
+    setExplicationBox(false);
+    setCommentBox(false);
+    setNotebookBox(!notebookBox);
+    setXrayBox(false);
+  }
+  function showXrayBox(){
+    setExplicationBox(false);
+    setCommentBox(false);
+    setNotebookBox(false);
+    setXrayBox(!xrayBox);
+  }
+
+
   return (
     <Container>
      <Header/>
      <Menu/>
      <Content>
+        <DefaultBoxQuestion 
+        className={explicationBox ? 'show' : "hidden"}
+        h1='Essa questão ainda não possui gabarito comentando' 
+        strong='Estamos trabalhando nisso!' 
+        picture={professor} 
+        alt='Professor dando aula'
+        />
+
+        <DefaultBoxQuestion 
+        className={commentBox ? 'show' : "hidden"}
+        h1='Essa questão ainda não possui comentários' 
+        strong='Seja o primeiro(a)!' 
+        picture={typing} 
+        alt='Rapaz digitando'
+        >
+          <h1>OIIIIII</h1>
+        </DefaultBoxQuestion>
+
         <Filter/>
         <QuestionContainer>
           <Navigation>
@@ -116,6 +171,8 @@ export default function Questoes() {
                   <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete/></button>
                 </li>
             </ul>
+
+
           </QuestionStatement>
 
           <QuestionButtons>
@@ -125,25 +182,25 @@ export default function Questoes() {
 
             <ul className='actionsButton'>
               <li>
-                <button>
+                <button onClick={showExplicationBox}>
                   <AiOutlineCompass/>
                   <span>Explicação</span>
                 </button>
               </li>
               <li>
-                <button>
+                <button onClick={showCommentBox}>
                   <AiOutlineComment/>
                   <span>Comentários</span>
                 </button>
               </li>
               <li>
-                <button>
+                <button onClick={showNotebookBox}>
                   <AiOutlineBook/>
                   <span>Cadernos</span>
                 </button>
               </li>
               <li>
-                <button>
+                <button onClick={showXrayBox}>
                   <AiOutlineProfile/>
                   <span>Raio-X</span>
                 </button>
