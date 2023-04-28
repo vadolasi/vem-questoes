@@ -285,3 +285,12 @@ export const QuestionButtons = styled("div", {
     }
 })
 
+export const Search = styled('div', {
+    display: "grid",
+    gridTemplateColumns: "500px 150px",
+    alignItems: "center",
+    gap: "17px",
+
+    margin: "0 auto"
+    
+})

@@ -3,20 +3,24 @@ import Image from 'next/image';
 
 import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
 
-import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons } from './styles';
+import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from './styles';
 
-import { Container, Content } from '../styles';
+import { Container, Content} from '../styles';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { Filter } from '@/components/Filter';
 import { PaginationBar } from '@/components/PaginationBar';
 import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
-
+import { CommentBar } from '@/components/CommentBar';
+import { SearchInput } from '@/components/SearchInput';
+import { Button } from '@/components/Button';
+import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 
 import professor from '@/assets/professor.png';
 import typing from '@/assets/typing.png';
-import { CommentBar } from '@/components/CommentBar';
+import notebook from '@/assets/Notebook.png';
+import raiox from '@/assets/raiox.png';
 
 export default function Questoes() {
   const [questions, setQuestions] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -123,6 +127,22 @@ export default function Questoes() {
         >
           <CommentBar/>
         </DefaultBoxQuestion>
+
+        <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
+          <Search>
+            <SearchInput/>
+            <Button text='+ Criar Caderno'/>
+          </Search>
+            <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno'/>
+        </DefaultBoxQuestion>
+
+        <DefaultBoxQuestion 
+        className={xrayBox ? 'show' : "hidden"}
+        h1='Esta questão ainda não tem Raio-X' 
+        strong='Estamos trabalhando nisso!' 
+        picture={raiox} 
+        alt='mulher com uma maquina de dados'/>
+
 
         <Filter/>
         <QuestionContainer>
