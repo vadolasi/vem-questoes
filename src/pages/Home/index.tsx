@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <Container>
      <Header/>
-     <Menu/>
+     <Menu page='home'/>
 
      <Content>
           <ContentCard title='Leaderboard'>

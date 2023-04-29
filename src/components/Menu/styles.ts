@@ -42,6 +42,11 @@ export const Container = styled('ul', {
        border: "1px solid $blue_1"
     },
 
+    "li .page":{
+        color: "$blue_1",
+        border: "1px solid $blue_1"
+    },
+
     'li a svg': {
         fontSize: '20px',
     }

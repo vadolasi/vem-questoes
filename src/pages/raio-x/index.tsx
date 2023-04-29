@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <Container>
      <Header/>
-     <Menu/>
+     <Menu page='raio-x'/>
      <Content>
       <Search>
         <SearchInput/>

@@ -13,7 +13,7 @@ export default function Table() {
   return (
     <Container>
      <Header/>
-     <Menu/>
+     <Menu page='mesa-de-estudos'/>
      <Content>
       <TableCard title='Resolver Questões!' picture={study} link='/banco-de-questoes' description='Garoto estudando em uma mesa'/>
       <TableCard title='Meus Cadernos!' picture={notebook} link='/cadernos' description='Garota estudando com um caderno aberto'/>

@@ -98,7 +98,7 @@ export default function Questoes() {
   return (
     <Container>
      <Header/>
-     <Menu/>
+     <Menu page='banco-de-questoes'/>
      <Content>
 
         <DefaultBoxQuestion 

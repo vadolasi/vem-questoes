@@ -9,7 +9,7 @@ export default function questoes() {
   return (
     <Container>
      <Header/>
-     <Menu/>
+     <Menu page='banco-de-questoes'/>
      <Content>
         <Filter/>
         <div className='MatterWrap'>
