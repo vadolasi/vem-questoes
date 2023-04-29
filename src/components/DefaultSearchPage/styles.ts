@@ -21,3 +21,15 @@ export const Container = styled("div", {
 
     }
 })
+
+export const Content = styled("div", {
+    width: '693px',
+    height: '414px',
+
+    background: '$white_1',
+
+    border: '1px solid $border',
+    borderRadius: '15px',
+
+    padding: "24px 30px",
+})
