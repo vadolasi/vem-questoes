@@ -32,4 +32,6 @@ export const Content = styled("div", {
     borderRadius: '15px',
 
     padding: "24px 30px",
+
+    overflowY: "auto"
 })
