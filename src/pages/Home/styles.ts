@@ -12,6 +12,8 @@ export const Container = styled('div', {
         "header header" 
         "menu content"
         `,
+
+        overflowX: "hidden"
 });
 
 
