@@ -27,6 +27,7 @@ export const Search = styled('div', {
         display: "grid",
         gridTemplateColumns: "500px 150px",
         alignItems: "center",
+        justifyContent: "center",
         width: "800px",
         gap: "17px",
 
