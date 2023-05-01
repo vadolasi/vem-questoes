@@ -38,7 +38,7 @@ export const Profile = styled('div', {
 
     height: "max-content",
 
-    'button:hover':{
+    'button:hover, a:hover':{
         cursor: 'pointer',
         color: "$blue_1"
     },
@@ -94,7 +94,7 @@ export const DropMenu = styled("ul", {
 
     transition: "0.5s",
 
-    'li button':{
+    'li button, li a':{
         background: 'none',
         border: 'none',
 
@@ -106,10 +106,13 @@ export const DropMenu = styled("ul", {
         fontSize: '16px',
         lineHeight: '22px',
 
+        textDecoration: "none",
+        color: "$text",
+
         transition: "0.2s",
     },
 
-    'li button svg':{
+    'li a svg':{
         fontSize: '20px',
     }
 })

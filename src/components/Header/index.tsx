@@ -6,6 +6,7 @@ import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 
 import Logo from '../../assets/logo.png';
 import profilePicture from '../../assets/profile/Picture.png'
+import Link from 'next/link';
 
 export const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -27,22 +28,22 @@ export const Header = () => {
                     </ProfileInfo>
                     <DropMenu className={showMenu ? "show" : "hidden"}>
                         <li>
-                            <button>
+                            <Link href='/perfil'>
                                 <AiOutlineLineChart/>
                                 Perfil
-                            </button>
+                            </Link>
                         </li>
                         <li>
-                            <button>
+                            <Link href='#'>
                                 <AiOutlineUser/>
                                 Planos
-                            </button>
+                            </Link>
                         </li>
                         <li>
-                            <button>
+                            <Link href="#">
                                 <AiOutlinePoweroff/>
                                 Sair
-                            </button>
+                            </Link>
                         </li>
                     </DropMenu>
                 </Profile>
