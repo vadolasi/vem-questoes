@@ -40,7 +40,7 @@ export default function Home() {
         <Select label='Tipo' options={['Aleatório', 'Personalizado']}/>
         <Button text='Criar'/>
       </Search>
-        <DefaultSearchPage text='Você não possui simulados' picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
+        <DefaultSearchPage text={array.length > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
         {array && array.map((exam, index) => (
             <ExamBar key={index} title={exam.title} description={exam.descripition} questions={exam.questions} deleteClick={() => handleRemoveExam(exam)}/>
             ))}

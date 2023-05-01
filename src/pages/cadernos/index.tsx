@@ -36,7 +36,7 @@ export default function Home() {
         <SearchInput/>
         <Button text='+ Criar Caderno' onClick={() => setArray(prev => [...prev, {title: 'titulo', descripition: "mude titulo e descrição no botao", questions: []}])}/>
       </Search>
-        <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escrevendo informações em um carderno' content={true}>
+        <DefaultSearchPage text={array.length > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={array.length > 0}>
             {array && array.map((notebook, index) => (
             <NotebookCard key={index} title={notebook.title} description={notebook.descripition} questions={notebook.questions} deleteClick={() => handleRemoveNotebook(notebook)}/>
             ))}
