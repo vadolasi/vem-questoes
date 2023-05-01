@@ -31,6 +31,6 @@ export const Search = styled('div', {
         width: "800px",
         gap: "17px",
 
-        marginTop: "32px auto"
+        marginTop: "32px"
         
 })
