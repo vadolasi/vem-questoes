@@ -4,7 +4,7 @@ import { Container } from './styles';
 interface SelectProps {
     options: Array<any>,
     label: string,
-    value?: string,
+    value?: any,
     onChange?: any,
 
 }
