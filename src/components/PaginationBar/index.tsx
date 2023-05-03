@@ -23,7 +23,7 @@ export const PaginationBar: React.FC<PaginationBarProps> = ({pages}) => {
                 {
                 currentPage > 1 ? 
                 pages
-                .slice((currentPage - 2), currentPage + 1)
+                .slice((currentPage == pages.length? currentPage - 3 : currentPage - 2), currentPage + 1)
                 .map((page, index) => (
                     <li 
                     key={index} 
