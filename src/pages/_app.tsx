@@ -6,7 +6,7 @@ import { globalStyles } from "@/styles/global"
 globalStyles();
 
 const client = new Client({
-  url: 'http://localhost:3000/graphql',
+  url: 'http://localhost:3000/api/graphql',
   exchanges: [cacheExchange, fetchExchange],
 });
 
