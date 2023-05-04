@@ -3,8 +3,9 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-interface ContextType {
+export interface ContextType {
   getUserId: () => string | null
+  setToken: (token: string) => void
 }
 
 export const authChecker: AuthChecker<ContextType> = async (

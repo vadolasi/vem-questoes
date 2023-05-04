@@ -1,7 +1,8 @@
-import { Args, Mutation, Resolver } from "type-graphql"
+import { Args, Ctx, Mutation, Resolver } from "type-graphql"
 import { Service } from "typedi"
 import { AuthService } from "./auth.service"
 import { LoginInput } from "./inputs/login.input"
+import type { ContextType } from "../auth"
 
 @Service()
 @Resolver()
@@ -12,8 +13,13 @@ export class AuthResolver {
 
   @Mutation(() => String)
   async login(
-    @Args() { email, password }: LoginInput
+    @Args() { email, password }: LoginInput,
+    @Ctx() ctx: ContextType
   ) {
-    return this.authService.login(email, password)
+    const { accessToken, refreshToken } = await this.authService.login(email, password)
+
+    ctx.setToken(accessToken)
+
+    return refreshToken
   }
 }
