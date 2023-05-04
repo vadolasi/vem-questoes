@@ -13,13 +13,13 @@ export const Menu: FC<menuProps> = ({page}) => {
     return(
         <Container>
             <li>
-                <Link href="/home" className={page == 'home' ? 'page' : ''}>
+                <Link href="/" className={page == 'home' ? 'page' : ''}>
                         <AiOutlineHome/>
                         Home
                 </Link>
             </li>
             <li>
-                <Link href="/mesa-de-estudos" className={page == 'mesa-de-estudos' ? 'page' : ''}>   
+                <Link href="/mesa-de-estudos" className={page == 'mesa-de-estudos' ? 'page' : ''}>
                         <AiOutlineRead/>
                         Mesa de estudos
                 </Link>
@@ -31,7 +31,7 @@ export const Menu: FC<menuProps> = ({page}) => {
                 </Link>
             </li>
             <li>
-                <Link href="/raio-x" className={page == 'raio-x' ? 'page' : ''}> 
+                <Link href="/raio-x" className={page == 'raio-x' ? 'page' : ''}>
                     <AiOutlineKey/>
                     Raio-X
                 </Link>

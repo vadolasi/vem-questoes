@@ -1,4 +1,4 @@
-import { styled } from '../../styles'
+import { styled } from '../styles'
 
 export const Container = styled('div', {
         width: "100vw",
@@ -9,7 +9,7 @@ export const Container = styled('div', {
         gridTemplateRows: '100px auto',
         gridTemplateAreas:
         `
-        "header header" 
+        "header header"
         "menu content"
         `,
 
@@ -49,7 +49,7 @@ export const OfferCard = styled('div', {
                 height: '122px',
                 padding: '16px',
                 background: 'linear-gradient(90.64deg, #00CFFF 0.43%, #82E7FF 99.52%)',
-                
+
                 display: 'flex',
 
                 borderRadius: '23px',
