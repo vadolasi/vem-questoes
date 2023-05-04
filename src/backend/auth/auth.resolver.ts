@@ -1,4 +1,4 @@
-import { Arg, Mutation, Resolver } from "type-graphql"
+import { Args, Mutation, Resolver } from "type-graphql"
 import { Service } from "typedi"
 import { AuthService } from "./auth.service"
 import { LoginInput } from "./inputs/login.input"
@@ -12,7 +12,7 @@ export class AuthResolver {
 
   @Mutation(() => String)
   async login(
-    @Arg("data") { email, password }: LoginInput
+    @Args() { email, password }: LoginInput
   ) {
     return this.authService.login(email, password)
   }

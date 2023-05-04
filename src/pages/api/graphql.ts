@@ -10,6 +10,8 @@ import { useGraphQlJit } from "@envelop/graphql-jit"
 import jwt from "jsonwebtoken"
 import { authChecker } from "../../backend/auth"
 import { AuthResolver } from "@/backend/auth/auth.resolver"
+import { printSchema } from "graphql"
+import { writeFile } from "fs/promises"
 
 export const config = {
   api: {
@@ -20,8 +22,11 @@ export const config = {
 const schema = await buildSchema({
   resolvers: [UserResolver, AuthResolver],
   container: Container,
-  authChecker
+  authChecker,
+  validate: { forbidUnknownValues: false }
 })
+
+await writeFile("./src/backend/schema.graphql", printSchema(schema))
 
 export default createYoga<{
   req: NextApiRequest

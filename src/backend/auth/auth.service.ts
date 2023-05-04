@@ -9,7 +9,7 @@ export class AuthService {
   ) {}
 
   async login(email: string, password: string) {
-    const user = await this.usersService.getByEmail(email)
+     const user = await this.usersService.getByEmail(email)
     if (!user) throw new Error("No user found")
 
     const valid = await compare(password, user.password)

@@ -10,13 +10,26 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { ButtonText } from '@/components/ButtonText';
 
+import { gql, useQuery } from 'urql';
+import { graphql } from '../../gql'
 
+const LoginMutationDocument = graphql(/* GraphQL */ `
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password)
+  }
+`);
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log(email, password)
+    const [result, executeMutation] = useQuery({
+      query: LoginMutationDocument,
+      variables: {
+        email,
+        password
+      },
+    });
 
     return (
       <Container>
@@ -37,4 +50,3 @@ export default function Login() {
       </Container>
     )
   }
-  
