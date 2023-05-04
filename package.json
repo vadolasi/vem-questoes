@@ -2,21 +2,30 @@
   "name": "vem-questoes",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dec",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "pm2 install typescript && prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^4.11.0",
     "@types/node": "18.15.7",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "graphql-yoga": "^3.7.3",
     "next": "13.2.4",
+    "pm2": "^5.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "prisma": "^4.11.0",
+    "ts-node": "^10.9.1"
   }
 }
