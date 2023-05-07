@@ -12,6 +12,15 @@ export const Container = styled('div', {
         "header header" 
         "menu content"
         `,
+
+        '@media (max-width: 1200px)': {
+                gridTemplateRows: 'auto',
+                gridTemplateAreas:
+                `
+                "header header"
+                "content content"
+                `,
+        }
 });
 
 
@@ -26,7 +35,7 @@ export const Content = styled("div", {
         padding: "100px 58px",
 
         
-        '@media (max-width: 1050px)':{
+        '@media (max-width: 1200px)':{
                 gridTemplateColumns: "auto",
                 gridTemplateRows: "auto auto auto",
                 gap: '20px',

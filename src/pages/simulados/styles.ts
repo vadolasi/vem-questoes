@@ -15,7 +15,16 @@ export const Container = styled('div', {
 
         '.hidden': {
                 display: "none"
-            }
+            },
+
+            '@media (max-width: 1200px)': {
+                gridTemplateRows: 'auto',
+                gridTemplateAreas:
+                `
+                "header header"
+                "content content"
+                `,
+              }
 });
 
 

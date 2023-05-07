@@ -49,5 +49,10 @@ export const Container = styled('ul', {
 
     'li a svg': {
         fontSize: '20px',
-    }
+    },
+
+
+    '@media (max-width: 1200px)': {
+        display: 'none'
+      }
 })

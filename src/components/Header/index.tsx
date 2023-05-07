@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from "next/image";
-import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineBell} from 'react-icons/ai'
+import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
 
 import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 
@@ -39,7 +39,38 @@ export const Header = () => {
                                 Planos
                             </Link>
                         </li>
-                        <li>
+                        <li className='Mobile'>
+                            <Link href='/'>
+                             <AiOutlineHome/>
+                             Home
+                            </Link>
+                        </li>
+                        <li className='Mobile'>
+                            <Link href='/mesa-de-estudos'>
+                                <AiOutlineRead/>
+                                Mesa de estudos
+                            </Link>
+                        </li>
+                        <li className='Mobile'>
+                            <Link href='/banco-de-questoes'>
+                                <AiOutlineForm/>
+                                Banco de questões
+                            </Link>
+                        </li>
+                        <li className='Mobile'>
+                            <Link href='/raio-x'>
+                                <AiOutlineKey/>
+                                Raio-X
+                            </Link>
+                        </li>
+                        <li className='Mobile'>
+                            <Link href='/estatisticas'>
+                                <AiOutlineBarChart/>
+                                Estatísticas
+                            </Link>
+                        </li>
+
+                        <li className='Mobile'>
                             <Link href="#">
                                 <AiOutlinePoweroff/>
                                 Sair
