@@ -5,11 +5,11 @@ import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, Ai
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from './styles';
 
-import { Container, Content} from '../styles';
+import { Container, Content} from '../../styles';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
-import { Timer } from '@/components/Timer';
+import { TimerInverse } from '@/components/TimerInverse';
 import { PaginationBar } from '@/components/PaginationBar';
 
 
@@ -91,7 +91,7 @@ export default function Questoes() {
      <Header/>
      <Menu page=''/>
      <Content>
-        <Timer title='Simulado de Respiração'/>
+        <TimerInverse title='Simulado de Respiração' time={3*questions.length}/>
         <QuestionContainer>
           <Navigation>
             <span>{questions.length} questões encontradas</span>

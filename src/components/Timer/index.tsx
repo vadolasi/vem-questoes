@@ -10,18 +10,18 @@ interface TimerProps {
 }
 
 export const Timer: React.FC<TimerProps> = ({title}) => {
-    const [horas, setHoras] = useState(0);
-    const [minutos, setMinutos] = useState(0);
-    const [segundos, setSegundos] = useState(0);
+    const [horas, setHoras] = useState<number>(0);
+    const [minutos, setMinutos] = useState<number>(0);
+    const [segundos, setSegundos] = useState<number>(0);
 
-    const [play, setPlay] = useState(false);
+    const [play, setPlay] = useState<boolean>(false);
 
     useEffect(() => {
-        let intervalId: any;
+        let intervalId: NodeJS.Timeout;
     
         if (play) {
           intervalId = setInterval(() => {
-            setSegundos(segundos => {
+            setSegundos((segundos) => {
               let newSegundos = segundos + 1;
               let newMinutos = minutos;
               let newHoras = horas;
