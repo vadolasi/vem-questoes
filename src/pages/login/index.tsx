@@ -1,6 +1,6 @@
 import { useState } from 'react';
-
 import  Image  from 'next/image'
+import { useRouter } from 'next/router';
 
 import { Container, Background, Form } from "./styles";
 
@@ -24,6 +24,11 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     const [result, executeMutation] = useMutation(LoginMutation);
+    const router = useRouter();
+
+    if (result.data?.login) {
+      router.push('/');
+    }
 
     return (
       <Container>
@@ -36,7 +41,7 @@ export default function Login() {
          <Input text="Senha" type='password' placeholderText='Mínimo 8 caracteres' onChange={(e: any) => setPassword(e.target.value)}/>
          </div>
 
-         <Button text='Entrar' onClick={() => {executeMutation({email, password}), console.log(result.data.login)}}/>
+         <Button text='Entrar' onClick={() => {executeMutation({email, password})}}/>
 
          <ButtonText text='Esqueceu sua senha?'/>
        </Form>

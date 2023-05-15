@@ -31,6 +31,9 @@ dependencies:
   '@types/react-dom':
     specifier: 18.0.11
     version: 18.0.11
+  '@urql/exchange-auth':
+    specifier: ^2.1.2
+    version: 2.1.2(graphql@15.3.0)
   babel-plugin-parameter-decorator:
     specifier: ^1.0.16
     version: 1.0.16
@@ -2679,6 +2682,15 @@ packages:
     resolution: {integrity: sha512-UtZ9oSbSFODXzFydgLCXpAQz26KGT1d6uEfcylKphiRWNXSWZi8k7vhJXNceNm/Dn0MiZ+kaaJHKcnGY1jvHRQ==}
     dependencies:
       '@0no-co/graphql.web': 1.0.1(graphql@15.3.0)
+      wonka: 6.3.2
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
+  /@urql/exchange-auth@2.1.2(graphql@15.3.0):
+    resolution: {integrity: sha512-YoQgCXW3JlC5HimRXWuqKqcMwrop8SqXXbSlycyg7rG4BXGkZ1tFgZzrdasjhh2U+u3TWad0gTjF8oE2fjULpw==}
+    dependencies:
+      '@urql/core': 4.0.7(graphql@15.3.0)
       wonka: 6.3.2
     transitivePeerDependencies:
       - graphql

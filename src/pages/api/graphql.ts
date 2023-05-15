@@ -50,10 +50,13 @@ export default createYoga<GqlContext>({
       return verifiedToken.sub
     },
     setToken: (token: string) => {
-      res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly`)
+      res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly; SameSite=Strict`)
     },
     setRefreshToken: (token: string) => {
-      res.setHeader("Set-Cookie", `refreshToken=${token}; Path=/; HttpOnly`)
+      res.setHeader("Set-Cookie", `refreshToken=${token}; Path=/; HttpOnly; SameSite=Strict`)
+    },
+    getRefreshToken: () => {
+      return req.cookies.refreshToken
     }
   })
 })

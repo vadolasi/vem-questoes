@@ -12,7 +12,7 @@ export class AuthService {
   ) {}
 
   async login(email: string, password: string) {
-     const user = await this.usersService.getByEmail(email)
+    const user = await this.usersService.getByEmail(email)
     if (!user) throw new Error("No user found")
 
     const valid = await compare(password, user.password)
@@ -35,5 +35,28 @@ export class AuthService {
     ))
 
     return { accessToken, refreshToken }
+  }
+
+  async refreshToken(refreshToken: string | null) {
+    if (!refreshToken) throw new Error("No refresh token provided")
+
+    const refreshTokenObject = await this.prisma.refreshToken.findUnique({
+      where: { id: refreshToken },
+      select: { expiresAt: true, user: { select: { id: true } } }
+    })
+
+    if (!refreshTokenObject) throw new Error("Invalid refresh token")
+    if (refreshTokenObject.expiresAt < new Date()) throw new Error("Refresh token expired")
+
+    const userId = refreshTokenObject.user.id
+
+    const accessToken = await new Promise<string>(resolve => jwt.sign(
+      { userId },
+      process.env.JWT_SECRET!,
+      { expiresIn: "1h" },
+      (_, token) => resolve(token as string)
+    ))
+
+    return accessToken
   }
 }
