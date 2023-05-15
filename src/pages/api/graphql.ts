@@ -51,6 +51,9 @@ export default createYoga<GqlContext>({
     },
     setToken: (token: string) => {
       res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly`)
+    },
+    setRefreshToken: (token: string) => {
+      res.setHeader("Set-Cookie", `refreshToken=${token}; Path=/; HttpOnly`)
     }
   })
 })

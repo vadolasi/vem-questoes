@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 export interface ContextType {
   getUserId: () => string | null
   setToken: (token: string) => void
+  setRefreshToken: (token: string) => void
 }
 
 export const authChecker: AuthChecker<ContextType> = async (
