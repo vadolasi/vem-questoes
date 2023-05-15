@@ -4,7 +4,7 @@ export const Container = styled('header', {
     width: '100%',
     padding: '23px 42px',
 
-    zIndex: 2,
+    zIndex: 3,
 
     display: "flex",
     justifyContent: 'space-between',
@@ -24,6 +24,19 @@ export const Container = styled('header', {
     ".hidden": {
         display: "none"
     },
+
+    '.Mobile': {
+        display: 'none',
+        zIndex: 4,
+    },
+
+    
+    '@media (max-width: 1200px)': {
+        '.Mobile':{
+            display: 'flex',
+            zIndex: 4,
+        }
+      }
        
 });
 
@@ -79,6 +92,7 @@ export const ProfileInfo = styled("div", {
 
         transition: '0.3s',
     },
+
 });
 
 export const DropMenu = styled("ul", {
@@ -93,6 +107,8 @@ export const DropMenu = styled("ul", {
     listStyle: "none",
 
     transition: "0.5s",
+
+    zIndex: 4,
 
     'li button, li a':{
         background: 'none',
@@ -114,5 +130,8 @@ export const DropMenu = styled("ul", {
 
     'li a svg':{
         fontSize: '20px',
-    }
+    },
+
+
+
 })

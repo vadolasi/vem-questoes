@@ -12,6 +12,16 @@ export const Container = styled('div', {
         "header header" 
         "menu content"
         `,
+
+
+        '@media (max-width: 1200px)': {
+                gridTemplateRows: 'auto',
+                gridTemplateAreas:
+                `
+                "header header"
+                "content content"
+                `,
+        }
 });
 
 
@@ -33,6 +43,11 @@ export const Content = styled("div", {
 
         '.hidden': {
                 display: "none"
+        },
+
+        '@media (max-width: 1200px)': {
+                paddingTop: "15px",
+                paddingLeft: "15px",
         }
 });
 

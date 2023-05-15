@@ -12,6 +12,15 @@ export const Container = styled('div', {
         "header header" 
         "menu content"
         `,
+
+        '@media (max-width: 1200px)': {
+                gridTemplateRows: 'auto',
+                gridTemplateAreas:
+                `
+                "header header"
+                "content content"
+                `,
+              }
 });
 
 

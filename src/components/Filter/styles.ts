@@ -47,6 +47,15 @@ export const Container = styled("div", {
         },
     },
 
+    '@media (max-width: 1200px)': {
+    width: "350px",
+    '.Selects':{
+        display: 'grid',
+        gridTemplateColumns: "150px",
+        gridTemplateRows: "auto auto auto auto",
+        gap: "10px"
+    },
+}
 });
 
 export const Fieldset = styled("fieldset", {

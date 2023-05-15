@@ -28,6 +28,10 @@ export const Container = styled('div', {
         background: '$blue_2',
         borderRadius: '23px 23px 0 0',
     },
+    
+    '@media (max-width: 1200px)': {
+        width: '350px',
+      }
 })
 
 

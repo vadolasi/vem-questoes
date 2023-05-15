@@ -36,7 +36,7 @@ export default function Login() {
          <Input text="Senha" type='password' placeholderText='Mínimo 8 caracteres' onChange={(e: any) => setPassword(e.target.value)}/>
          </div>
 
-         <Button text='Entrar'/>
+         <Button text='Entrar' onClick={() => {executeMutation({email, password}), console.log(result.data.login)}}/>
 
          <ButtonText text='Esqueceu sua senha?'/>
        </Form>

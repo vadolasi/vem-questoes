@@ -13,7 +13,17 @@ export const Container = styled('div', {
         "menu content"
         `,
 
-        overflowX: "hidden"
+        overflowX: "hidden",
+
+        
+    '@media (max-width: 1200px)': {
+        gridTemplateRows: 'auto',
+        gridTemplateAreas:
+        `
+        "header header"
+        "content content"
+        `,
+      }
 });
 
 
@@ -32,6 +42,8 @@ export const Content = styled('main', {
                 gridTemplateColumns: "auto",
                 gridTemplateRows: "auto auto auto auto",
                 gap: '35px',
+
+                padding: '20px'
         },
 })
 
@@ -113,5 +125,12 @@ export const OfferCard = styled('div', {
                         bottom: '0px',
                         right: '-25px',
                 },
-        }
+        },
+        '@media (max-width: 1200px)': {
+                width: '300px',
+
+                'img':{
+                        display: "none"
+                }
+              }
 })

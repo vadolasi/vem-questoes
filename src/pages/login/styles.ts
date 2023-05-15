@@ -33,13 +33,13 @@ export const Background = styled('div', {
 })
 
 export const Form = styled('form', {
-    width: '330px',
+    width: '480px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
 
 
-    gap: '24px',
+    gap: '45px',
 
     textAlign: 'center',
 
@@ -58,8 +58,12 @@ export const Form = styled('form', {
       alignItems: "center",
       justifyContent: 'center',
 
-      gap: '15px',
+      gap: '25px',
     },
 
+
+    '@media (max-width: 650px)': {
+      width: '330px',
+    }
 
 })
