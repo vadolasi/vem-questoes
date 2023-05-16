@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "extract-questions": "sucrase-node questions/extractor.ts"
   },
   "dependencies": {
     "@babel/core": "^7.21.8",
@@ -41,7 +42,8 @@
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
     "typedi": "^0.10.0",
-    "urql": "^4.0.2"
+    "urql": "^4.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/plugin-syntax-top-level-await": "^7.14.5",
@@ -50,6 +52,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "prisma": "^4.11.0",
+    "sucrase": "^3.32.0",
     "ts-node": "^10.9.1",
     "typescript": "5.0.2"
   }

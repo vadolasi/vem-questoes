@@ -12,6 +12,7 @@ import { AuthResolver } from "@/backend/auth/auth.resolver"
 import { printSchema } from "graphql"
 import { writeFile } from "fs/promises"
 import { GqlContext } from "@/backend/gqlContext"
+import { QuestionsResolver } from "@/backend/questions/questions.resolver"
 
 export const config = {
   api: {
@@ -20,7 +21,7 @@ export const config = {
 }
 
 const schema = await buildSchema({
-  resolvers: [UserResolver, AuthResolver],
+  resolvers: [UserResolver, AuthResolver, QuestionsResolver],
   container: Container,
   authChecker,
   validate: { forbidUnknownValues: false }
@@ -35,19 +36,19 @@ export default createYoga<GqlContext>({
   plugins: [useGraphQlJit()],
   context: ({ req, res }) => ({
     getUserId: () => {
-      const token = req.cookies.token
+       const token = req.cookies.token
 
       if (!token) {
         return null
       }
 
-      const verifiedToken = jwt.verify(token, process.env.JWT_SECRET!) as { sub: string }
+      const verifiedToken = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string }
 
       if (!verifiedToken) {
         return null
       }
 
-      return verifiedToken.sub
+      return verifiedToken.userId
     },
     setToken: (token: string) => {
       res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly; SameSite=Strict`)

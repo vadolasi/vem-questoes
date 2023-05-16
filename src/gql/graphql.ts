@@ -14,10 +14,54 @@ export type Scalars = {
   Float: number;
 };
 
+export type Alternative = {
+  __typename?: 'Alternative';
+  id: Scalars['ID'];
+  isCorrect: Scalars['Boolean'];
+  text: Scalars['String'];
+};
+
+export type Ano = {
+  __typename?: 'Ano';
+  ano: Scalars['Float'];
+  id: Scalars['ID'];
+};
+
+export type Area = {
+  __typename?: 'Area';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type Banca = {
+  __typename?: 'Banca';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type Estado = {
+  __typename?: 'Estado';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type Local = {
+  __typename?: 'Local';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addAnswer: Scalars['Boolean'];
   login: Scalars['Boolean'];
   refreshToken: Scalars['Boolean'];
+};
+
+
+export type MutationAddAnswerArgs = {
+  alternativeId: Scalars['String'];
+  questionId: Scalars['String'];
 };
 
 
@@ -26,9 +70,62 @@ export type MutationLoginArgs = {
   password: Scalars['String'];
 };
 
+export type Perfil = {
+  __typename?: 'Perfil';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type ProcessoSeletivo = {
+  __typename?: 'ProcessoSeletivo';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  anos: Array<Ano>;
+  areas: Array<Area>;
+  bancas: Array<Banca>;
+  estados: Array<Estado>;
+  locais: Array<Local>;
   me?: Maybe<User>;
+  perfis: Array<Perfil>;
+  processosSeletivos: Array<ProcessoSeletivo>;
+  questions: Array<Question>;
+  subareas: Array<Subarea>;
+};
+
+
+export type QueryQuestionsArgs = {
+  anoId?: InputMaybe<Scalars['String']>;
+  areaId?: InputMaybe<Scalars['String']>;
+  bancaId?: InputMaybe<Scalars['String']>;
+  estadoId?: InputMaybe<Scalars['String']>;
+  localId?: InputMaybe<Scalars['String']>;
+  perfilId?: InputMaybe<Scalars['String']>;
+  processoSeletivoId?: InputMaybe<Scalars['String']>;
+  subareaId?: InputMaybe<Scalars['String']>;
+};
+
+export type Question = {
+  __typename?: 'Question';
+  alternatives?: Maybe<Array<Alternative>>;
+  ano?: Maybe<Ano>;
+  area?: Maybe<Area>;
+  banca?: Maybe<Banca>;
+  enunciado: Scalars['String'];
+  estado?: Maybe<Estado>;
+  id: Scalars['ID'];
+  local?: Maybe<Local>;
+  perfil?: Maybe<Perfil>;
+  subarea?: Maybe<Subarea>;
+};
+
+export type Subarea = {
+  __typename?: 'Subarea';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type User = {

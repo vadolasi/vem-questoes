@@ -11,7 +11,7 @@ import { Button } from '@/components/Button';
 import { ButtonText } from '@/components/ButtonText';
 
 import { useMutation } from 'urql';
-import { graphql } from '../../gql'
+import { graphql } from '@/gql';
 
 const LoginMutation = graphql(/* GraphQL */ `
   mutation Login($email: String!, $password: String!) {
