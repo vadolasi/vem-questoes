@@ -8,7 +8,10 @@ type Query {
   subareas: [Subarea!]!
   estados: [Estado!]!
   bancas: [Banca!]!
-  questions(processoSeletivoId: String, anoId: String, localId: String, perfilId: String, areaId: String, subareaId: String, estadoId: String, bancaId: String): [Question!]!
+  questions(text: String, processoSeletivoId: String, anoId: String, localId: String, perfilId: String, areaId: String, subareaId: String, estadoId: String, bancaId: String): [Question!]!
+  question(id: String!): [Question!]!
+  notebooks: [Notebook!]!
+  notebook(notebookId: String!): Notebook!
 }
 
 type User {
@@ -61,6 +64,7 @@ type Question {
   id: ID!
   enunciado: String!
   alternatives: [Alternative!]
+  processoSeletivo: ProcessoSeletivo
   ano: Ano
   local: Local
   perfil: Perfil
@@ -68,6 +72,7 @@ type Question {
   subarea: Subarea
   estado: Estado
   banca: Banca
+  comments: [Comment!]
 }
 
 type Alternative {
@@ -76,8 +81,22 @@ type Alternative {
   isCorrect: Boolean!
 }
 
+type Comment {
+  id: ID!
+  content: String!
+}
+
+type Notebook {
+  id: ID!
+  name: String!
+  questions: [Question!]!
+}
+
 type Mutation {
   login(email: String!, password: String!): Boolean!
   refreshToken: Boolean!
   addAnswer(alternativeId: String!, questionId: String!): Boolean!
+  addComment(content: String!, questionId: String!): Boolean!
+  addNotebook(questions: [String!]!, name: String!): Boolean!
+  updateNotebook(questions: [String!], name: String, notebookId: String!): Boolean!
 }

@@ -10,9 +10,15 @@ dependencies:
   '@envelop/graphql-jit':
     specifier: ^5.0.6
     version: 5.0.6(@envelop/core@3.0.6)(graphql@15.3.0)
+  '@envelop/response-cache-redis':
+    specifier: ^2.0.8
+    version: 2.0.8(@envelop/core@3.0.6)(graphql@15.3.0)
   '@graphql-typed-document-node/core':
     specifier: ^3.2.0
     version: 3.2.0(graphql@15.3.0)
+  '@graphql-yoga/plugin-response-cache':
+    specifier: ^1.9.1
+    version: 1.9.1(@envelop/core@3.0.6)(graphql-yoga@3.7.3)(graphql@15.3.0)
   '@graphql-yoga/render-graphiql':
     specifier: ^3.9.1
     version: 3.9.1(graphql-yoga@3.7.3)
@@ -1406,6 +1412,33 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@envelop/response-cache-redis@2.0.8(@envelop/core@3.0.6)(graphql@15.3.0):
+    resolution: {integrity: sha512-OIZRMT1U4rSstVpHZI4jPtynUgRUD+GQxXu3pcsUspCTjWe+WR/sNVrbR7LaSXoVvRJqb+ulvN8h6ltTluTRpA==}
+    dependencies:
+      '@envelop/response-cache': 4.0.8(@envelop/core@3.0.6)(graphql@15.3.0)
+      ioredis: 4.28.5
+      tslib: 2.5.0
+    transitivePeerDependencies:
+      - '@envelop/core'
+      - graphql
+      - supports-color
+    dev: false
+
+  /@envelop/response-cache@4.0.8(@envelop/core@3.0.6)(graphql@15.3.0):
+    resolution: {integrity: sha512-XF/0WGLYoYkpJ3H33xi0YXEoQBtJ4KIsrDtJwp9mx/VUeiF8iHAuHmjIC6XtISdDSoeGXiKLpFSlEtNXfBk+xA==}
+    peerDependencies:
+      '@envelop/core': ^3.0.6
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@envelop/core': 3.0.6
+      '@graphql-tools/utils': 8.13.1(graphql@15.3.0)
+      '@whatwg-node/fetch': 0.8.4
+      fast-json-stable-stringify: 2.1.0
+      graphql: 15.3.0
+      lru-cache: 6.0.0
+      tslib: 2.5.0
+    dev: false
+
   /@envelop/types@3.0.2:
     resolution: {integrity: sha512-pOFea9ha0EkURWxJ/35axoH9fDGP5S2cUu/5Mmo9pb8zUf+TaEot8vB670XXihFEn/92759BMjLJNWBKmNhyng==}
     dependencies:
@@ -2042,6 +2075,15 @@ packages:
       - utf-8-validate
     dev: true
 
+  /@graphql-tools/utils@8.13.1(graphql@15.3.0):
+    resolution: {integrity: sha512-qIh9yYpdUFmctVqovwMdheVNJqFh+DQNWIhX87FJStfXYnmweBUDATok9fWPleKeFwxnW8IapKmY8m8toJEkAw==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      graphql: 15.3.0
+      tslib: 2.5.0
+    dev: false
+
   /@graphql-tools/utils@9.2.1(graphql@15.3.0):
     resolution: {integrity: sha512-WUw506Ql6xzmOORlriNrD6Ugx+HjVgYxt9KCXD9mHAak+eaXSwuGGPyE60hy9xaDEoXKBsG7SkG69ybitaVl6A==}
     peerDependencies:
@@ -2083,6 +2125,19 @@ packages:
     resolution: {integrity: sha512-6npFz7eZz33mXgSm1waBLMjUNG0D5hTc/p5Hcs1mojkT3KsLpCOFokzTEKboNsBhKevYcaVa/xeA7WBj4UYMLg==}
     dependencies:
       tslib: 2.5.0
+    dev: false
+
+  /@graphql-yoga/plugin-response-cache@1.9.1(@envelop/core@3.0.6)(graphql-yoga@3.7.3)(graphql@15.3.0):
+    resolution: {integrity: sha512-afnp3BGGGHE6PG2bfBZXwaknRKESD//J6wbclNH0V0AAnbMV7FaPChdhcSUV6q+mLuOnQFWo+z3q26Iezgag0g==}
+    peerDependencies:
+      graphql: ^15.2.0 || ^16.0.0
+      graphql-yoga: ^3.9.1
+    dependencies:
+      '@envelop/response-cache': 4.0.8(@envelop/core@3.0.6)(graphql@15.3.0)
+      graphql: 15.3.0
+      graphql-yoga: 3.7.3(graphql@15.3.0)
+    transitivePeerDependencies:
+      - '@envelop/core'
     dev: false
 
   /@graphql-yoga/render-graphiql@3.9.1(graphql-yoga@3.7.3):
@@ -3727,6 +3782,11 @@ packages:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
     dev: false
 
+  /denque@1.5.1:
+    resolution: {integrity: sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==}
+    engines: {node: '>=0.10'}
+    dev: false
+
   /denque@2.1.0:
     resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
     engines: {node: '>=0.10'}
@@ -4888,6 +4948,25 @@ packages:
       loose-envify: 1.4.0
     dev: true
 
+  /ioredis@4.28.5:
+    resolution: {integrity: sha512-3GYo0GJtLqgNXj4YhrisLaNNvWSNwSS2wS4OELGfGxH8I69+XfNdnmV1AyN+ZqMh0i7eX+SWjrwFKDBDgfBC1A==}
+    engines: {node: '>=6'}
+    dependencies:
+      cluster-key-slot: 1.1.2
+      debug: 4.3.4
+      denque: 1.5.1
+      lodash.defaults: 4.2.0
+      lodash.flatten: 4.4.0
+      lodash.isarguments: 3.1.0
+      p-map: 2.1.0
+      redis-commands: 1.7.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /ioredis@5.3.2:
     resolution: {integrity: sha512-1DKMMzlIHM02eBBVOFQ1+AolGjs6+xEcM4PDL7NqOS6szq7H9jSaEkIUH6/a5Hl241LzW6JLSiAbNvTQjUupUA==}
     engines: {node: '>=12.22.0'}
@@ -5424,6 +5503,10 @@ packages:
 
   /lodash.defaults@4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
+    dev: false
+
+  /lodash.flatten@4.4.0:
+    resolution: {integrity: sha512-C5N2Z3DgnnKr0LOpv/hKCgKdb7ZZwafIrsesve6lmzvZIRZRGaZ/l6Q8+2W7NaT+ZwO3fFlSCzCzrDCFdJfZ4g==}
     dev: false
 
   /lodash.get@4.4.2:
@@ -6186,6 +6269,10 @@ packages:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
+
+  /redis-commands@1.7.0:
+    resolution: {integrity: sha512-nJWqw3bTFy21hX/CPKHth6sfhZbdiHP6bTawSgQBlKOVRG7EZkfHbbHwQJnrE4vsQf0CMNE+3gJ4Fmm16vdVlQ==}
+    dev: false
 
   /redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}

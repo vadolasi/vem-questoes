@@ -8,7 +8,7 @@ import { graphql } from "../gql";
 globalStyles();
 
 const refreshTokenMutation = graphql(/* GraphQL */ `
-  mutation RefreshToken() {
+  mutation RefreshToken {
     refreshToken
   }
 `);

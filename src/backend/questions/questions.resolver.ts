@@ -13,6 +13,7 @@ import { Question } from "./models/question.model"
 import { GetQuestionsInput } from "./inputs/getQuestions.input"
 import { CurrentUserID } from "../auth"
 import type { GraphQLResolveInfo } from "graphql"
+import { Notebook } from "./models/notebook.model"
 
 @Service()
 @Resolver()
@@ -72,13 +73,14 @@ export class QuestionsResolver {
   @Authorized()
   @Query(() => [Question])
   async questions(
-    @Args() { processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
+    @Args() { text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
     @Info() info: GraphQLResolveInfo
   ) {
-    const requestedFields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as any).name.value) as string[]
+    const requestedFields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as { name: { value: string } }).name.value) || []
 
-    return this.questionsService.getQuestions(
+    return await this.questionsService.getQuestions(
       requestedFields,
+      text,
       processoSeletivoId,
       anoId,
       localId,
@@ -91,6 +93,17 @@ export class QuestionsResolver {
   }
 
   @Authorized()
+  @Query(() => [Question])
+  async question(
+    @Info() info: GraphQLResolveInfo,
+    @Arg("id") id: string
+  ) {
+    const requestedFields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as { name: { value: string } }).name.value) || []
+
+    return await this.questionsService.getQuestion(id, requestedFields)
+  }
+
+  @Authorized()
   @Mutation(() => Boolean)
   async addAnswer(
     @CurrentUserID() userId: string,
@@ -98,5 +111,53 @@ export class QuestionsResolver {
     @Arg("alternativeId") alternativeId: string
   ) {
     return await this.questionsService.resolveQuestion(userId, questionId, alternativeId)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async addComment(
+    @CurrentUserID() userId: string,
+    @Arg("questionId") questionId: string,
+    @Arg("content") content: string
+  ) {
+    return await this.questionsService.addComment(userId, questionId, content)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async addNotebook(
+    @CurrentUserID() userId: string,
+    @Arg("name") name: string,
+    @Arg("questions", type => [String]) questions: string[]
+  ) {
+    return await this.questionsService.addNotebook(userId, name, questions)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async updateNotebook(
+    @CurrentUserID() userId: string,
+    @Arg("notebookId") notebookId: string,
+    @Arg("name", { nullable: true }) name?: string,
+    @Arg("questions", type => [String], { nullable: true }) questions?: string[]
+  ) {
+    return await this.questionsService.updateNotebook(userId, notebookId, name, questions)
+  }
+
+  @Authorized()
+  @Query(() => [Notebook])
+  async notebooks(
+    @CurrentUserID() userId: string
+  ) {
+    return await this.questionsService.getNotebooks(userId)
+  }
+
+  @Authorized()
+  @Query(() => Notebook)
+  async notebook(
+    @CurrentUserID() userId: string,
+    @Arg("notebookId") notebookId: string
+  ) {
+    return await this.questionsService.getNotebook(userId, notebookId)
   }
 }

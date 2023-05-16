@@ -7,6 +7,8 @@ import { Area } from "./area.model"
 import { Subarea } from "./subarea.model"
 import { Estado } from "./estado.model"
 import { Banca } from "./banca.model"
+import { ProcessoSeletivo } from "./processoSeletico.model"
+import { Comment } from "./comment.model"
 
 @ObjectType()
 export class Question {
@@ -18,6 +20,9 @@ export class Question {
 
   @Field(() => [Alternative], { nullable: true })
   alternatives?: Alternative[]
+
+  @Field(() => ProcessoSeletivo, { nullable: true })
+  processoSeletivo: string
 
   @Field(() => Ano, { nullable: true })
   ano?: Ano
@@ -39,4 +44,7 @@ export class Question {
 
   @Field(() => Banca, { nullable: true })
   banca?: Banca
+
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[]
 }

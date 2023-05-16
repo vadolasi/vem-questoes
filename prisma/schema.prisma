@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
   engineType = "binary"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -40,6 +41,8 @@ model User {
   totalCorrect   Int
   createdAt      DateTime
   tickets        Ticket[]
+  comments       Comment[]
+  notebooks      Notebook[]
 }
 
 model Alternative {
@@ -73,6 +76,33 @@ model Question {
   banca              Banca?           @relation(fields: [bancaId], references: [id])
   bancaId            String?
   responses          Response[]
+  comments           Comment[]
+  notebooks          QuestionToNotebook[]
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  content    String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model QuestionToNotebook {
+  id         String @id @default(cuid())
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+}
+
+model Notebook {
+  id        String @id @default(cuid())
+  name      String
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  questions QuestionToNotebook[]
 }
 
 model ProcessoSeletivo {

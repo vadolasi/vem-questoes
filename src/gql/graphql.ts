@@ -39,6 +39,12 @@ export type Banca = {
   name: Scalars['String'];
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  content: Scalars['String'];
+  id: Scalars['ID'];
+};
+
 export type Estado = {
   __typename?: 'Estado';
   id: Scalars['ID'];
@@ -54,8 +60,11 @@ export type Local = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAnswer: Scalars['Boolean'];
+  addComment: Scalars['Boolean'];
+  addNotebook: Scalars['Boolean'];
   login: Scalars['Boolean'];
   refreshToken: Scalars['Boolean'];
+  updateNotebook: Scalars['Boolean'];
 };
 
 
@@ -65,9 +74,35 @@ export type MutationAddAnswerArgs = {
 };
 
 
+export type MutationAddCommentArgs = {
+  content: Scalars['String'];
+  questionId: Scalars['String'];
+};
+
+
+export type MutationAddNotebookArgs = {
+  name: Scalars['String'];
+  questions: Array<Scalars['String']>;
+};
+
+
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationUpdateNotebookArgs = {
+  name?: InputMaybe<Scalars['String']>;
+  notebookId: Scalars['String'];
+  questions?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type Notebook = {
+  __typename?: 'Notebook';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  questions: Array<Question>;
 };
 
 export type Perfil = {
@@ -90,10 +125,23 @@ export type Query = {
   estados: Array<Estado>;
   locais: Array<Local>;
   me?: Maybe<User>;
+  notebook: Notebook;
+  notebooks: Array<Notebook>;
   perfis: Array<Perfil>;
   processosSeletivos: Array<ProcessoSeletivo>;
+  question: Array<Question>;
   questions: Array<Question>;
   subareas: Array<Subarea>;
+};
+
+
+export type QueryNotebookArgs = {
+  notebookId: Scalars['String'];
+};
+
+
+export type QueryQuestionArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -106,6 +154,7 @@ export type QueryQuestionsArgs = {
   perfilId?: InputMaybe<Scalars['String']>;
   processoSeletivoId?: InputMaybe<Scalars['String']>;
   subareaId?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
 };
 
 export type Question = {
@@ -114,11 +163,13 @@ export type Question = {
   ano?: Maybe<Ano>;
   area?: Maybe<Area>;
   banca?: Maybe<Banca>;
+  comments?: Maybe<Array<Comment>>;
   enunciado: Scalars['String'];
   estado?: Maybe<Estado>;
   id: Scalars['ID'];
   local?: Maybe<Local>;
   perfil?: Maybe<Perfil>;
+  processoSeletivo?: Maybe<ProcessoSeletivo>;
   subarea?: Maybe<Subarea>;
 };
 
@@ -135,6 +186,16 @@ export type User = {
   name: Scalars['String'];
 };
 
+export type QuestionsFiltersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QuestionsFiltersQuery = { __typename?: 'Query', processosSeletivos: Array<{ __typename?: 'ProcessoSeletivo', id: string, name: string }>, anos: Array<{ __typename?: 'Ano', id: string, ano: number }>, locais: Array<{ __typename?: 'Local', id: string, name: string }>, perfis: Array<{ __typename?: 'Perfil', id: string, name: string }>, areas: Array<{ __typename?: 'Area', id: string, name: string }>, subareas: Array<{ __typename?: 'Subarea', id: string, name: string }>, estados: Array<{ __typename?: 'Estado', id: string, name: string }>, bancas: Array<{ __typename?: 'Banca', id: string, name: string }> };
+
+export type RefreshTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: boolean };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -144,4 +205,6 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = { __typename?: 'Mutation', login: boolean };
 
 
+export const QuestionsFiltersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QuestionsFilters"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processosSeletivos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"anos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"ano"}}]}},{"kind":"Field","name":{"kind":"Name","value":"locais"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"perfis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"subareas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"estados"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"bancas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<QuestionsFiltersQuery, QuestionsFiltersQueryVariables>;
+export const RefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RefreshToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]} as unknown as DocumentNode<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;

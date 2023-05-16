@@ -3,6 +3,9 @@ import { ArgsType, Field } from "type-graphql"
 @ArgsType()
 export class GetQuestionsInput {
   @Field({ nullable: true })
+  text?: string
+
+  @Field({ nullable: true })
   processoSeletivoId?: string
 
   @Field({ nullable: true })

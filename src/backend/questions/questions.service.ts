@@ -41,6 +41,7 @@ export class QuestionsService {
 
   async getQuestions(
     requestedFields: string[],
+    text?: string,
     processoSeletivoId?: string,
     anoId?: string,
     localId?: string,
@@ -50,8 +51,24 @@ export class QuestionsService {
     estadoId?: string,
     bancaId?: string
   ) {
-    return this.prisma.question.findMany({
+    return await this.prisma.question.findMany({
       where: {
+        OR: [
+          {
+            enunciado: {
+              contains: text
+            }
+          },
+          {
+            alternatives: {
+              some: {
+                text: {
+                  contains: text
+                }
+              }
+            }
+          }
+        ],
         processoSeletivoId,
         anoId,
         localId,
@@ -62,14 +79,36 @@ export class QuestionsService {
         bancaId
       },
       include: {
-        alternatives: "alternatives" in requestedFields,
-        ano: "ano" in requestedFields,
-        local: "local" in requestedFields,
-        perfil: "perfil" in requestedFields,
-        area: "area" in requestedFields,
-        subarea: "subarea" in requestedFields,
-        estado: "estado" in requestedFields,
-        banca: "banca" in requestedFields
+        processoSeletivo: requestedFields.includes("processoSeletivo"),
+        alternatives: requestedFields.includes("alternatives"),
+        ano: requestedFields.includes("ano"),
+        local: requestedFields.includes("local"),
+        perfil: requestedFields.includes("perfil"),
+        area: requestedFields.includes("area"),
+        subarea: requestedFields.includes("subarea"),
+        estado: requestedFields.includes("estado"),
+        banca: requestedFields.includes("banca"),
+        comments: requestedFields.includes("comments")
+      }
+    })
+  }
+
+  async getQuestion(questionId: string, requestedFields: string[]) {
+    return await this.prisma.question.findFirst({
+      where: {
+        id: questionId
+      },
+      include: {
+        processoSeletivo: requestedFields.includes("processoSeletivo"),
+        alternatives: requestedFields.includes("alternatives"),
+        ano: requestedFields.includes("ano"),
+        local: requestedFields.includes("local"),
+        perfil: requestedFields.includes("perfil"),
+        area: requestedFields.includes("area"),
+        subarea: requestedFields.includes("subarea"),
+        estado: requestedFields.includes("estado"),
+        banca: requestedFields.includes("banca"),
+        comments: requestedFields.includes("comments")
       }
     })
   }
@@ -109,5 +148,61 @@ export class QuestionsService {
     })
 
     return alternative.correct
+  }
+
+  async addComment(userId: string, questionId: string, content: string) {
+    await this.prisma.comment.create({
+      data: {
+        userId,
+        questionId,
+        content
+      }
+    })
+
+    return true
+  }
+
+  async addNotebook(userId: string, name: string, questions: string[]) {
+    await this.prisma.notebook.create({
+      data: {
+        userId,
+        name,
+        questions: {
+          connect: questions.map(questionId => ({ id: questionId }))
+        }
+      }
+    })
+  }
+
+  async updateNotebook(userId: string, notebookId: string, name?: string, questions?: string[]) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found!")
+    }
+
+    await this.prisma.notebook.update({
+      where: { id: notebookId },
+      data: {
+        name,
+        questions: {
+          set: questions?.map(questionId => ({ id: questionId }))
+        }
+      }
+    })
+  }
+
+  async getNotebooks(userId: string) {
+    return await this.prisma.notebook.findMany({ where: { userId } })
+  }
+
+  async getNotebook(userId: string, notebookId: string) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found")
+    }
+
+    return notebook
   }
 }
