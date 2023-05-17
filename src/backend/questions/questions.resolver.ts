@@ -110,9 +110,10 @@ export class QuestionsResolver {
   async addAnswer(
     @CurrentUserID() userId: string,
     @Arg("questionId") questionId: string,
-    @Arg("alternativeId") alternativeId: string
+    @Arg("alternativeId") alternativeId: string,
+    @Arg("simuladoId") simuladoId: string
   ) {
-    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId)
+    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId)
   }
 
   @Authorized()
