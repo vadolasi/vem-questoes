@@ -96,7 +96,7 @@ type Notebook {
 type Mutation {
   login(email: String!, password: String!): Boolean!
   refreshToken: Boolean!
-  addAnswer(alternativeId: String!, questionId: String!): Boolean!
+  addAnswer(simuladoId: String!, alternativeId: String!, questionId: String!): Boolean!
   addComment(content: String!, questionId: String!): Boolean!
   addNotebook(questions: [String!]!, name: String!): Boolean!
   updateNotebook(questions: [String!], name: String, notebookId: String!): Boolean!

@@ -143,7 +143,7 @@ export class QuestionsService {
     })
   }
 
-  async resolveQuestion(userId: string, questionId: string, alternativeId: string) {
+  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId: string) {
     const alternative = await this.prisma.alternative.findUnique({
       where: {
         id: alternativeId
@@ -159,7 +159,8 @@ export class QuestionsService {
         userId,
         questionId,
         alternativeId,
-        correct: alternative.correct
+        correct: alternative.correct,
+        simuladoId
       }
     })
 
