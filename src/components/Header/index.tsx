@@ -34,7 +34,7 @@ export const Header = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href='#'>
+                            <Link href='/ofertas'>
                                 <AiOutlineUser/>
                                 Planos
                             </Link>

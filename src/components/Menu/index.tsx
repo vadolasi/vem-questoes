@@ -46,7 +46,7 @@ export const Menu: FC<menuProps> = ({page}) => {
                 </Link>
             </li>
             <li>
-                <Link href="/promotions" className={page == '' ? 'page' : ''}>
+                <Link href="/ofertas" className={page == '' ? 'page' : ''}>
                     <Image src={Button} alt='botão para acessar página de promoções'/>
                 </Link>
             </li>
