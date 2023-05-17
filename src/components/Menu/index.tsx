@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Container } from "./styles";
 import {AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
 import { FC } from 'react';
+
+import Button from '../../assets/button.png'
 
 interface menuProps {
     page: string,
@@ -40,6 +43,11 @@ export const Menu: FC<menuProps> = ({page}) => {
                 <Link href="/estatisticas" className={page == 'estatisticas' ? 'page' : ''}>
                     <AiOutlineBarChart/>
                     Estatísticas
+                </Link>
+            </li>
+            <li>
+                <Link href="/ofertas" className={page == '' ? 'page' : ''}>
+                    <Image src={Button} alt='botão para acessar página de promoções'/>
                 </Link>
             </li>
         </Container>

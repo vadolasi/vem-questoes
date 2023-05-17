@@ -1,7 +1,7 @@
 import { styled } from "@/styles";
 
 export const Container = styled('header', {
-    width: '100%',
+    width: '100vw',
     padding: '23px 42px',
 
     zIndex: 3,
@@ -10,8 +10,7 @@ export const Container = styled('header', {
     justifyContent: 'space-between',
 
     gridArea: 'header',
-
-    borderBottom: '1px solid $white_1',
+    
 
     ".Logo": {
         width: "85px",

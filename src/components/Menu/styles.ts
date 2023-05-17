@@ -51,7 +51,15 @@ export const Container = styled('ul', {
         fontSize: '20px',
     },
 
+    'li:last-child':{
+        width: '240px',
+        height: '140px',
 
+        'img':{
+            width: '100%',
+            height: "100%"
+        }
+    },
     '@media (max-width: 1200px)': {
         display: 'none'
       }
