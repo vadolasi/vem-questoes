@@ -40,6 +40,9 @@ dependencies:
   '@urql/exchange-auth':
     specifier: ^2.1.2
     version: 2.1.2(graphql@15.3.0)
+  '@urql/exchange-graphcache':
+    specifier: ^6.0.4
+    version: 6.0.4(graphql@15.3.0)
   babel-plugin-parameter-decorator:
     specifier: ^1.0.16
     version: 1.0.16
@@ -2751,6 +2754,16 @@ packages:
   /@urql/exchange-auth@2.1.2(graphql@15.3.0):
     resolution: {integrity: sha512-YoQgCXW3JlC5HimRXWuqKqcMwrop8SqXXbSlycyg7rG4BXGkZ1tFgZzrdasjhh2U+u3TWad0gTjF8oE2fjULpw==}
     dependencies:
+      '@urql/core': 4.0.7(graphql@15.3.0)
+      wonka: 6.3.2
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
+  /@urql/exchange-graphcache@6.0.4(graphql@15.3.0):
+    resolution: {integrity: sha512-fzfCUrHzhLycPRa6kYrQYryk0pwmUfeHY9Xqh11A6wtp4/diV7FASlffB5k2j3AWRBxBnqThXDssRXI/G8cACQ==}
+    dependencies:
+      '@0no-co/graphql.web': 1.0.1(graphql@15.3.0)
       '@urql/core': 4.0.7(graphql@15.3.0)
       wonka: 6.3.2
     transitivePeerDependencies:

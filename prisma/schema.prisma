@@ -77,7 +77,8 @@ model Question {
   bancaId            String?
   responses          Response[]
   comments           Comment[]
-  notebooks          QuestionToNotebook[]
+  notebooks          Notebook[]
+  simulados          Simulado[]
 }
 
 model Comment {
@@ -88,21 +89,12 @@ model Comment {
   user       User     @relation(fields: [userId], references: [id])
   userId     String
 }
-
-model QuestionToNotebook {
-  id         String @id @default(cuid())
-  notebook   Notebook @relation(fields: [notebookId], references: [id])
-  notebookId String
-  question   Question @relation(fields: [questionId], references: [id])
-  questionId String
-}
-
 model Notebook {
   id        String @id @default(cuid())
   name      String
   user      User   @relation(fields: [userId], references: [id])
   userId    String
-  questions QuestionToNotebook[]
+  questions Question[]
 }
 
 model ProcessoSeletivo {
@@ -178,10 +170,11 @@ model Response {
 model Simulado {
   id        String     @id @default(cuid())
   name      String
-  questions Response[]
+  questions Question[]
+  responses Response[]
   user      User       @relation(fields: [userId], references: [id])
   userId    String
-  createdAt DateTime
+  createdAt DateTime   @default(now())
 }
 
 model Ticket {

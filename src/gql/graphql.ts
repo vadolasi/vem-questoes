@@ -16,8 +16,9 @@ export type Scalars = {
 
 export type Alternative = {
   __typename?: 'Alternative';
+  correct: Scalars['Boolean'];
   id: Scalars['ID'];
-  isCorrect: Scalars['Boolean'];
+  letter: Scalars['String'];
   text: Scalars['String'];
 };
 
@@ -31,6 +32,11 @@ export type Area = {
   __typename?: 'Area';
   id: Scalars['ID'];
   name: Scalars['String'];
+};
+
+export type AreaToSimuladoInput = {
+  areaId: Scalars['ID'];
+  quantity: Scalars['Float'];
 };
 
 export type Banca = {
@@ -62,6 +68,7 @@ export type Mutation = {
   addAnswer: Scalars['Boolean'];
   addComment: Scalars['Boolean'];
   addNotebook: Scalars['Boolean'];
+  createSimulado: Simulado;
   login: Scalars['Boolean'];
   refreshToken: Scalars['Boolean'];
   updateNotebook: Scalars['Boolean'];
@@ -83,6 +90,12 @@ export type MutationAddCommentArgs = {
 export type MutationAddNotebookArgs = {
   name: Scalars['String'];
   questions: Array<Scalars['String']>;
+};
+
+
+export type MutationCreateSimuladoArgs = {
+  areas: Array<AreaToSimuladoInput>;
+  name: Scalars['String'];
 };
 
 
@@ -171,6 +184,12 @@ export type Question = {
   perfil?: Maybe<Perfil>;
   processoSeletivo?: Maybe<ProcessoSeletivo>;
   subarea?: Maybe<Subarea>;
+};
+
+export type Simulado = {
+  __typename?: 'Simulado';
+  id: Scalars['ID'];
+  questions: Array<Question>;
 };
 
 export type Subarea = {

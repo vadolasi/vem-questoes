@@ -54,21 +54,21 @@ export default function Home() {
      <Content>
       <Search>
         <SearchInput/>
-        <Select label='Buscar por' options={['banca', 'prova']}/>
+        <Select label='Buscar por' options={[{ option: 'banca', value: 'banca' }, { option: 'prova', value: 'prova' }]}/>
         <Button text='Buscar'/>
       </Search>
         <DefaultSearchPage text='Raio-X completo da sua prova!' picture={raioX} alt='Mulher avaliando informações sobre algo' content={response.length > 0}>
           {response && response.map((response, index) => (
-            <XrayButton 
-            key={index} 
-            disciplina={response.disciplina} 
-            relevancia={response.relevancia} 
-            desempenho={response.desempenho} 
+            <XrayButton
+            key={index}
+            disciplina={response.disciplina}
+            relevancia={response.relevancia}
+            desempenho={response.desempenho}
             assuntos={response.assuntos}/>
           ))}
-          
+
         </DefaultSearchPage>
-     </Content> 
+     </Content>
     </Container>
   )
 }

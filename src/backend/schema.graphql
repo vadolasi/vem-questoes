@@ -78,7 +78,8 @@ type Question {
 type Alternative {
   id: ID!
   text: String!
-  isCorrect: Boolean!
+  letter: String!
+  correct: Boolean!
 }
 
 type Comment {
@@ -99,4 +100,15 @@ type Mutation {
   addComment(content: String!, questionId: String!): Boolean!
   addNotebook(questions: [String!]!, name: String!): Boolean!
   updateNotebook(questions: [String!], name: String, notebookId: String!): Boolean!
+  createSimulado(areas: [AreaToSimuladoInput!]!, name: String!): Simulado!
+}
+
+type Simulado {
+  id: ID!
+  questions: [Question!]!
+}
+
+input AreaToSimuladoInput {
+  areaId: ID!
+  quantity: Float!
 }

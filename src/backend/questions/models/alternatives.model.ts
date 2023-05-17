@@ -9,5 +9,8 @@ export class Alternative {
   text: string
 
   @Field()
-  isCorrect: boolean
+  letter: string
+
+  @Field()
+  correct: boolean
 }

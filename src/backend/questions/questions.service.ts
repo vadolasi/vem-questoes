@@ -1,6 +1,27 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 
+function getRandomEntries(arr: any[], n: number) {
+  if (n >= arr.length) {
+    return arr
+  }
+
+  const shuffled = arr.slice()
+  let currentIndex = arr.length
+  let temporaryValue, randomIndex
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1;
+
+    temporaryValue = shuffled[currentIndex]
+    shuffled[currentIndex] = shuffled[randomIndex]
+    shuffled[randomIndex] = temporaryValue
+  }
+
+  return shuffled.slice(0, n)
+}
+
 @Service()
 export class QuestionsService {
   constructor(
@@ -204,5 +225,27 @@ export class QuestionsService {
     }
 
     return notebook
+  }
+
+  async createSimulado(userId: string, name: string, areas: { areaId: string, quantity: number }[]) {
+    return await this.prisma.simulado.create({
+      data: {
+        userId,
+        name,
+        questions: {
+          connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
+            const questions = await this.prisma.question.findMany({
+              where: {
+                areaId
+              },
+              select: { id: true }
+            })
+
+            return getRandomEntries(questions, quantity)
+          }))).flat()
+        }
+      },
+      include: { questions: { include: { alternatives: true } } }
+    })
   }
 }

@@ -14,6 +14,8 @@ import { GetQuestionsInput } from "./inputs/getQuestions.input"
 import { CurrentUserID } from "../auth"
 import type { GraphQLResolveInfo } from "graphql"
 import { Notebook } from "./models/notebook.model"
+import { Simulado } from "./models/simulado.model"
+import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
 
 @Service()
 @Resolver()
@@ -159,5 +161,15 @@ export class QuestionsResolver {
     @Arg("notebookId") notebookId: string
   ) {
     return await this.questionsService.getNotebook(userId, notebookId)
+  }
+
+  @Authorized()
+  @Mutation(() => Simulado)
+  async createSimulado(
+    @CurrentUserID() userId: string,
+    @Arg("name") name: string,
+    @Arg("areas", () => [AreaToSimuladoInput]) areas: AreaToSimuladoInput[]
+  ) {
+    return await this.questionsService.createSimulado(userId, name, areas)
   }
 }

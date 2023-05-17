@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from './styles';
 
 interface SelectProps {
-  options: { value: string, option: string }[],
+  options: { value: any, option: string }[],
   label: string,
   value?: any,
   onChange?: any
