@@ -16,6 +16,9 @@ import { ExamCard } from '@/components/ExamCard';
 import { graphql } from '@/gql';
 import { useQuery } from 'urql';
 
+import { ImageSlider } from '@/components/ImageSlider';
+import { SliderData } from '@/components/ImageSlider/SliderData';
+
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
     leaderBoard {
@@ -60,10 +63,14 @@ export default function Home() {
                 </div>
                 <Image src={mulherComNotebook} alt="Mulher segurando um notebook"/>
             </div>
+            <div className='Content'>
+            <ImageSlider slides={SliderData} />
+            </div>
           </OfferCard>
           <ContentCard title='Estatísticas'>
             <div className='box'>
            <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>;
+           <span><strong>X</strong> questões certas de <strong>Y</strong></span>
            </div>
           </ContentCard>
           <ContentCard title='Simulados'>
