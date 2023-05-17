@@ -55,9 +55,20 @@ export const Container = styled('ul', {
         width: '240px',
         height: '140px',
 
+        padding: 0,
+        border: 'none',
+
         'img':{
             width: '100%',
             height: "100%"
+        },
+        '& a':{
+            padding: 0,
+            border: 'none',
+        },
+
+        '& a:hover': {
+            border: 'none'
         }
     },
     '@media (max-width: 1200px)': {
