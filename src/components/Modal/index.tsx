@@ -9,7 +9,7 @@ import { Button } from '../Button';
 
 import { Container, ModalWindow } from './styles';
 import { graphql } from '@/gql';
-import { useQuery } from 'urql';
+import { useMutation, useQuery } from 'urql';
 
 interface ModalProps {
   onClick?: any,
@@ -27,12 +27,28 @@ const GetAreasQuery = graphql(/* GraphQL */ `
   }
 `)
 
+const createSimuladoMutation = graphql(/* GraphQL */ `
+  mutation CreateSimulado($name: String!, $type: SimuladoType!, $areas: [AreaToSimuladoInput!]!) {
+    createSimulado(
+      name: $name
+      type: $type
+      areas: $areas
+    ) {
+      id
+      questions {
+        id
+      }
+    }
+  }
+`)
+
 export const Modal: React.FC<ModalProps> = ({ onClick, className, create, title}) => {
     const [matters, setMatter] = useState(1);
-    const [result] = useQuery({ query: GetAreasQuery })
+    const [getAreasQueryResult] = useQuery({ query: GetAreasQuery })
+    const [] = useMutation(createSimuladoMutation)
     const [selectedAreas, setSelectedAreas] = useState<string[]>([])
 
-    const { data, fetching } = result
+    const { data, fetching } = getAreasQueryResult
 
     const selecetArea = (value: string) => {
       const newSelectedAreas = [...selectedAreas, value]

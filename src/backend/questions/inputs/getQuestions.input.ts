@@ -2,6 +2,12 @@ import { ArgsType, Field } from "type-graphql"
 
 @ArgsType()
 export class GetQuestionsInput {
+  @Field({ nullable: true, defaultValue: 1 })
+  page: number
+
+  @Field({ nullable: true, defaultValue: 10 })
+  itemsPerPage: number
+
   @Field({ nullable: true })
   text?: string
 
