@@ -11,7 +11,7 @@ export class AuthResolver {
     private readonly authService: AuthService
   ) {}
 
-  @Mutation(() => String)
+  @Mutation(() => Boolean)
   async login(
     @Args() { email, password }: LoginInput,
     @Ctx() ctx: ContextType
@@ -19,7 +19,19 @@ export class AuthResolver {
     const { accessToken, refreshToken } = await this.authService.login(email, password)
 
     ctx.setToken(accessToken)
+    ctx.setRefreshToken(refreshToken)
 
-    return refreshToken
+    return true
+  }
+
+  @Mutation(() => Boolean)
+  async refreshToken(
+    @Ctx() ctx: ContextType
+  ) {
+    const newAccessToken = await this.authService.refreshToken(ctx.getRefreshToken())
+
+    ctx.setToken(newAccessToken)
+
+    return true
   }
 }

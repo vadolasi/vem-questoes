@@ -7,7 +7,7 @@ export class UsersService {
     private readonly prisma: PrismaService
   ) {}
 
-  async getUserById(id: string) {
+  async getById(id: string) {
     return this.prisma.user.findUnique({
       where: { id }
     })

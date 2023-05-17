@@ -16,7 +16,7 @@ import simulado from '@/assets/Test.png'
 
 export default function Home() {
   const [array, setArray] = useState<any[]>([
-    {title: 'Simulado 1', descripition: "caderno feito agr", questions: ['1', '2', '3', 4, 5]}, 
+    {title: 'Simulado 1', descripition: "caderno feito agr", questions: ['1', '2', '3', 4, 5]},
     {title: 'Simulado 2', descripition: "caderno feito agr", questions: ['questao1', 'qua', 'qua']},
   ]);
 
@@ -37,7 +37,7 @@ export default function Home() {
       return alert('Selecione um tipo de simulado.')
     }
 
-    value == 'Personalizado'? 
+    value == 'Personalizado'?
       setShowExamModal(!showExamModal) : {
 
     }
@@ -52,7 +52,7 @@ export default function Home() {
       <Modal className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
       <Search>
         <SearchInput/>
-        <Select label='Tipo' options={['Aleatorio', 'Personalizado']}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
+        <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
         <Button text='Criar' onClick={createSimulado}/>
       </Search>
         <DefaultSearchPage text={array.length > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
@@ -60,7 +60,7 @@ export default function Home() {
             <ExamBar key={index} title={exam.title} questions={exam.questions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
             ))}
         </DefaultSearchPage>
-     </Content> 
+     </Content>
     </Container>
   )
 }

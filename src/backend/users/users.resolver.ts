@@ -14,6 +14,6 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   @Authorized()
   async me(@CurrentUserID() userId: string) {
-    return this.usersService.getUserById(userId)
+    return this.usersService.getById(userId)
   }
 }

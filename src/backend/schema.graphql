@@ -1,5 +1,17 @@
 type Query {
   me: User
+  processosSeletivos: [ProcessoSeletivo!]!
+  anos: [Ano!]!
+  locais: [Local!]!
+  perfis: [Perfil!]!
+  areas: [Area!]!
+  subareas: [Subarea!]!
+  estados: [Estado!]!
+  bancas: [Banca!]!
+  questions(text: String, processoSeletivoId: String, anoId: String, localId: String, perfilId: String, areaId: String, subareaId: String, estadoId: String, bancaId: String): [Question!]!
+  question(id: String!): [Question!]!
+  notebooks: [Notebook!]!
+  notebook(notebookId: String!): Notebook!
 }
 
 type User {
@@ -8,6 +20,95 @@ type User {
   name: String!
 }
 
+type ProcessoSeletivo {
+  id: ID!
+  name: String!
+}
+
+type Ano {
+  id: ID!
+  ano: Float!
+}
+
+type Local {
+  id: ID!
+  name: String!
+}
+
+type Perfil {
+  id: ID!
+  name: String!
+}
+
+type Area {
+  id: ID!
+  name: String!
+}
+
+type Subarea {
+  id: ID!
+  name: String!
+}
+
+type Estado {
+  id: ID!
+  name: String!
+}
+
+type Banca {
+  id: ID!
+  name: String!
+}
+
+type Question {
+  id: ID!
+  enunciado: String!
+  alternatives: [Alternative!]
+  processoSeletivo: ProcessoSeletivo
+  ano: Ano
+  local: Local
+  perfil: Perfil
+  area: Area
+  subarea: Subarea
+  estado: Estado
+  banca: Banca
+  comments: [Comment!]
+}
+
+type Alternative {
+  id: ID!
+  text: String!
+  letter: String!
+  correct: Boolean!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+}
+
+type Notebook {
+  id: ID!
+  name: String!
+  questions: [Question!]!
+}
+
 type Mutation {
-  login(email: String!, password: String!): String!
+  login(email: String!, password: String!): Boolean!
+  refreshToken: Boolean!
+  addAnswer(alternativeId: String!, questionId: String!): Boolean!
+  addComment(content: String!, questionId: String!): Boolean!
+  addNotebook(questions: [String!]!, name: String!): Boolean!
+  updateNotebook(questions: [String!], name: String, notebookId: String!): Boolean!
+  createSimulado(areas: [AreaToSimuladoInput!]!, name: String!): Simulado!
+}
+
+type Simulado {
+  id: ID!
+  questions: [Question!]!
+}
+
+input AreaToSimuladoInput {
+  areaId: ID!
+  quantity: Float!
 }
