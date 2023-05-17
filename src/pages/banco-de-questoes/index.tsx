@@ -13,21 +13,18 @@ export default function questoes() {
      <Content>
         <Filter/>
         <div className='MatterWrap'>
-          <h1>Respiração</h1>
           <MatterMenu>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='blue'/></li>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='blue'/></li>
           </MatterMenu>
         </div>
         <div className='MatterWrap'>
-          <h1>Teste</h1>
           <MatterMenu>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='red'/></li>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='red'/></li>
           </MatterMenu>
         </div>
         <div className='MatterWrap'>
-          <h1>Ai mds</h1>
           <MatterMenu>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='green'/></li>
           <li><MatterCard title='Exemplo EXEMPLO' number={10} color='green'/></li>
