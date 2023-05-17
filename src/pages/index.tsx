@@ -57,10 +57,17 @@ export default function Home() {
             </div>
           </OfferCard>
           <ContentCard title='Estatísticas'>
+            <div className='box'>
+              <div className='boxCircle'>
+                <circle cx={70} cy={70} r={70}></circle>
+                <circle cx={70} cy={70} r={70}></circle>
+              </div>
+
+            </div>
           </ContentCard>
           <ContentCard title='Simulados'>
             {data?.simulados.simulados.map(simulado => (
-              <ExamCard name={simulado.name} questions={simulado.totalQuestions} />
+              <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
           </ContentCard>
      </Content>
