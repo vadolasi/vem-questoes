@@ -18,7 +18,7 @@ interface UserCardInterface{
 export const UserCard: FC<UserCardInterface> = ({position, picture, name, goals, questions}) => {
     return(
         <Container>
-    
+
             <div className="userInfo">
             <p>{position}º</p>
             <Image src={userProfile}  alt=""/>
@@ -28,7 +28,7 @@ export const UserCard: FC<UserCardInterface> = ({position, picture, name, goals,
             <div className="examInfo">
                 <span><AiOutlineCheck/>{goals}</span>
                 <span><AiOutlineQuestionCircle/>{questions}</span>
-                <span><AiOutlinePercentage/>{100*goals/questions}</span>
+                <span><AiOutlinePercentage/>{100*goals/questions || 0}</span>
             </div>
 
         </Container>

@@ -1,6 +1,3 @@
-import Image from 'next/image';
-import {useState} from 'react'
-
 import { Container, Content, Search } from './styles';
 
 import { Menu } from "@/components/Menu";
@@ -9,24 +6,59 @@ import { SearchInput } from '@/components/SearchInput';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 
-
 import notebook from '@/assets/Notebook.png'
 import { NotebookCard } from '@/components/NotebookCard';
+import { graphql } from '@/gql';
+import { useMutation, useQuery } from 'urql';
+
+const notebooksQuery = graphql(/* GraphQL */ `
+  query NotebooksQuery {
+    notebooks {
+      id
+      name
+      description
+      questions {
+        id
+      }
+    }
+  }
+`);
+
+const createNotebookMutation = graphql(/* GraphQL */ `
+  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {
+    addNotebook(
+      name: $name
+      description: $description
+      questions: $questions
+    )
+  }
+`);
+
+const deleteNotebookMutation = graphql(/* GraphQL */`
+  mutation DeleteNotebook($id: String!) {
+    deleteOneNotebook(where: { id: $id }) {
+      id
+    }
+  }
+`)
 
 export default function Home() {
-  const [array, setArray] = useState<any[]>([
-    {title: 'caderno 1', descripition: "caderno feito agr", questions: ['1', '2', '3', 4, 5]}, 
-    {title: 'caderno 2', descripition: "caderno feito agr", questions: ['questao1', 'qua', 'qua']},]);
+  const [result, executeQuery] = useQuery({ query: notebooksQuery })
+  const [, executeCreateNotebook] = useMutation(createNotebookMutation)
+  const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
 
-    function handleRemoveNotebook(deleted: any){
-      const confirmDelete = confirm(`deseja excluir o caderno ${deleted.title}`);
+  const { data } = result
 
-      if(!confirmDelete){
-        return
-      }
-
-      setArray(prevState => prevState.filter(notebook => notebook !== deleted))
+  const addNotebook = async () => {
+    await executeCreateNotebook({ name: "Título", questions: [] })
+    executeQuery()
   }
+
+  const deleteNotebook = async (id: string) => {
+    await executeDeleteNotebook({ id })
+    executeQuery()
+  }
+
   return (
     <Container>
      <Header/>
@@ -34,15 +66,14 @@ export default function Home() {
      <Content>
       <Search>
         <SearchInput/>
-        <Button text='+ Criar Caderno' onClick={() => setArray(prev => [...prev, {title: 'titulo', descripition: "mude titulo e descrição no botao", questions: []}])}/>
+        <Button text='+ Criar Caderno' onClick={() => addNotebook()} />
       </Search>
-        <DefaultSearchPage text={array.length > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={array.length > 0}>
-            {array && array.map((notebook, index) => (
-            <NotebookCard key={index} title={notebook.title} description={notebook.descripition} questions={notebook.questions} deleteClick={() => handleRemoveNotebook(notebook)}/>
-            ))}
-
+        <DefaultSearchPage text={(data?.notebooks!.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
+          {data?.notebooks && data.notebooks.map((notebook, index) => (
+            <NotebookCard key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+          ))}
         </DefaultSearchPage>
-     </Content> 
+     </Content>
     </Container>
   )
 }

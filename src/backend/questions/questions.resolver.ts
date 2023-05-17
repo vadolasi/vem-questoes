@@ -13,10 +13,11 @@ import { Question } from "./models/question.model"
 import { GetQuestionsInput } from "./inputs/getQuestions.input"
 import { CurrentUserID } from "../auth"
 import type { GraphQLResolveInfo } from "graphql"
-import { Notebook } from "./models/notebook.model"
+import { NotebookModel } from "./models/notebook.model"
 import { Simulado, SimuladoType } from "./models/simulado.model"
 import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
 import { QuestionsResponse } from "./responses/questions.response"
+import { SimuladosResponse } from "./responses/simulados.response"
 
 @Service()
 @Resolver()
@@ -134,9 +135,12 @@ export class QuestionsResolver {
   async addNotebook(
     @CurrentUserID() userId: string,
     @Arg("name") name: string,
-    @Arg("questions", type => [String]) questions: string[]
+    @Arg("questions", type => [String]) questions: string[],
+    @Arg("description", { nullable: true }) description: string
   ) {
-    return await this.questionsService.addNotebook(userId, name, questions)
+    await this.questionsService.addNotebook(userId, name, questions, description)
+
+    return true
   }
 
   @Authorized()
@@ -145,13 +149,25 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string,
     @Arg("notebookId") notebookId: string,
     @Arg("name", { nullable: true }) name?: string,
+    @Arg("description", { nullable: true }) description?: string,
     @Arg("questions", type => [String], { nullable: true }) questions?: string[]
   ) {
-    return await this.questionsService.updateNotebook(userId, notebookId, name, questions)
+    await this.questionsService.updateNotebook(userId, notebookId, name, description, questions)
+
+    return true
   }
 
   @Authorized()
-  @Query(() => [Notebook])
+  @Mutation(() => Boolean)
+  async deleteNotebook(
+    @CurrentUserID() userId: string,
+    @Arg("id") id: string,
+  ) {
+    return await this.questionsService.deleteNotebook(userId, id)
+  }
+
+  @Authorized()
+  @Query(() => [NotebookModel])
   async notebooks(
     @CurrentUserID() userId: string
   ) {
@@ -159,12 +175,22 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Query(() => Notebook)
+  @Query(() => NotebookModel)
   async notebook(
     @CurrentUserID() userId: string,
     @Arg("notebookId") notebookId: string
   ) {
     return await this.questionsService.getNotebook(userId, notebookId)
+  }
+
+  @Authorized()
+  @Query(() => SimuladosResponse)
+  async simulados(
+    @CurrentUserID() userId: string,
+    @Arg("page", { defaultValue: 1 }) page: number,
+    @Arg("itemsPerPage", { defaultValue: 10 }) itemsPerPage: number
+  ) {
+    return await this.questionsService.simulados(page, itemsPerPage, userId)
   }
 
   @Authorized()
