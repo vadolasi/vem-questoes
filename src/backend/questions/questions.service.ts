@@ -70,6 +70,8 @@ export class QuestionsService {
   }
 
   async getQuestions(
+    page: number,
+    itemsPerPage: number,
     requestedFields: string[],
     text?: string,
     processoSeletivoId?: string,
@@ -81,7 +83,36 @@ export class QuestionsService {
     estadoId?: string,
     bancaId?: string
   ) {
-    return await this.prisma.question.findMany({
+    const quantity = await this.prisma.question.count({
+      where: {
+        OR: [
+          {
+            enunciado: {
+              contains: text
+            }
+          },
+          {
+            alternatives: {
+              some: {
+                text: {
+                  contains: text
+                }
+              }
+            }
+          }
+        ],
+        processoSeletivoId,
+        anoId,
+        localId,
+        perfilId,
+        areaId,
+        subareaId,
+        estadoId,
+        bancaId
+      }
+    })
+
+    const questions = await this.prisma.question.findMany({
       where: {
         OR: [
           {
@@ -119,8 +150,12 @@ export class QuestionsService {
         estado: requestedFields.includes("estado"),
         banca: requestedFields.includes("banca"),
         comments: requestedFields.includes("comments")
-      }
+      },
+      skip: itemsPerPage * (page - 1),
+      take: itemsPerPage
     })
+
+    return { pagesQuantity: Math.ceil(quantity / itemsPerPage), questions }
   }
 
   async getQuestion(questionId: string, requestedFields: string[]) {

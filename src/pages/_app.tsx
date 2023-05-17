@@ -17,12 +17,13 @@ const refreshTokenMutation = graphql(/* GraphQL */ `
 
 const client = new Client({
   url: 'http://localhost:3000/api/graphql',
-  exchanges: [cacheExchange({}),
+  exchanges: [
+    cacheExchange({}),
     authExchange(async utils => {
       return {
         didAuthError: (error) => {
           return error.graphQLErrors.some(
-            e => e.extensions?.code === 'FORBIDDEN',
+            e => e.name == 'TokenExpiredError'
           )
         },
         addAuthToOperation(operation) {
@@ -33,7 +34,8 @@ const client = new Client({
         },
       };
     }),
-  fetchExchange],
+    fetchExchange
+  ],
 });
 
 export default function App({ Component, pageProps }: AppProps) {

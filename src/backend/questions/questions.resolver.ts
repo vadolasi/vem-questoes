@@ -16,6 +16,7 @@ import type { GraphQLResolveInfo } from "graphql"
 import { Notebook } from "./models/notebook.model"
 import { Simulado, SimuladoType } from "./models/simulado.model"
 import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
+import { QuestionsResponse } from "./responses/questions.response"
 
 @Service()
 @Resolver()
@@ -73,14 +74,16 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Query(() => [Question])
+  @Query(() => QuestionsResponse)
   async questions(
-    @Args() { text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
+    @Args() { page, itemsPerPage, text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
     @Info() info: GraphQLResolveInfo
   ) {
     const requestedFields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as { name: { value: string } }).name.value) || []
 
     return await this.questionsService.getQuestions(
+      page,
+      itemsPerPage,
       requestedFields,
       text,
       processoSeletivoId,
