@@ -23,6 +23,17 @@ export const Container = styled('div', {
         "header header"
         "content content"
         `,
+      },
+      '.box': {
+        width: "100%",
+        height: "100%",
+
+        display: "grid",
+        placeContent: 'center'
+      },
+      '.circle': {
+        width: '200px',
+        height: '200px',
       }
 });
 

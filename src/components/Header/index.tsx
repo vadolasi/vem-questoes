@@ -83,7 +83,7 @@ export const Header = () => {
                             </Link>
                         </li>
 
-                        <li className='Mobile'>
+                        <li>
                             <Link href="#">
                                 <AiOutlinePoweroff/>
                                 Sair

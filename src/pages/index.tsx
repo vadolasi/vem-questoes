@@ -5,6 +5,9 @@ import { Container, Content,OfferCard } from './styles';
 
 import mulherComNotebook from '@/assets/mulherComNotebook.png'
 
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { ContentCard } from '@/components/ContentCard';
@@ -35,6 +38,8 @@ export default function Home() {
 
   const { data } = result
 
+  const percentage = 66
+
   return (
     <Container>
      <Header/>
@@ -58,12 +63,8 @@ export default function Home() {
           </OfferCard>
           <ContentCard title='Estatísticas'>
             <div className='box'>
-              <div className='boxCircle'>
-                <circle cx={70} cy={70} r={70}></circle>
-                <circle cx={70} cy={70} r={70}></circle>
-              </div>
-
-            </div>
+           <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>;
+           </div>
           </ContentCard>
           <ContentCard title='Simulados'>
             {data?.simulados.simulados.map(simulado => (
