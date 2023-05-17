@@ -15,6 +15,15 @@ export class Simulado {
   @Field(() => ID)
   id: string
 
+  @Field()
+  name: string
+
+  @Field()
+  totalQuestions: number
+
+  @Field()
+  totalMinutes: number
+
   @Field(() => [Question])
   questions: Question[]
 

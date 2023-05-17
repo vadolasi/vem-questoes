@@ -10,8 +10,31 @@ import { Header } from "@/components/Header";
 import { ContentCard } from '@/components/ContentCard';
 import { UserCard } from '@/components/UserCard';
 import { ExamCard } from '@/components/ExamCard';
+import { graphql } from '@/gql';
+import { useQuery } from 'urql';
+
+const initialPagerQuery = graphql(/* GraphQL */ `
+  query InitialPage {
+    leaderBoard {
+      id
+      name
+      totalQuestions
+      totalCorrect
+    }
+    simulados {
+      simulados {
+        name
+        totalQuestions
+      }
+    }
+  }
+`);
 
 export default function Home() {
+  const [result] = useQuery({ query: initialPagerQuery })
+
+  const { data } = result
+
   return (
     <Container>
      <Header/>
@@ -19,7 +42,9 @@ export default function Home() {
 
      <Content>
           <ContentCard title='Leaderboard'>
-            <UserCard position={1} name='fokdokf dokfo' goals={10} questions={20}/>
+            {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
+              <UserCard key={id} position={index + 1} name={name} goals={totalCorrect} questions={totalQuestions} />
+            ))}
           </ContentCard>
           <OfferCard>
             <div className='Header'>
@@ -34,7 +59,9 @@ export default function Home() {
           <ContentCard title='Estatísticas'>
           </ContentCard>
           <ContentCard title='Simulados'>
-            <ExamCard name="simulado" questions={10}/>
+            {data?.simulados.simulados.map(simulado => (
+              <ExamCard name={simulado.name} questions={simulado.totalQuestions} />
+            ))}
           </ContentCard>
      </Content>
     </Container>

@@ -16,4 +16,10 @@ export class UserResolver {
   async me(@CurrentUserID() userId: string) {
     return this.usersService.getById(userId)
   }
+
+  @Query(() => [User], { nullable: true })
+  @Authorized()
+  async leaderBoard() {
+    return this.usersService.leaderBoard()
+  }
 }

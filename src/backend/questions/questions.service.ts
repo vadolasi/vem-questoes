@@ -228,11 +228,12 @@ export class QuestionsService {
     return true
   }
 
-  async addNotebook(userId: string, name: string, questions: string[]) {
+  async addNotebook(userId: string, name: string, questions: string[], description?: string) {
     await this.prisma.notebook.create({
       data: {
         userId,
         name,
+        description,
         questions: {
           connect: questions.map(questionId => ({ id: questionId }))
         }
@@ -240,7 +241,7 @@ export class QuestionsService {
     })
   }
 
-  async updateNotebook(userId: string, notebookId: string, name?: string, questions?: string[]) {
+  async updateNotebook(userId: string, notebookId: string, name?: string, description?: string, questions?: string[]) {
     const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
@@ -250,7 +251,12 @@ export class QuestionsService {
     await this.prisma.notebook.update({
       where: { id: notebookId },
       data: {
-        name,
+        name: {
+          set: name
+        },
+        description: {
+          set: description
+        },
         questions: {
           set: questions?.map(questionId => ({ id: questionId }))
         }
@@ -258,8 +264,14 @@ export class QuestionsService {
     })
   }
 
+  async deleteNotebook(userId: string, id: string) {
+    await this.prisma.notebook.deleteMany({ where: { id, userId } })
+
+    return true
+  }
+
   async getNotebooks(userId: string) {
-    return await this.prisma.notebook.findMany({ where: { userId } })
+    return await this.prisma.notebook.findMany({ where: { userId }, include: { questions: { include: { alternatives: true } } } })
   }
 
   async getNotebook(userId: string, notebookId: string) {
@@ -272,12 +284,30 @@ export class QuestionsService {
     return notebook
   }
 
+  async simulados(page: number, itemsPerPage: number, userId: string) {
+    const quantity = await this.prisma.simulado.count({ where: { userId } })
+
+    const simulados = await this.prisma.simulado.findMany({
+      where: { userId },
+      include: { questions: { include: { alternatives: true } } },
+      skip: itemsPerPage * (page - 1),
+      take: itemsPerPage
+    })
+
+    return { simulados, pagesQuantity: Math.ceil(quantity / itemsPerPage) }
+  }
+
   async createSimulado(userId: string, name: string, type: SimuladoType, areas?: { areaId: string, quantity: number }[]) {
     if (type === SimuladoType.Custom && areas) {
+      const totalQuestions = areas?.reduce((counter, area) => area.quantity + counter, 0)!
+      const totalMinutes = totalQuestions * 3
+
       return await this.prisma.simulado.create({
         data: {
           userId,
           name,
+          totalQuestions,
+          totalMinutes,
           questions: {
             connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
               const questions = await this.prisma.question.findMany({
@@ -298,11 +328,14 @@ export class QuestionsService {
 
       const quantites = [10, 15, 20, 25, 30]
       const quantity = getRandomItem(quantites)
+      const totalMinutes = quantity * 3
 
       return await this.prisma.simulado.create({
         data: {
           userId,
           name,
+          totalQuestions: quantity,
+          totalMinutes,
           questions: {
             connect: getRandomEntries(questions, quantity)
           }

@@ -18,4 +18,11 @@ export class UsersService {
       where: { email }
     })
   }
+
+  async leaderBoard() {
+    return this.prisma.user.findMany({
+      orderBy: { totalCorrect: "desc" },
+      take: 10
+    })
+  }
 }

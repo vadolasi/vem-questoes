@@ -5,11 +5,24 @@ import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUse
 import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 
 import Logo from '../../assets/logo.png';
-import profilePicture from '../../assets/profile/Picture.png'
 import Link from 'next/link';
+import { graphql } from '@/gql';
+import { useQuery } from 'urql';
+
+const meQuery = graphql(/* GraphQL */ `
+  query Me {
+    me {
+      name
+      photoUrl
+    }
+  }
+`);
 
 export const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const [result] = useQuery({ query: meQuery })
+
+    const { data } = result
 
     function handleChangeMenuState(){
         setShowMenu(!showMenu);
@@ -20,8 +33,8 @@ export const Header = () => {
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
                     <ProfileInfo>
-                        <Image src={profilePicture} alt="Foto de perfil do usuário"/>
-                        <span>Iago Nobre da Silva</span>
+                        <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
+                        <span>{data?.me?.name!}</span>
                         <button onClick={handleChangeMenuState}>
                             {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
                         </button>
@@ -80,4 +93,4 @@ export const Header = () => {
                 </Profile>
             </Container>
     );
-} 
+}

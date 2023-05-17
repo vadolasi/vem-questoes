@@ -49,6 +49,25 @@ CREATE TABLE "Question" (
 );
 
 -- CreateTable
+CREATE TABLE "Comment" (
+    "id" STRING NOT NULL,
+    "content" STRING NOT NULL,
+    "questionId" STRING NOT NULL,
+    "userId" STRING NOT NULL,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Notebook" (
+    "id" STRING NOT NULL,
+    "name" STRING NOT NULL,
+    "userId" STRING NOT NULL,
+
+    CONSTRAINT "Notebook_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ProcessoSeletivo" (
     "id" STRING NOT NULL,
     "name" STRING NOT NULL,
@@ -127,8 +146,9 @@ CREATE TABLE "RefreshToken" (
 CREATE TABLE "Response" (
     "id" STRING NOT NULL,
     "questionId" STRING NOT NULL,
-    "simuladoId" STRING NOT NULL,
-    "correct" BOOL,
+    "alternativeId" STRING NOT NULL,
+    "simuladoId" STRING,
+    "correct" BOOL NOT NULL,
     "userId" STRING NOT NULL,
 
     CONSTRAINT "Response_pkey" PRIMARY KEY ("id")
@@ -139,7 +159,9 @@ CREATE TABLE "Simulado" (
     "id" STRING NOT NULL,
     "name" STRING NOT NULL,
     "userId" STRING NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "totalQuestions" INT4 NOT NULL,
+    "totalMinutes" INT4 NOT NULL,
 
     CONSTRAINT "Simulado_pkey" PRIMARY KEY ("id")
 );
@@ -155,6 +177,18 @@ CREATE TABLE "Ticket" (
     "createdAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_QuestionToSimulado" (
+    "A" STRING NOT NULL,
+    "B" STRING NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_NotebookToQuestion" (
+    "A" STRING NOT NULL,
+    "B" STRING NOT NULL
 );
 
 -- CreateIndex
@@ -184,6 +218,18 @@ CREATE UNIQUE INDEX "Estado_name_key" ON "Estado"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "Banca_name_key" ON "Banca"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "_QuestionToSimulado_AB_unique" ON "_QuestionToSimulado"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_QuestionToSimulado_B_index" ON "_QuestionToSimulado"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_NotebookToQuestion_AB_unique" ON "_NotebookToQuestion"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_NotebookToQuestion_B_index" ON "_NotebookToQuestion"("B");
+
 -- AddForeignKey
 ALTER TABLE "Alternative" ADD CONSTRAINT "Alternative_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -212,13 +258,25 @@ ALTER TABLE "Question" ADD CONSTRAINT "Question_estadoId_fkey" FOREIGN KEY ("est
 ALTER TABLE "Question" ADD CONSTRAINT "Question_bancaId_fkey" FOREIGN KEY ("bancaId") REFERENCES "Banca"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Notebook" ADD CONSTRAINT "Notebook_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Response" ADD CONSTRAINT "Response_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_simuladoId_fkey" FOREIGN KEY ("simuladoId") REFERENCES "Simulado"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_alternativeId_fkey" FOREIGN KEY ("alternativeId") REFERENCES "Alternative"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Response" ADD CONSTRAINT "Response_simuladoId_fkey" FOREIGN KEY ("simuladoId") REFERENCES "Simulado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Response" ADD CONSTRAINT "Response_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -228,3 +286,15 @@ ALTER TABLE "Simulado" ADD CONSTRAINT "Simulado_userId_fkey" FOREIGN KEY ("userI
 
 -- AddForeignKey
 ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_QuestionToSimulado" ADD CONSTRAINT "_QuestionToSimulado_A_fkey" FOREIGN KEY ("A") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_QuestionToSimulado" ADD CONSTRAINT "_QuestionToSimulado_B_fkey" FOREIGN KEY ("B") REFERENCES "Simulado"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_NotebookToQuestion" ADD CONSTRAINT "_NotebookToQuestion_A_fkey" FOREIGN KEY ("A") REFERENCES "Notebook"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_NotebookToQuestion" ADD CONSTRAINT "_NotebookToQuestion_B_fkey" FOREIGN KEY ("B") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
