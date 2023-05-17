@@ -1,5 +1,6 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
+import { SimuladoType } from "./models/simulado.model"
 
 function getRandomEntries(arr: any[], n: number) {
   if (n >= arr.length) {
@@ -20,6 +21,14 @@ function getRandomEntries(arr: any[], n: number) {
   }
 
   return shuffled.slice(0, n)
+}
+
+function getRandomItem(arr: any[]) {
+  const randomIndex = Math.floor(Math.random() * arr.length)
+
+  const item = arr[randomIndex]
+
+  return item
 }
 
 @Service()
@@ -227,25 +236,43 @@ export class QuestionsService {
     return notebook
   }
 
-  async createSimulado(userId: string, name: string, areas: { areaId: string, quantity: number }[]) {
-    return await this.prisma.simulado.create({
-      data: {
-        userId,
-        name,
-        questions: {
-          connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
-            const questions = await this.prisma.question.findMany({
-              where: {
-                areaId
-              },
-              select: { id: true }
-            })
+  async createSimulado(userId: string, name: string, type: SimuladoType, areas?: { areaId: string, quantity: number }[]) {
+    if (type === SimuladoType.Custom && areas) {
+      return await this.prisma.simulado.create({
+        data: {
+          userId,
+          name,
+          questions: {
+            connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
+              const questions = await this.prisma.question.findMany({
+                where: {
+                  areaId
+                },
+                select: { id: true }
+              })
 
-            return getRandomEntries(questions, quantity)
-          }))).flat()
-        }
-      },
-      include: { questions: { include: { alternatives: true } } }
-    })
+              return getRandomEntries(questions, quantity)
+            }))).flat()
+          }
+        },
+        include: { questions: { include: { alternatives: true } } }
+      })
+    } else {
+      const questions = await this.prisma.question.findMany({ select: { id: true } })
+
+      const quantites = [10, 15, 20, 25, 30]
+      const quantity = getRandomItem(quantites)
+
+      return await this.prisma.simulado.create({
+        data: {
+          userId,
+          name,
+          questions: {
+            connect: getRandomEntries(questions, quantity)
+          }
+        },
+        include: { questions: { include: { alternatives: true } } }
+      })
+    }
   }
 }

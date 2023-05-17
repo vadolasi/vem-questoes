@@ -100,12 +100,18 @@ type Mutation {
   addComment(content: String!, questionId: String!): Boolean!
   addNotebook(questions: [String!]!, name: String!): Boolean!
   updateNotebook(questions: [String!], name: String, notebookId: String!): Boolean!
-  createSimulado(areas: [AreaToSimuladoInput!]!, name: String!): Simulado!
+  createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
 }
 
 type Simulado {
   id: ID!
   questions: [Question!]!
+  type: SimuladoType!
+}
+
+enum SimuladoType {
+  Random
+  Custom
 }
 
 input AreaToSimuladoInput {

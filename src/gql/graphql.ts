@@ -96,6 +96,7 @@ export type MutationAddNotebookArgs = {
 export type MutationCreateSimuladoArgs = {
   areas: Array<AreaToSimuladoInput>;
   name: Scalars['String'];
+  type: SimuladoType;
 };
 
 
@@ -190,7 +191,13 @@ export type Simulado = {
   __typename?: 'Simulado';
   id: Scalars['ID'];
   questions: Array<Question>;
+  type: SimuladoType;
 };
+
+export enum SimuladoType {
+  Custom = 'Custom',
+  Random = 'Random'
+}
 
 export type Subarea = {
   __typename?: 'Subarea';
