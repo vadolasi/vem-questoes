@@ -5,7 +5,6 @@ const withPWA = require("next-pwa")({
 
 module.exports = withPWA({
   reactStrictMode: true,
-  pageExtensions: ["tsx"],
   webpack: (config) => {
     config.experiments = { ...config.experiments, topLevelAwait: true }
 

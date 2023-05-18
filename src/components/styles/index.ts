@@ -1,4 +1,4 @@
-import { styled } from '../styles'
+import { styled } from '../../styles'
 
 export const Container = styled('div', {
         width: "100vw",
@@ -15,7 +15,7 @@ export const Container = styled('div', {
 
         overflowX: "hidden",
 
-        
+
     '@media (max-width: 1200px)': {
         gridTemplateRows: 'auto',
         gridTemplateAreas:

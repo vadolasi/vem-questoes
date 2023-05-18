@@ -19,6 +19,7 @@ const documents = {
     "\n  mutation CreateSimulado($name: String!, $type: SimuladoType!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: $type\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
     "\n  mutation UpdateNotebook($id: String!, $name: String, $description: String, $questions: [String!]) {\n    updateNotebook(\n      notebookId: $id\n      name: $name\n      description: $description\n      questions: $questions\n    )\n  }\n": types.UpdateNotebookDocument,
     "\n  mutation RefreshToken {\n    refreshToken\n  }\n": types.RefreshTokenDocument,
+    "\n  query GetQuestions($page: Float) {\n    questions(\n      page: $page\n    ) {\n      questions {\n        id\n        area {\n          name\n        }\n        ano {\n          ano\n        }\n        processoSeletivo {\n          name\n        }\n      }\n      pagesQuantity\n      quantity\n    }\n  }\n": types.GetQuestionsDocument,
     "\n  query NotebooksQuery {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksQueryDocument,
     "\n  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n      questions: $questions\n    ) {\n      id\n      name\n      description\n    }\n  }\n": types.CreateNotebookDocument,
     "\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n": types.DeleteNotebookDocument,
@@ -64,6 +65,10 @@ export function graphql(source: "\n  mutation UpdateNotebook($id: String!, $name
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation RefreshToken {\n    refreshToken\n  }\n"): (typeof documents)["\n  mutation RefreshToken {\n    refreshToken\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetQuestions($page: Float) {\n    questions(\n      page: $page\n    ) {\n      questions {\n        id\n        area {\n          name\n        }\n        ano {\n          ano\n        }\n        processoSeletivo {\n          name\n        }\n      }\n      pagesQuantity\n      quantity\n    }\n  }\n"): (typeof documents)["\n  query GetQuestions($page: Float) {\n    questions(\n      page: $page\n    ) {\n      questions {\n        id\n        area {\n          name\n        }\n        ano {\n          ano\n        }\n        processoSeletivo {\n          name\n        }\n      }\n      pagesQuantity\n      quantity\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

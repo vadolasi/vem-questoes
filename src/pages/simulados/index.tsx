@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { Container, Content, Search } from './styles';
+import { Container, Content, Search } from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";

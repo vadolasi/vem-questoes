@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
 
-import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search, Container, Content } from './styles';
+import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search, Container, Content } from '../../components/styles/banco-de-questoes';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -23,7 +22,7 @@ import { graphql } from '@/gql';
 import { useQuery } from 'urql';
 
 const questionsQuery = graphql(/* GraphQL */ `
-  query GetQuestions(page: Float) {
+  query GetQuestions($page: Float) {
     questions(
       page: $page
     ) {

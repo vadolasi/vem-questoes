@@ -5,7 +5,7 @@ import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, Ai
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from './styles';
 
-import { Container, Content} from '../../styles';
+import { Container, Content} from '../../../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -58,7 +58,7 @@ export default function Questoes() {
     setSelectC(false);
     setSelectD(true);
   }
-  
+
 
   function showExplicationBox(){
     setExplicationBox(!explicationBox);
