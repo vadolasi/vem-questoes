@@ -1,4 +1,4 @@
-import { Container } from "./styles"
+import { Container } from "../../components/styles/admin"
 import { Button } from '@/components/Button'
 
 
