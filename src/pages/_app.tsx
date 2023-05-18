@@ -22,9 +22,7 @@ const client = new Client({
     authExchange(async utils => {
       return {
         didAuthError: (error) => {
-          return error.graphQLErrors.some(
-            e => e.name == 'TokenExpiredError'
-          )
+          return true
         },
         addAuthToOperation(operation) {
           return operation

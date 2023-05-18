@@ -83,6 +83,7 @@ export class QuestionsService {
     estadoId?: string,
     bancaId?: string
   ) {
+    console.log(requestedFields)
     const quantity = await this.prisma.question.count({
       where: {
         OR: [
@@ -155,7 +156,7 @@ export class QuestionsService {
       take: itemsPerPage
     })
 
-    return { pagesQuantity: Math.ceil(quantity / itemsPerPage), questions }
+    return { quantity, pagesQuantity: Math.ceil(quantity / itemsPerPage), questions }
   }
 
   async getQuestion(questionId: string, requestedFields: string[]) {
@@ -229,7 +230,7 @@ export class QuestionsService {
   }
 
   async addNotebook(userId: string, name: string, questions: string[], description?: string) {
-    await this.prisma.notebook.create({
+    return await this.prisma.notebook.create({
       data: {
         userId,
         name,
@@ -237,7 +238,8 @@ export class QuestionsService {
         questions: {
           connect: questions.map(questionId => ({ id: questionId }))
         }
-      }
+      },
+      include: { questions: true }
     })
   }
 

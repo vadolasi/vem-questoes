@@ -5,19 +5,15 @@ import { graphql } from '@/gql';
 import { useMutation } from 'urql';
 
 interface NotebookCardProps {
-    title: string,
-    description: string,
-    questions: any[],
-    deleteClick?: any,
+  id: string
+  title: string,
+  description: string,
+  questions: any[],
+  deleteClick?: any
 }
 
 const updateNotebookMutation = graphql(/* GraphQL */ `
-  mutation UpdateNotebook(
-    $id: String!
-    $name: String
-    $description: String
-    $questions: [String!]
-  ) {
+  mutation UpdateNotebook($id: String!, $name: String, $description: String, $questions: [String!]) {
     updateNotebook(
       notebookId: $id
       name: $name
@@ -27,15 +23,15 @@ const updateNotebookMutation = graphql(/* GraphQL */ `
   }
 `);
 
-export const NotebookCard: React.FC<NotebookCardProps> = ({title, description, questions, deleteClick}) => {
+export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick }) => {
     const [titleCard, setTitleCard] = useState(title);
     const [descriptionCard, setDescriptionCard] = useState(description);
     const [edit, setEdit] = useState(true);
     const [, executeMutation] = useMutation(updateNotebookMutation)
 
     useEffect(() => {
-      if (!edit) {
-        executeMutation({  })
+      if (titleCard !== title || descriptionCard !== description) {
+        executeMutation({ id, name: titleCard, description: descriptionCard })
       }
     }, [edit])
 

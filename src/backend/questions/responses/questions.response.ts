@@ -7,5 +7,8 @@ export class QuestionsResponse {
   questions: Question[]
 
   @Field()
+  quantity: number
+
+  @Field()
   pagesQuantity: number
 }

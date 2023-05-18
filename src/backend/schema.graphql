@@ -67,6 +67,7 @@ type Banca {
 
 type QuestionsResponse {
   questions: [Question!]!
+  quantity: Float!
   pagesQuantity: Float!
 }
 
@@ -128,7 +129,7 @@ type Mutation {
   refreshToken: Boolean!
   addAnswer(simuladoId: String!, alternativeId: String!, questionId: String!): Boolean!
   addComment(content: String!, questionId: String!): Boolean!
-  addNotebook(description: String, questions: [String!]!, name: String!): Boolean!
+  addNotebook(description: String, questions: [String!]!, name: String!): NotebookModel!
   updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
   deleteNotebook(id: String!): Boolean!
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!

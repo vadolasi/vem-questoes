@@ -30,15 +30,17 @@ const createNotebookMutation = graphql(/* GraphQL */ `
       name: $name
       description: $description
       questions: $questions
-    )
+    ) {
+      id
+      name
+      description
+    }
   }
 `);
 
 const deleteNotebookMutation = graphql(/* GraphQL */`
   mutation DeleteNotebook($id: String!) {
-    deleteOneNotebook(where: { id: $id }) {
-      id
-    }
+    deleteNotebook(id: $id)
   }
 `)
 
@@ -51,12 +53,12 @@ export default function Home() {
 
   const addNotebook = async () => {
     await executeCreateNotebook({ name: "Título", questions: [] })
-    executeQuery()
+    executeQuery({ requestPolicy: "network-only" })
   }
 
   const deleteNotebook = async (id: string) => {
     await executeDeleteNotebook({ id })
-    executeQuery()
+    executeQuery({ requestPolicy: "network-only" })
   }
 
   return (
@@ -68,9 +70,9 @@ export default function Home() {
         <SearchInput/>
         <Button text='+ Criar Caderno' onClick={() => addNotebook()} />
       </Search>
-        <DefaultSearchPage text={(data?.notebooks!.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
+        <DefaultSearchPage text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
           {data?.notebooks && data.notebooks.map((notebook, index) => (
-            <NotebookCard key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+            <NotebookCard id={notebook.id} key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
           ))}
         </DefaultSearchPage>
      </Content>

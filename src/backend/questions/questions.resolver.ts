@@ -19,6 +19,27 @@ import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
 import { QuestionsResponse } from "./responses/questions.response"
 import { SimuladosResponse } from "./responses/simulados.response"
 
+function getRequestedFields(info: GraphQLResolveInfo): string[] {
+  const fieldList: string[] = [];
+
+  const traverse = (node: any, path: string) => {
+    const selectionSet = node.selectionSet;
+    if (selectionSet) {
+      const selections = selectionSet.selections;
+      selections.forEach((selection: any) => {
+        const fieldName = selection.name.value;
+        const fieldPath = path ? `${path}.${fieldName}` : fieldName;
+        fieldList.push(fieldPath);
+        traverse(selection, fieldPath);
+      });
+    }
+  };
+
+  traverse(info.fieldNodes[0], '');
+
+  return fieldList;
+}
+
 @Service()
 @Resolver()
 export class QuestionsResolver {
@@ -80,7 +101,7 @@ export class QuestionsResolver {
     @Args() { page, itemsPerPage, text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
     @Info() info: GraphQLResolveInfo
   ) {
-    const requestedFields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as { name: { value: string } }).name.value) || []
+    const requestedFields = getRequestedFields(info).filter(field => field.startsWith("questions.")).map(field => field.split(".")[1])
 
     return await this.questionsService.getQuestions(
       page,
@@ -131,16 +152,14 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Mutation(() => Boolean)
+  @Mutation(() => NotebookModel)
   async addNotebook(
     @CurrentUserID() userId: string,
     @Arg("name") name: string,
     @Arg("questions", type => [String]) questions: string[],
     @Arg("description", { nullable: true }) description: string
   ) {
-    await this.questionsService.addNotebook(userId, name, questions, description)
-
-    return true
+    return await this.questionsService.addNotebook(userId, name, questions, description)
   }
 
   @Authorized()
@@ -163,7 +182,9 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string,
     @Arg("id") id: string,
   ) {
-    return await this.questionsService.deleteNotebook(userId, id)
+    await this.questionsService.deleteNotebook(userId, id)
+
+    return true
   }
 
   @Authorized()
