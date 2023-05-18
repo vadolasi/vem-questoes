@@ -2,7 +2,7 @@ import { useState } from 'react';
 import  Image  from 'next/image'
 import { useRouter } from 'next/router';
 
-import { Container, Background, Form } from "./styles";
+import { Container, Background, Form } from "../../components/styles/login";
 
 import Logo from '../../assets/Logo.svg';
 

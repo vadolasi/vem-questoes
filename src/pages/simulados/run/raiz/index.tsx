@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
 
-import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from './styles';
+import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from '../../../../components/styles/raiz';
 
 import { Container, Content} from '../../../../components/styles/simulados';
 

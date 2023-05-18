@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {AiOutlineRightCircle} from 'react-icons/ai'
 
-import { Container, Content,OfferCard } from '../components/styles/styles';
+import { Container, Content,OfferCard } from '../components/styles/index';
 
 import mulherComNotebook from '@/assets/mulherComNotebook.png'
 

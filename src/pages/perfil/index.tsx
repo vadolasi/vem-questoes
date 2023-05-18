@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {FiCamera} from 'react-icons/fi'
 
-import { Container, Content, Form, Avatar } from './styles';
+import { Container, Content, Form, Avatar } from '../../components/styles/perfil';
 
 
 import { Menu } from "@/components/Menu";
@@ -21,43 +21,43 @@ export default function Home() {
       <header></header>
       <Form>
         <Avatar>
-        <Image 
+        <Image
                     src={avatar}
-                    alt="Foto do usuário" 
+                    alt="Foto do usuário"
           />
 
                     <label htmlFor="avatar">
                         <FiCamera/>
 
-                        <input 
-                        type="file" 
+                        <input
+                        type="file"
                         id="avatar"
                         />
                     </label>
         </Avatar>
 
-        <Input 
+        <Input
             text='Nome'
-            placeholderText="Nome" 
-            type="text" 
+            placeholderText="Nome"
+            type="text"
         />
 
         <Input
-          text="E-Mail" 
-          placeholderText="E-Mail" 
-          type="text" 
+          text="E-Mail"
+          placeholderText="E-Mail"
+          type="text"
         />
 
-        <Input 
-          text="Senha atual" 
-          placeholderText="Senha atual" 
-          type="password" 
+        <Input
+          text="Senha atual"
+          placeholderText="Senha atual"
+          type="password"
         />
 
-        <Input 
-          text="Nova senha" 
-          placeholderText="Nova senha" 
-          type="password" 
+        <Input
+          text="Nova senha"
+          placeholderText="Nova senha"
+          type="password"
          />
 
          <Button text='Salvar'/>

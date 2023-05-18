@@ -1,4 +1,4 @@
-import { Container, Content, Search } from './styles';
+import { Container, Content, Search } from '../../components/styles/cadernos';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";

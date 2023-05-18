@@ -1,5 +1,5 @@
 
-import { Container, Content } from './styles';
+import { Container, Content } from '../../components/styles/mesa-de-estudos';
 
 import study from '../../assets/table/study.png';
 import notebook from '../../assets/table/Notebook.png';

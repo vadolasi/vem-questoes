@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Container, Content, Search } from './styles';
+import { Container, Content, Search } from '../../components/styles/raio-x';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
