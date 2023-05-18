@@ -16,7 +16,7 @@ const refreshTokenMutation = graphql(/* GraphQL */ `
 `);
 
 const client = new Client({
-  url: 'http://localhost:3000/api/graphql',
+  url: '/api/graphql',
   exchanges: [
     cacheExchange({}),
     authExchange(async utils => {
