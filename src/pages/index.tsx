@@ -21,6 +21,10 @@ import { SliderData } from '@/components/ImageSlider/SliderData';
 
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
+    me {
+      totalQuestions
+      totalCorrect
+    }
     leaderBoard {
       id
       name
@@ -41,7 +45,7 @@ export default function Home() {
 
   const { data } = result
 
-  const percentage = 66
+  const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
   return (
     <Container>
@@ -69,8 +73,8 @@ export default function Home() {
           </OfferCard>
           <ContentCard title='Estatísticas'>
             <div className='box'>
-           <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>;
-           <span><strong>X</strong> questões certas de <strong>Y</strong></span>
+           <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>
+           <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
            </div>
           </ContentCard>
           <ContentCard title='Simulados'>
