@@ -5,6 +5,9 @@ import { Container, Content,OfferCard } from './styles';
 
 import mulherComNotebook from '@/assets/mulherComNotebook.png'
 
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { ContentCard } from '@/components/ContentCard';
@@ -12,6 +15,9 @@ import { UserCard } from '@/components/UserCard';
 import { ExamCard } from '@/components/ExamCard';
 import { graphql } from '@/gql';
 import { useQuery } from 'urql';
+
+import { ImageSlider } from '@/components/ImageSlider';
+import { SliderData } from '@/components/ImageSlider/SliderData';
 
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
@@ -35,6 +41,8 @@ export default function Home() {
 
   const { data } = result
 
+  const percentage = 66
+
   return (
     <Container>
      <Header/>
@@ -55,12 +63,19 @@ export default function Home() {
                 </div>
                 <Image src={mulherComNotebook} alt="Mulher segurando um notebook"/>
             </div>
+            <div className='Content'>
+            <ImageSlider slides={SliderData} />
+            </div>
           </OfferCard>
           <ContentCard title='Estatísticas'>
+            <div className='box'>
+           <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>;
+           <span><strong>X</strong> questões certas de <strong>Y</strong></span>
+           </div>
           </ContentCard>
           <ContentCard title='Simulados'>
             {data?.simulados.simulados.map(simulado => (
-              <ExamCard name={simulado.name} questions={simulado.totalQuestions} />
+              <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
           </ContentCard>
      </Content>

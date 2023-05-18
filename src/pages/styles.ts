@@ -23,6 +23,17 @@ export const Container = styled('div', {
         "header header"
         "content content"
         `,
+      },
+      '.box': {
+        width: "100%",
+        height: "380px",
+
+        display: "grid",
+        placeContent: 'center'
+      },
+      '.circle': {
+        width: '200px',
+        height: '200px',
       }
 });
 
@@ -125,6 +136,14 @@ export const OfferCard = styled('div', {
                         bottom: '0px',
                         right: '-25px',
                 },
+
+                '.content':{
+                        width: "300px",
+                        height: "300px",
+
+                        display: "grid",
+                        placeContent: "center",
+                }
         },
         '@media (max-width: 1200px)': {
                 width: '300px',
