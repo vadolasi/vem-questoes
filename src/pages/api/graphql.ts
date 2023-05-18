@@ -27,7 +27,9 @@ const schema = await buildSchema({
   validate: { forbidUnknownValues: false }
 })
 
-await writeFile("./src/backend/schema.graphql", printSchema(schema))
+if (process.env.NODE_ENV !== "production") {
+  await writeFile("./src/backend/schema.graphql", printSchema(schema))
+}
 
 export default createYoga<GqlContext>({
   schema,
