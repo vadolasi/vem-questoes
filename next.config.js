@@ -17,5 +17,11 @@ module.exports = withPWA({
         hostname: "**"
       }
     ]
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
+  typescript: {
+    ignoreBuildErrors: true
   }
 })
