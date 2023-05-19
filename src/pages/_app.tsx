@@ -6,6 +6,8 @@ import { globalStyles } from "@/styles/global"
 import { graphql } from "../gql";
 
 import { cacheExchange } from '@urql/exchange-graphcache';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 globalStyles();
 
@@ -39,6 +41,7 @@ const client = new Client({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
+      <ToastContainer />
       <Component {...pageProps} />
     </Provider>
   )

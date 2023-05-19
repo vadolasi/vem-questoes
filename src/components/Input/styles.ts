@@ -15,7 +15,11 @@ export const Container = styled('div', {
         color: '$text',
         fontSize: '15px'
     },
-    
+
+    '& input:focus': {
+      border: '1px solid $blue_1',
+    },
+
     '& span': {
         position: 'absolute',
         left: '10px',
