@@ -38,25 +38,25 @@ export default function Home() {
 
         <Input
             text='Nome'
-            placeholderText="Nome"
+            placeholder="Nome"
             type="text"
         />
 
         <Input
           text="E-Mail"
-          placeholderText="E-Mail"
+          placeholder="E-Mail"
           type="text"
         />
 
         <Input
           text="Senha atual"
-          placeholderText="Senha atual"
+          placeholder="Senha atual"
           type="password"
         />
 
         <Input
           text="Nova senha"
-          placeholderText="Nova senha"
+          placeholder="Nova senha"
           type="password"
          />
 

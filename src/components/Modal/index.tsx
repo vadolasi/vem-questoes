@@ -63,7 +63,7 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, title}
                 <>
                   <h1>Crie seu simulado personalizado!</h1>
                   <div className='Header'>
-                    <Input type='text' text='Titulo' placeholderText='Insira seu Título aqui'/>
+                    <Input type='text' text='Titulo' placeholder='Insira seu Título aqui'/>
                 <Select label='Nº de Áreas' options={[{ value: 1, option: "1" }, { value: 2, option: "2" }, { value: 3, option: "3" }, { value: 4, option: "4" }, { value: 5, option: "5" }, { value: 5, option: "5" }, { value: 6, option: "6" }, { value: 7, option: "7" }, { value: 8, option: "8" }, { value: 9, option: "9" }]} value={matters} onChange={(e: any) => setMatter(e.target.value)}/>
                 </div>
                     <div className={matters >= 1 ? 'ExamInfos' : 'hidden'}>
@@ -106,7 +106,7 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, title}
                         <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
-                    <Button text='Criar'/>
+                    <Button>Salvar</Button>
                 </> :
                 <>
                     <h1>Executar simulado no modo</h1>
