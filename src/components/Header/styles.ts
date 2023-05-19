@@ -67,6 +67,36 @@ export const Profile = styled('div', {
         top: '15px',
         left: '-30px',
     },
+
+    '.notificacoesBox':{
+        width: '350px',
+        height: '300px',
+
+        cursor: 'pointer',
+
+        position: "absolute",
+        top: '-5px',
+        left: '-390px',
+
+        zIndex: 10,
+
+        border: '1px solid $border',
+        borderRadius: '4px',
+
+        padding: '10px',
+        background: '$white_1',
+
+        boxShadow: '4px 4px 14px rgba(0,0,0,0.5)',
+
+        h1:{
+            fontSize: '18px',
+            lineHeight: '20px',
+
+            borderBottom: '1px solid black',
+            paddingBottom: '5px'
+
+        },
+    }
 });
 
 export const ProfileInfo = styled("div", {

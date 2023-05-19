@@ -10,6 +10,7 @@ import { graphql } from '@/gql';
 import { useQuery } from 'urql';
 
 import { SpinnerCircular } from 'spinners-react';
+import NotificacoesCard from '../NotificacoesCard';
 
 const meQuery = graphql(/* GraphQL */ `
   query Me {
@@ -22,6 +23,7 @@ const meQuery = graphql(/* GraphQL */ `
 
 export const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showNotificacoes, setShowNotificacoes] = useState(false);
   const [result] = useQuery({ query: meQuery })
 
   const { data, fetching } = result
@@ -35,7 +37,11 @@ export const Header = () => {
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
-                    <AiOutlineBell className='notificacoes'/>
+                    <AiOutlineBell className='notificacoes' onClick={() => setShowNotificacoes(!showNotificacoes)}/>
+                    <div className={`notificacoesBox ${showNotificacoes ? '' : 'hidden'}`}>
+                      <h1>Notificações</h1>
+                      <NotificacoesCard>Notificação test</NotificacoesCard>
+                    </div>
                     <ProfileInfo>
                       {fetching ? <SpinnerCircular size={40} color="#f0f0fc"/> : 
                       <>
