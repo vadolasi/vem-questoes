@@ -19,6 +19,8 @@ import { useQuery } from 'urql';
 import { ImageSlider } from '@/components/ImageSlider';
 import { SliderData } from '@/components/ImageSlider/SliderData';
 
+import { SpinnerCircular } from 'spinners-react';
+
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
     me {
@@ -43,10 +45,11 @@ const initialPagerQuery = graphql(/* GraphQL */ `
 export default function Home() {
   const [result] = useQuery({ query: initialPagerQuery })
 
-  const { data } = result
+  const { data, fetching } = result
 
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
+ 
   return (
     <Container>
      <Header/>
@@ -54,9 +57,14 @@ export default function Home() {
 
      <Content>
           <ContentCard title='Leaderboard'>
-            {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" /> : 
+          <>
+          {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
               <UserCard key={id} position={index + 1} name={name} goals={totalCorrect} questions={totalQuestions} />
             ))}
+          </>
+           }
+            
           </ContentCard>
           <OfferCard>
             <div className='Header'>
@@ -67,20 +75,31 @@ export default function Home() {
                 </div>
                 <Image src={mulherComNotebook} alt="Mulher segurando um notebook"/>
             </div>
-            <div className='Content'>
-            <ImageSlider slides={SliderData} />
-            </div>
+
+            {fetching ? <SpinnerCircular color="#f0f0fc" size="80" /> : 
+          <div className='Content'>
+          <ImageSlider slides={SliderData} />
+          </div>
+           }
+            
           </OfferCard>
           <ContentCard title='Estatísticas'>
-            <div className='box'>
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" /> : 
+          <div className='box'>
            <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>
            <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
            </div>
+           }
+            
           </ContentCard>
           <ContentCard title='Simulados'>
-            {data?.simulados.simulados.map(simulado => (
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" /> : 
+          <>
+          {data?.simulados.simulados.map(simulado => (
               <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
+          </>}
+            
           </ContentCard>
      </Content>
     </Container>

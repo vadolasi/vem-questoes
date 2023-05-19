@@ -5,7 +5,7 @@ import { Button } from '@/components/Button'
 export default function Admin() {
   return (
     <Container>
-         <Button text="Add Questão" link="/admin/questao"/>
+         <Button link="/admin/questao">Add questão</Button>
     </Container>
   )
 }

@@ -152,7 +152,7 @@ export default function Questoes() {
         <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
           <Search>
             <SearchInput/>
-            <Button text='+ Criar Caderno'/>
+            <Button>+ Criar Caderno</Button>
           </Search>
             <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno'/>
         </DefaultBoxQuestion>

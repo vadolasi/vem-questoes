@@ -68,7 +68,7 @@ export default function Home() {
      <Content>
       <Search>
         <SearchInput/>
-        <Button text='+ Criar Caderno' onClick={() => addNotebook()} />
+        <Button onClick={() => addNotebook()}>+ Criar Caderno</Button>
       </Search>
         <DefaultSearchPage text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
           {data?.notebooks && data.notebooks.map((notebook, index) => (

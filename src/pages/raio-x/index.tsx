@@ -55,7 +55,7 @@ export default function Home() {
       <Search>
         <SearchInput/>
         <Select label='Buscar por' options={[{ option: 'banca', value: 'banca' }, { option: 'prova', value: 'prova' }]}/>
-        <Button text='Buscar'/>
+        <Button>Buscar</Button>
       </Search>
         <DefaultSearchPage text='Raio-X completo da sua prova!' picture={raioX} alt='Mulher avaliando informações sobre algo' content={response.length > 0}>
           {response && response.map((response, index) => (

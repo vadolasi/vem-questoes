@@ -60,7 +60,7 @@ export default function Home() {
           type="password"
          />
 
-         <Button text='Salvar'/>
+         <Button>Salvar</Button>
       </Form>
      </Content>
     </Container>

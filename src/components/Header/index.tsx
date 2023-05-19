@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { graphql } from '@/gql';
 import { useQuery } from 'urql';
 
+import { SpinnerCircular } from 'spinners-react';
+
 const meQuery = graphql(/* GraphQL */ `
   query Me {
     me {
@@ -22,7 +24,7 @@ export const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [result] = useQuery({ query: meQuery })
 
-  const { data } = result
+  const { data, fetching } = result
 
   function handleChangeMenuState() {
     setShowMenu(!showMenu);
@@ -34,11 +36,16 @@ export const Header = () => {
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
                     <ProfileInfo>
+                      {fetching ? <SpinnerCircular size={40} color="#f0f0fc"/> : 
+                      <>
                         <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
                         <span>{data?.me?.name!}</span>
                         <button onClick={handleChangeMenuState}>
                             {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
                         </button>
+                      </>
+                      }
+                        
                     </ProfileInfo>
                     <DropMenu className={showMenu ? "show" : "hidden"}>
                         <li>

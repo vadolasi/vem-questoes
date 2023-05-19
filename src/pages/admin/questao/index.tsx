@@ -189,7 +189,7 @@ export default function Admin() {
                   </div>
                 </div>
 
-                <Button text="Cadastrar" />
+                <Button>Cadastrar</Button>
             </div>
           </fieldset>
          </form>
