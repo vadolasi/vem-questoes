@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Image from "next/image";
-import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart, AiOutlineBell} from 'react-icons/ai'
+import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
 
-import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
+import { Container, Profile, DropMenu, ProfileInfo, Line } from "./styles";
 
 import Logo from '../../assets/logo.png';
 import Link from 'next/link';
@@ -19,27 +19,26 @@ const meQuery = graphql(/* GraphQL */ `
 `);
 
 export const Header = () => {
-    const [showMenu, setShowMenu] = useState(false);
-    const [result] = useQuery({ query: meQuery })
+  const [showMenu, setShowMenu] = useState(false);
+  const [result] = useQuery({ query: meQuery })
 
-    const { data } = result
+  const { data } = result
 
-    function handleChangeMenuState(){
-        setShowMenu(!showMenu);
-    }
+  function handleChangeMenuState() {
+    setShowMenu(!showMenu);
+  }
 
     return(
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
-                     <AiOutlineBell className='notificacoes'/>
-                        <ProfileInfo>
-                            <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
-                            <span>{data?.me?.name!}</span>
-                            <button onClick={handleChangeMenuState}>
-                                {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
-                            </button>
-                        </ProfileInfo>
+                    <ProfileInfo>
+                        <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
+                        <span>{data?.me?.name!}</span>
+                        <button onClick={handleChangeMenuState}>
+                            {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
+                        </button>
+                    </ProfileInfo>
                     <DropMenu className={showMenu ? "show" : "hidden"}>
                         <li>
                             <Link href='/perfil'>
@@ -84,14 +83,17 @@ export const Header = () => {
                             </Link>
                         </li>
 
-                        <li>
-                            <Link href="#">
-                                <AiOutlinePoweroff/>
-                                Sair
-                            </Link>
-                        </li>
-                    </DropMenu>
-                </Profile>
-            </Container>
-    );
+            <li>
+              <Link href="#">
+                <AiOutlinePoweroff />
+                Sair
+              </Link>
+            </li>
+          </DropMenu>
+        </Profile>
+
+      </Container>
+      <Line />
+    </>
+  );
 }

@@ -1,20 +1,15 @@
+import { InputHTMLAttributes } from "react";
 import { Container } from "./styles";
-import { FC } from "react";
 
-interface InputInterface{
-    text: string;
-    placeholderText?: string;
-    type: string;
-    onChange?: any;
-    min?: number,
-    max?: number,
+interface InputInterface extends InputHTMLAttributes<HTMLInputElement> {
+  text: string;
 }
 
-export const Input: FC<InputInterface> = ({text, placeholderText, type, onChange, min, max}) =>{
-    return(
-        <Container>
-            <input type={type} required placeholder={placeholderText} onChange={onChange} min={min} max={max}/>
-            <span>{text}</span>
-        </Container>
-    );
+export const Input = ({ text, ...rest }: InputInterface) => {
+  return (
+    <Container>
+      <input  {...rest} />
+      <span>{text}</span>
+    </Container>
+  );
 }

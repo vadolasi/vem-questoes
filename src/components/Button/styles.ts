@@ -16,6 +16,8 @@ export const Container = styled("div", {
 export const ButtonTT = styled('button', {
     width: '100%',
     height: '52px',
+    alignItems: 'center',
+    flexDirection: 'center',
 
     background: '$blue_1',
 
@@ -28,7 +30,7 @@ export const ButtonTT = styled('button', {
     cursor: 'pointer',
 
     transition: 'filter 0.2s',
-    
+
     '&:hover': {
         filter: 'brightness(0.9)'
     }

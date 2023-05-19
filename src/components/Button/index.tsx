@@ -1,29 +1,26 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState, ReactNode, ButtonHTMLAttributes } from "react";
 import { Container, ButtonTT } from "./styles";
 
 import Link from 'next/link';
 
 
-interface ButtonInterface {
-    text: string,
-    onClick?: any,
-    link?: string,
+interface ButtonInterface extends ButtonHTMLAttributes<HTMLButtonElement> {
+  onClick?: any,
+  link?: string,
+  children: ReactNode,
 }
 
-export const Button: FC<ButtonInterface> = ({text, link, onClick}) => {
-    const [linkText, setLinkText] = useState('')
-    
-    useEffect(() => {
-        link ? setLinkText(link) : setLinkText('');
-    }, [link])
-    return( 
-            <Container>
-                <Link href={linkText}>
-                 <ButtonTT onClick={onClick}>
-                    {text}
-                 </ButtonTT>
-                </Link>
-            </Container>
+export const Button = ({ children, link, onClick, ...rest }: ButtonInterface) => {
+  const [linkText, setLinkText] = useState('')
 
-    );
-} 
+  useEffect(() => {
+    link ? setLinkText(link) : setLinkText('');
+  }, [link])
+  return (
+    <Container>
+      <Link href={linkText}>
+        <ButtonTT onClick={onClick} {...rest}>{children}</ButtonTT>
+      </Link>
+    </Container>
+  );
+}
