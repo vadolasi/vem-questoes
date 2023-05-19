@@ -10,8 +10,9 @@ export const Container = styled('header', {
     justifyContent: 'space-between',
 
     gridArea: 'header',
-    
 
+    position: 'relative',
+    
     ".Logo": {
         width: "85px",
         height: "56px"
@@ -27,7 +28,8 @@ export const Container = styled('header', {
     '.Mobile': {
         display: 'none',
         zIndex: 4,
-    },
+    },  
+
 
     
     '@media (max-width: 1200px)': {
@@ -50,9 +52,22 @@ export const Profile = styled('div', {
 
     height: "max-content",
 
+    position: 'relative',
+
     'button:hover, a:hover':{
         cursor: 'pointer',
         color: "$blue_1"
+    },
+
+    '.notificacoes':{
+        width: '25px',
+        height: '25px',
+
+        cursor: 'pointer',
+
+        position: "absolute",
+        top: '10px',
+        left: '-50px',
     },
 });
 

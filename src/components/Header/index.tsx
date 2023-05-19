@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from "next/image";
-import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
+import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart, AiOutlineBell} from 'react-icons/ai'
 
 import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 
@@ -32,13 +32,14 @@ export const Header = () => {
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
-                    <ProfileInfo>
-                        <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
-                        <span>{data?.me?.name!}</span>
-                        <button onClick={handleChangeMenuState}>
-                            {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
-                        </button>
-                    </ProfileInfo>
+                     <AiOutlineBell className='notificacoes'/>
+                        <ProfileInfo>
+                            <Image src={data?.me?.photoUrl!} width={20} height={20} alt="Foto de perfil do usuário"/>
+                            <span>{data?.me?.name!}</span>
+                            <button onClick={handleChangeMenuState}>
+                                {showMenu ? <AiOutlineUpCircle/> : <AiOutlineDownCircle/>}
+                            </button>
+                        </ProfileInfo>
                     <DropMenu className={showMenu ? "show" : "hidden"}>
                         <li>
                             <Link href='/perfil'>
