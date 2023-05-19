@@ -29,6 +29,7 @@ export const Header = () => {
   }
 
     return(
+      <>
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
