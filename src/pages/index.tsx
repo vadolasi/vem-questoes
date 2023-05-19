@@ -49,7 +49,7 @@ export default function Home() {
 
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
- 
+  console.log(data)
   return (
     <Container>
      <Header/>
