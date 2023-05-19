@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from "next/image";
-import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart} from 'react-icons/ai'
+import {AiOutlineDownCircle, AiOutlineUpCircle, AiOutlineLineChart, AiOutlineUser, AiOutlinePoweroff, AiOutlineHome, AiOutlineRead, AiOutlineForm, AiOutlineKey, AiOutlineBarChart, AiOutlineBell} from 'react-icons/ai'
 
 import { Container, Profile, DropMenu, ProfileInfo, Line } from "./styles";
 
@@ -35,6 +35,7 @@ export const Header = () => {
             <Container>
                 <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo'/>
                 <Profile>
+                    <AiOutlineBell className='notificacoes'/>
                     <ProfileInfo>
                       {fetching ? <SpinnerCircular size={40} color="#f0f0fc"/> : 
                       <>

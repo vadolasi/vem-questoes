@@ -64,8 +64,8 @@ export const Profile = styled('div', {
         cursor: 'pointer',
 
         position: "absolute",
-        top: '10px',
-        left: '-50px',
+        top: '15px',
+        left: '-30px',
     },
 });
 

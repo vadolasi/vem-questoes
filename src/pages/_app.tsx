@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app"
+import Head from "next/head";
 import { Client, Provider, fetchExchange } from 'urql';
 import { authExchange } from '@urql/exchange-auth'
 
@@ -41,6 +42,9 @@ const client = new Client({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
+      <Head>
+      <title>Vem Questões</title>
+      </Head>
       <ToastContainer />
       <Component {...pageProps} />
     </Provider>
