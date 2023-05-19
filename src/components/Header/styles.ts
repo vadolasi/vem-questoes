@@ -96,6 +96,12 @@ export const Profile = styled('div', {
             paddingBottom: '5px'
 
         },
+
+        '@media (max-width: 1200px)': {
+            top: '60px',
+            left: '-150px',
+          }
+    
     }
 });
 
