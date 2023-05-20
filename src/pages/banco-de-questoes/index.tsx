@@ -273,33 +273,84 @@ export default function Questoes() {
 
               {pages && questionNumber && (
                 <ContainerPagination>
-                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber - 1)} disabled={questionNumber == pages[0]}>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber - 1)}  disabled={questionNumber==1}>
                     <AiOutlineLeft />
                   </ButtonPagination>
                   <MenuPagination>
-                    {
-                      questionNumber > 1 ?
-                        pages
-                          .slice((questionNumber == pages.length ? questionNumber - 3 : questionNumber - 2), questionNumber + 1)
-                          .map((page, index) => (
-                            <button
-                              key={index}
-                              className={page == questionNumber ? 'current' : ''}>
-                              {page}
-                            </button>
-                          )) :
-                        pages
-                          .slice((questionNumber - 1), questionNumber + 2)
-                          .map((page, index) => (
-                            <button
-                              key={index}
-                              className={page == questionNumber ? 'current' : ''}>
-                              {page}
-                            </button>
-                          ))
-                    }
+
+                    {questionNumber <= 5 ? <>
+                      <button className={questionNumber == 1 ? 'current' : ''} onClick={() => setQuestionNumber(1)}>
+                        1
+                      </button>
+                      <button className={questionNumber == 2 ? 'current' : ''} onClick={() => setQuestionNumber(2)}>
+                        2
+                      </button>
+                      <button className={questionNumber == 3 ? 'current' : ''} onClick={() => setQuestionNumber(3)}>
+                        3
+                      </button>
+                      <button className={questionNumber == 4 ? 'current' : ''} onClick={() => setQuestionNumber(4)}>
+                         4
+                      </button>
+                      <button className={questionNumber == 5 ? 'current' : ''} onClick={() => setQuestionNumber(5)}>
+                         5
+                      </button>
+                      <button className={questionNumber == 6 ? 'current' : ''} onClick={() => setQuestionNumber(6)}>
+                         6
+                      </button>
+                      <button className={questionNumber == 7 ? 'current' : ''} onClick={() => setQuestionNumber(7)}>
+                         7
+                      </button>
+                      <button className={questionNumber == 8 ? 'current' : ''} onClick={() => setQuestionNumber(8)}>
+                         8
+                      </button>
+                      <button className={questionNumber == 9 ? 'current' : ''} onClick={() => setQuestionNumber(9)}>
+                         9
+                      </button>
+                    </> : <>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-4)}>
+                              {questionNumber - 4}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-3)}>
+                              {questionNumber - 3}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-2)}>
+                              {questionNumber - 2}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-1)}>
+                              {questionNumber - 1}
+                    </button>
+                    <button
+                              className='current'>
+                              {questionNumber}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+1)}>
+                              {questionNumber + 1}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+2)}>
+                              {questionNumber + 2}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+3)}>
+                              {questionNumber + 3}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+4)}>
+                              {questionNumber + 4}
+                      </button>
+                    
+                    </>}
+                    
+
+                         
+            
                   </MenuPagination>
-                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} disabled={questionNumber == pages.length}>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
                     <AiOutlineRight />
                   </ButtonPagination>
 
