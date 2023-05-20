@@ -80,6 +80,13 @@ export const QuestionStatement = styled("div", {
     },
 
     ".questionInfo":{
+        ".load":{
+            width: '100%',
+            height: '70px',
+
+            display: 'grid',
+            placeContent: 'center',
+        },
         "p":{
             width: "100%",
 
@@ -96,6 +103,11 @@ export const QuestionStatement = styled("div", {
             display: "flex",
             alignItems: "center",
             gap: "5px",
+        },
+
+        'li':{
+            display: 'flex',
+            aligItems: 'center',
         }
     },
 

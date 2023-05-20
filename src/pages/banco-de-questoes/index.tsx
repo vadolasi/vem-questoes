@@ -25,7 +25,9 @@ import { AiOutlineFilter, AiOutlineUndo } from 'react-icons/ai';
 
 import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from './styles';
 import { toast } from 'react-toastify';
-import Confetti from 'react-confetti'
+import Confetti from 'react-confetti';
+
+import { SpinnerCircular } from 'spinners-react';
 
 const questionsFiltersQuery = graphql(/* GraphQL */ `
   query QuestionsFilters {
@@ -375,42 +377,46 @@ export default function Questoes() {
               </div>
 
               <div className='questionInfo'>
-                <p>{currentQuestion?.enunciado}</p>
+                {fetching? 
+                <div className='load'>
+                  <p>Carregando...</p>
+                </div> : <p>{currentQuestion?.enunciado}</p>}
                 <ul>
-                  <li><strong>Ano:</strong> {currentQuestion?.ano?.ano}</li>
-                  <li><strong>Banca:</strong> {currentQuestion?.banca?.name}</li>
-                  <li><strong>Prova:</strong> {currentQuestion?.processoSeletivo?.name}</li>
+                  <li><strong>Ano:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.ano?.ano}</>}</li>
+                  <li><strong>Banca:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.banca?.name}</>}</li>
+                  <li><strong>Prova:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.processoSeletivo?.name}</>}</li>
                 </ul>
               </div>
 
               <ul className='questionAlternatives'>
-                {currentQuestion?.alternatives && (
-                  <>
-                    <li className={deleteA ? "deleted" : ""}>
-                      <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
-                      <p>{currentQuestion?.alternatives[0].text}</p>
-                      <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
-                    </li>
-
-                    <li className={deleteB ? "deleted" : ""}>
-                      <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
-                      <p>{currentQuestion?.alternatives[1].text}</p>
-                      <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
-                    </li>
-
-                    <li className={deleteC ? "deleted" : ""}>
-                      <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
-                      <p>{currentQuestion?.alternatives[2].text}</p>
-                      <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
-                    </li>
-
-                    <li className={deleteD ? "deleted" : ""}>
-                      <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
-                      <p>{currentQuestion?.alternatives[3].text}</p>
-                      <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
-                    </li>
-                  </>
-                )}
+                {
+                  currentQuestion?.alternatives &&  (
+                    <>
+                      <li className={deleteA ? "deleted" : ""}>
+                        <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[0].text}</p>
+                        <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
+                      </li>
+  
+                      <li className={deleteB ? "deleted" : ""}>
+                        <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[1].text}</p>
+                        <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
+                      </li>
+  
+                      <li className={deleteC ? "deleted" : ""}>
+                        <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}.</p>
+                        <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
+                      </li>
+  
+                      <li className={deleteD ? "deleted" : ""}>
+                        <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}.</p>
+                        <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
+                      </li>
+                    </>
+                  )}
               </ul>
 
               <DefaultBoxQuestion
@@ -454,7 +460,7 @@ export default function Questoes() {
 
             <QuestionButtons>
               <div className='resposta'>
-                <button onClick={() => setIsConfettiActive(true)}>Responder</button>
+                <button onClick={() => setIsConfettiActive(true)} disabled={fetching}>Responder</button>
               </div>
 
               <ul className='actionsButton'>
