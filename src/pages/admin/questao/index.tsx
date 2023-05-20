@@ -27,7 +27,7 @@ export default function Admin() {
   const [checkD, setCheckD] = useState(false);
 
   const [explicacao, setExplicacao] = useState('');
-  const [link, setLink]
+  const [link, setLink] = useState('')
 
   function isCorrectA(){
     setCheckA(!checkA);
