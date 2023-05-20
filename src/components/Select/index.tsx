@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { SelectHTMLAttributes } from 'react';
 import { Container } from './styles';
 
-interface SelectProps {
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: any, option: string }[],
   label: string,
-  value?: any,
-  onChange?: any
 }
 
-export const Select: React.FC<SelectProps> = ({ options, label, value, onChange }) => {
+export const Select = ({ options, label, ...rest }: SelectProps) => {
   return (
     <Container>
       <label htmlFor={label}>{label}</label>
-      <select id={label} value={value} onChange={onChange}>
+      <select id={label} {...rest}>
         <option defaultValue=''></option>
 
         {options && options.map(({ value, option }) => (

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile } from 'react-icons/ai'
-
+import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile } from 'react-icons/ai'
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search, Container, Content } from '../../components/styles/banco-de-questoes';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
-import { PaginationBar } from '@/components/PaginationBar';
 import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
 import { CommentBar } from '@/components/CommentBar';
 import { SearchInput } from '@/components/SearchInput';
@@ -21,11 +19,13 @@ import notebook from '@/assets/Notebook.png';
 import raiox from '@/assets/raiox.png';
 import { graphql } from '@/gql';
 import { useQuery } from 'urql';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 import { AiOutlineFilter, AiOutlineUndo } from 'react-icons/ai';
 
-import { ContainerFilter, Fieldset, ButtonFilter } from './styles';
+import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from './styles';
 import { toast } from 'react-toastify';
+import Confetti from 'react-confetti'
 
 const questionsFiltersQuery = graphql(/* GraphQL */ `
   query QuestionsFilters {
@@ -64,12 +64,52 @@ const questionsFiltersQuery = graphql(/* GraphQL */ `
   }
 `)
 
-
-const questionQuantityQuery = graphql(/* GraphQL */ `
-  query GetQuestions {
-    questions {
-      pagesQuantity
-      quantity
+const getQuestionQuery = graphql(/* GraphQL */ `
+  query GetQuestions($page: Float, $itemsPerPage: Float) {
+    questions(
+      page: $page,
+      itemsPerPage: $itemsPerPage
+    ) {
+      questions {
+        id,
+        enunciado,
+        processoSeletivo {
+          name
+        },
+        ano {
+          ano
+        },
+        local {
+          name
+        },
+        perfil {
+          name
+        },
+        area {
+          name
+        },
+        subarea {
+          name
+        },
+        estado {
+          name
+        },
+        banca {
+          name
+        },
+        alternatives {
+          id,
+          text,
+          letter,
+          correct,
+        },
+        comments {
+          id,
+          content,
+        },
+      }
+      pagesQuantity,
+      quantity,
     }
   }
 `)
@@ -77,13 +117,21 @@ const questionQuantityQuery = graphql(/* GraphQL */ `
 export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
+  const [isConfettiActive, setIsConfettiActive] = useState(false);
 
-  const [resultFilter] = useQuery({ query: questionsFiltersQuery })
+  const { width, height } = useWindowDimensions();
+
+  const [resultFilter] = useQuery({
+    query: questionsFiltersQuery
+  })
   const { data: filterData } = resultFilter
 
-  const [resultQuestionsQuantity] = useQuery({ query: questionQuantityQuery })
-
-  const { data: questionQuantity } = resultQuestionsQuantity
+  const [resultQuestion] = useQuery({
+    query: getQuestionQuery, variables: {
+      page: questionNumber, itemsPerPage: 1
+    }
+  })
+  const { data, fetching } = resultQuestion
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
@@ -99,6 +147,9 @@ export default function Questoes() {
   const [commentBox, setCommentBox] = useState(false);
   const [notebookBox, setNotebookBox] = useState(false);
   const [xrayBox, setXrayBox] = useState(false);
+
+  const currentQuestion = data?.questions.questions[0];
+  const pages = data?.questions.questions?.map((_, index) => index + 1) || []
 
   function selectedA() {
     setSelectA(true);
@@ -150,9 +201,10 @@ export default function Questoes() {
     setXrayBox(!xrayBox);
   }
 
+
   function handleChangeQuestionByInput() {
-    if (questionQuantity?.questions.quantity) {
-      if (questionInput >= 1 && questionInput <= questionQuantity?.questions.quantity) {
+    if (data?.questions.quantity) {
+      if (questionInput >= 1 && questionInput <= data?.questions.quantity) {
         setQuestionNumber(questionInput)
       } else {
         setQuestionNumber(1)
@@ -162,179 +214,230 @@ export default function Questoes() {
   }
 
   return (
-    <Container>
-      <Header />
-      <Menu page='banco-de-questoes' />
-      <Content>
-        <QuestionContainer>
-          <ContainerFilter>
-            <SearchInput placeholder='Pesquisar' />
-            <div className='inputs'>
-              <div className='Selects'>
-                <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} />
-                <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+    <>
+      <CorrectAnswerContainer>
+        {isConfettiActive && height && width && (
+          <Confetti
+            recycle={false}
+            onConfettiComplete={() => setIsConfettiActive(false)}
+            width={width}
+            height={height}
+            colors={['#f44336', '#FF3600', '#FF5722', '#9c27b0', '#990099', '#3f51b5', '#2196f3', '#00CFFF', '#03a9f4', '#00bcd4', '#82E7FF']}
+          />
+        )}
+      </CorrectAnswerContainer>
+      <Container>
+
+        <Header />
+        <Menu page='banco-de-questoes' />
+        <Content>
+          <QuestionContainer>
+            <ContainerFilter>
+              <SearchInput placeholder='Pesquisar' />
+              <div className='inputs'>
+                <div className='Selects'>
+                  <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} />
+                  <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                </div>
+
+                <Fieldset>
+                  <legend>Ocultar Questões</legend>
+                  <Checkbox label='Dos cadernos de erros' />
+                  <Checkbox label='Dos meus simulados' />
+                  <Checkbox label='Anuladas' />
+                  <Checkbox label='Desatualizadas' />
+                </Fieldset>
               </div>
 
-              <Fieldset>
-                <legend>Ocultar Questões</legend>
-                <Checkbox label='Dos cadernos de erros' />
-                <Checkbox label='Dos meus simulados' />
-                <Checkbox label='Anuladas' />
-                <Checkbox label='Desatualizadas' />
-              </Fieldset>
-            </div>
+              <div className='buttons'>
+                <ButtonFilter className='filter'>
+                  <AiOutlineFilter />
+                  Salvar Filtro
+                </ButtonFilter>
+                <ButtonFilter className='reset'>
+                  <AiOutlineUndo />
+                  Limpar Filtro
+                </ButtonFilter>
+              </div>
 
-            <div className='buttons'>
-              <ButtonFilter className='filter'>
-                <AiOutlineFilter />
-                Salvar Filtro
-              </ButtonFilter>
-              <ButtonFilter className='reset'>
-                <AiOutlineUndo />
-                Limpar Filtro
-              </ButtonFilter>
-            </div>
+            </ContainerFilter>
 
-          </ContainerFilter>
+            <Navigation>
+              <span>{data?.questions.quantity || 0} questões</span>
 
-          <Navigation>
-            <span>{questionQuantity?.questions.quantity || 0} questões encontradas</span>
+              {pages && questionNumber && (
+                <ContainerPagination>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber - 1)} disabled={questionNumber == pages[0]}>
+                    <AiOutlineLeft />
+                  </ButtonPagination>
+                  <MenuPagination>
+                    {
+                      questionNumber > 1 ?
+                        pages
+                          .slice((questionNumber == pages.length ? questionNumber - 3 : questionNumber - 2), questionNumber + 1)
+                          .map((page, index) => (
+                            <button
+                              key={index}
+                              className={page == questionNumber ? 'current' : ''}>
+                              {page}
+                            </button>
+                          )) :
+                        pages
+                          .slice((questionNumber - 1), questionNumber + 2)
+                          .map((page, index) => (
+                            <button
+                              key={index}
+                              className={page == questionNumber ? 'current' : ''}>
+                              {page}
+                            </button>
+                          ))
+                    }
+                  </MenuPagination>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} disabled={questionNumber == pages.length}>
+                    <AiOutlineRight />
+                  </ButtonPagination>
 
-            {/* <PaginationBar pages={data?.questions.questions?.map((_, index) => index + 1) || []} /> */}
+                </ContainerPagination>
+              )}
 
-            <GoTo>
-              <input type='number' min={1} defaultValue={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
-              <span>Ir Para</span>
-              <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
-            </GoTo>
 
-          </Navigation>
+              <GoTo>
+                <input type='number' min={1} defaultValue={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
+                <span>Ir Para</span>
+                <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
+              </GoTo>
 
-          <QuestionStatement>
-            <div className='title'>
-              <h1>
-                Questão {questionNumber}
-              </h1>
-              <ButtonReport>Reportar</ButtonReport>
-            </div>
+            </Navigation>
 
-            <div className='questionInfo'>
-              <p>A Atenção Primária à Saúde (APS) no Brasil passou por mudanças importantes com a revisão da Política Nacional de Atenção Básica, por meio da Portaria nº 2.436, de 21 de setembro de 2017. Considerando as alterações relacionadas à dimensão organizativa e funcional e de gestão, a alternativa que aponta mudanças trazidas pela política é:</p>
-              <ul>
-                <li><strong>Ano:</strong> 2021</li>
-                <li><strong>Banca:</strong> UNISEU</li>
-                <li><strong>Prova:</strong> Residência para Fisioterapeutas</li>
+            <QuestionStatement>
+              <div className='title'>
+                <h1>
+                  Questão {questionNumber}
+                </h1>
+                <ButtonReport>Reportar</ButtonReport>
+              </div>
+
+              <div className='questionInfo'>
+                <p>{currentQuestion?.enunciado}</p>
+                <ul>
+                  <li><strong>Ano:</strong> {currentQuestion?.ano?.ano}</li>
+                  <li><strong>Banca:</strong> {currentQuestion?.banca?.name}</li>
+                  <li><strong>Prova:</strong> {currentQuestion?.processoSeletivo?.name}</li>
+                </ul>
+              </div>
+
+              <ul className='questionAlternatives'>
+                {currentQuestion?.alternatives && (
+                  <>
+                    <li className={deleteA ? "deleted" : ""}>
+                      <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
+                      <p>{currentQuestion?.alternatives[0].text}</p>
+                      <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
+                    </li>
+
+                    <li className={deleteB ? "deleted" : ""}>
+                      <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
+                      <p>{currentQuestion?.alternatives[1].text}</p>
+                      <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
+                    </li>
+
+                    <li className={deleteC ? "deleted" : ""}>
+                      <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
+                      <p>{currentQuestion?.alternatives[2].text}</p>
+                      <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
+                    </li>
+
+                    <li className={deleteD ? "deleted" : ""}>
+                      <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
+                      <p>{currentQuestion?.alternatives[3].text}</p>
+                      <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
+                    </li>
+                  </>
+                )}
               </ul>
-            </div>
 
-            <ul className='questionAlternatives'>
+              <DefaultBoxQuestion
+                className={explicationBox ? 'show' : "hidden"}
+                h1='Essa questão ainda não possui gabarito comentando'
+                strong='Estamos trabalhando nisso!'
+                picture={professor}
+                alt='Professor dando aula' />
 
-              <li className={deleteA ? "deleted" : ""}>
-                <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
-                <p>O modelo de Estratégia Saúde da Família se torna prioritário e exclusivo</p>
-                <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
-              </li>
-
-              <li className={deleteB ? "deleted" : ""}>
-                <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
-                <p>Os profissionais podem se vincular em mais de uma equipe e ter carga horária de 10, 20 ou 30 horas semanais</p>
-                <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
-              </li>
-
-              <li className={deleteC ? "deleted" : ""}>
-                <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
-                <p>O tempo destinado à educação permanente foi garantido com o mínimo de 8h</p>
-                <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
-              </li>
-
-              <li className={deleteD ? "deleted" : ""}>
-                <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
-                <p>Sem a definição clara de número de Agentes Comunitários de Saúde (ACS) por equipe, as equipes podem funcionar tendo apenas um ACS</p>
-                <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
-              </li>
-            </ul>
-
-            <DefaultBoxQuestion
-              className={explicationBox ? 'show' : "hidden"}
-              h1='Essa questão ainda não possui gabarito comentando'
-              strong='Estamos trabalhando nisso!'
-              picture={professor}
-              alt='Professor dando aula' />
-
-            <DefaultBoxQuestion
-              className={commentBox ? 'show' : "hidden"}
-              h1='Essa questão ainda não possui comentários'
-              strong='Seja o primeiro(a)!'
-              picture={typing}
-              alt='Rapaz digitando'
-            >
-              <CommentBar />
-            </DefaultBoxQuestion>
+              <DefaultBoxQuestion
+                className={commentBox ? 'show' : "hidden"}
+                h1='Essa questão ainda não possui comentários'
+                strong='Seja o primeiro(a)!'
+                picture={typing}
+                alt='Rapaz digitando'
+              >
+                <CommentBar />
+              </DefaultBoxQuestion>
 
 
-            <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
-              <Search>
-                <SearchInput />
-                <Button>+ Criar Caderno</Button>
-              </Search>
-              <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' />
-            </DefaultBoxQuestion>
+              <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
+                <Search>
+                  <SearchInput />
+                  <Button>+ Criar Caderno</Button>
+                </Search>
+                <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' />
+              </DefaultBoxQuestion>
 
-            <DefaultBoxQuestion
-              className={xrayBox ? 'show' : "hidden"}
-              h1='Esta questão ainda não tem Raio-X'
-              strong='Estamos trabalhando nisso!'
-              picture={raiox}
-              alt='mulher com uma maquina de dados'
-            />
+              <DefaultBoxQuestion
+                className={xrayBox ? 'show' : "hidden"}
+                h1='Esta questão ainda não tem Raio-X'
+                strong='Estamos trabalhando nisso!'
+                picture={raiox}
+                alt='mulher com uma maquina de dados'
+              />
 
 
-          </QuestionStatement>
+            </QuestionStatement>
 
 
 
-          <QuestionButtons>
-            <div className='resposta'>
-              <button>Responder</button>
-            </div>
+            <QuestionButtons>
+              <div className='resposta'>
+                <button onClick={() => setIsConfettiActive(true)}>Responder</button>
+              </div>
 
-            <ul className='actionsButton'>
-              <li>
-                <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""}>
-                  <AiOutlineCompass />
-                  <span>Explicação</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={showCommentBox} className={commentBox ? 'open' : ""}>
-                  <AiOutlineComment />
-                  <span>Comentários</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""}>
-                  <AiOutlineBook />
-                  <span>Cadernos</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={showXrayBox} className={xrayBox ? 'open' : ""}>
-                  <AiOutlineProfile />
-                  <span>Raio-X</span>
-                </button>
-              </li>
-            </ul>
-          </QuestionButtons>
+              <ul className='actionsButton'>
+                <li>
+                  <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""}>
+                    <AiOutlineCompass />
+                    <span>Explicação</span>
+                  </button>
+                </li>
+                <li>
+                  <button onClick={showCommentBox} className={commentBox ? 'open' : ""}>
+                    <AiOutlineComment />
+                    <span>Comentários</span>
+                  </button>
+                </li>
+                <li>
+                  <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""}>
+                    <AiOutlineBook />
+                    <span>Cadernos</span>
+                  </button>
+                </li>
+                <li>
+                  <button onClick={showXrayBox} className={xrayBox ? 'open' : ""}>
+                    <AiOutlineProfile />
+                    <span>Raio-X</span>
+                  </button>
+                </li>
+              </ul>
+            </QuestionButtons>
 
-        </QuestionContainer>
-      </Content>
-    </Container>
+          </QuestionContainer>
+        </Content>
+      </Container >
+    </>
   )
 }
 

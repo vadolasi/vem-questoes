@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import { Container } from './styles';
 
-interface CheckboxProps {
-    label: string
+interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+  label: string
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({label}) => {
-    return (
-        <Container>
-            <input type="checkbox" id={label} name={label}/>
-            <label htmlFor={label}>{label}</label>
-        </Container>
-    );
+export const Checkbox = ({ label, ...rest }: CheckboxProps) => {
+  return (
+    <Container>
+      <input type="checkbox" id={label} name={label} {...rest} />
+      <label htmlFor={label}>{label}</label>
+    </Container>
+  );
 };
