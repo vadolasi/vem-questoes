@@ -156,6 +156,12 @@ export const QuestionStatement = styled("div", {
                 color: "$white_2",
                 background: "$blue_1"
             },
+            ".certo":{
+                background: "$green"
+            },
+            ".errado":{
+                background: "$red"
+            },
             ".delete":{
                 display: "none",
                 placeContent: "center",

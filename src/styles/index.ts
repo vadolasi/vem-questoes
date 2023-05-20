@@ -20,6 +20,7 @@ export const {
             white_2: '#FFFFFF',
             text: '#000000',
             border: '#B2BFBA',
+            green: '#68D14F'
         }
     }
 })

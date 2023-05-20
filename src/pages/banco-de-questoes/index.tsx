@@ -140,10 +140,9 @@ export default function Questoes() {
   const [deleteC, setDeleteC] = useState(false);
   const [deleteD, setDeleteD] = useState(false);
 
-  const [selectA, setSelectA] = useState(false);
-  const [selectB, setSelectB] = useState(false);
-  const [selectC, setSelectC] = useState(false);
-  const [selectD, setSelectD] = useState(false);
+  const [isSelected, setIsSelected] = useState<number | null>(null);
+
+  const [isCorrect, setIsCorrect] = useState<number | null>(null);
 
   const [explicationBox, setExplicationBox] = useState(false);
   const [commentBox, setCommentBox] = useState(false);
@@ -151,32 +150,7 @@ export default function Questoes() {
   const [xrayBox, setXrayBox] = useState(false);
 
   const currentQuestion = data?.questions.questions[0];
-  const pages = data?.questions.questions?.map((_, index) => index + 1) || []
-
-  function selectedA() {
-    setSelectA(true);
-    setSelectB(false);
-    setSelectC(false);
-    setSelectD(false);
-  }
-  function selectedB() {
-    setSelectA(false);
-    setSelectB(true);
-    setSelectC(false);
-    setSelectD(false);
-  }
-  function selectedC() {
-    setSelectA(false);
-    setSelectB(false);
-    setSelectC(true);
-    setSelectD(false);
-  }
-  function selectedD() {
-    setSelectA(false);
-    setSelectB(false);
-    setSelectC(false);
-    setSelectD(true);
-  }
+  const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
 
   function showExplicationBox() {
     setExplicationBox(!explicationBox);
@@ -203,6 +177,40 @@ export default function Questoes() {
     setXrayBox(!xrayBox);
   }
 
+  function answerQuestion(){
+    if(isCorrect) {
+     return setQuestionNumber(questionNumber => questionNumber + 1) 
+    }
+    if(currentQuestion?.alternatives){
+      if(currentQuestion?.alternatives[0].correct){
+        setIsCorrect(1)
+      }
+      if(currentQuestion?.alternatives[1].correct){
+        setIsCorrect(2)
+      }
+      if(currentQuestion?.alternatives[2].correct){
+        setIsCorrect(3)
+      }
+      if(currentQuestion?.alternatives[3].correct){
+        setIsCorrect(4)
+      }
+      if(isSelected === 1 && currentQuestion?.alternatives[0].correct){
+        setIsConfettiActive(true)
+      }
+      if(isSelected === 2 && currentQuestion?.alternatives[1].correct){
+        setIsConfettiActive(true)
+      }
+      if(isSelected === 3 && currentQuestion?.alternatives[2].correct){
+        setIsConfettiActive(true)
+      }
+      if(isSelected === 4 && currentQuestion?.alternatives[3].correct){
+        setIsConfettiActive(true)
+      }
+  }
+
+  
+  }
+
 
   function handleChangeQuestionByInput() {
     if (data?.questions.quantity) {
@@ -214,6 +222,12 @@ export default function Questoes() {
       }
     }
   }
+
+  useEffect(() => {
+    setQuestionInput(questionNumber)
+    setIsCorrect(null)
+    setIsSelected(null)
+  }, [questionNumber])
 
   return (
     <>
@@ -361,7 +375,7 @@ export default function Questoes() {
 
 
               <GoTo>
-                <input type='number' min={1} defaultValue={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
+                <input type='number' min={1} value={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
                 <span>Ir Para</span>
                 <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
               </GoTo>
@@ -393,25 +407,25 @@ export default function Questoes() {
                   currentQuestion?.alternatives &&  (
                     <>
                       <li className={deleteA ? "deleted" : ""}>
-                        <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
+                        <button onClick={() => setIsSelected(1)} className={`${isSelected === 1 && 'selected' } ${isCorrect == 1 ? 'certo' : `${isSelected === 1 && isCorrect && 'errado' }`}`} disabled={deleteA}>A</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[0].text}</p>
                         <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteB ? "deleted" : ""}>
-                        <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
+                        <button onClick={() => setIsSelected(2)} className={`${isSelected === 2 ? 'selected' : ''} ${isCorrect == 2 ? 'certo' : `${isSelected === 2 && isCorrect && 'errado' }`}`} disabled={deleteB}> B</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[1].text}</p>
                         <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteC ? "deleted" : ""}>
-                        <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
+                        <button onClick={() => setIsSelected(3)} className={`${isSelected === 3 ? 'selected' : ''} ${isCorrect == 3 ? 'certo' : `${isSelected === 3 && isCorrect && 'errado' }`}`} disabled={deleteC}>C</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}</p>
                         <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteD ? "deleted" : ""}>
-                        <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
+                        <button onClick={() => setIsSelected(4)} className={`${isSelected === 4 ? 'selected' : ''} ${isCorrect == 4 ? 'certo' : `${isSelected === 4 && isCorrect && 'errado' }`}`} disabled={deleteD}>D</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}</p>
                         <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
                       </li>
@@ -460,7 +474,7 @@ export default function Questoes() {
 
             <QuestionButtons>
               <div className='resposta'>
-                <button onClick={() => setIsConfettiActive(true)} disabled={fetching}>Responder</button>
+                <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
               </div>
 
               <ul className='actionsButton'>
