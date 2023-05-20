@@ -3,7 +3,7 @@ import image from '../../assets/fotodiagnostico.png'
 export const SliderData = [
     {
       image:
-        'https://imgur.com/a/hyYhXAh'
+        'https://i.imgur.com/CUT9s4w.png'
     },
     {
       image:
