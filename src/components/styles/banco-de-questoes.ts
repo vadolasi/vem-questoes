@@ -1,13 +1,14 @@
 import { styled } from "@/styles";
 
 export const QuestionContainer = styled("div", {
-    marginTop: "42px",
     width: "100%",
     paddingRight: "42px",
 });
 
 export const Navigation = styled("div", {
     width: "100%",
+    marginTop: "42px",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between"
@@ -26,7 +27,7 @@ export const GoTo = styled("div", {
     alignItems: "center",
 
     '& input': {
-        width: '100px',
+        width: '80px',
         background: 'none',
         outline: 'none',
         color: '$text',
@@ -202,7 +203,7 @@ export const QuestionButtons = styled("div", {
     alignItems: "center",
     justifyContent: "space-between",
 
-    marginTop: "59px",
+    margin: "42px 0px",
 
 
     '.resposta': {

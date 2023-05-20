@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 
-import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
+import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile } from 'react-icons/ai'
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search, Container, Content } from '../../components/styles/banco-de-questoes';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
-import { Filter } from '@/components/Filter';
 import { PaginationBar } from '@/components/PaginationBar';
 import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
 import { CommentBar } from '@/components/CommentBar';
 import { SearchInput } from '@/components/SearchInput';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
+import { Select } from '@/components/Select';
+import { Checkbox } from '@/components/Checkbox'
 
 import professor from '@/assets/professor.png';
 import typing from '@/assets/typing.png';
@@ -21,23 +22,52 @@ import raiox from '@/assets/raiox.png';
 import { graphql } from '@/gql';
 import { useQuery } from 'urql';
 
-const questionsQuery = graphql(/* GraphQL */ `
-  query GetQuestions($page: Float) {
-    questions(
-      page: $page
-    ) {
-      questions {
-        id
-        area {
-          name
-        }
-        ano {
-          ano
-        }
-        processoSeletivo {
-          name
-        }
-      }
+import { AiOutlineFilter, AiOutlineUndo } from 'react-icons/ai';
+
+import { ContainerFilter, Fieldset, ButtonFilter } from './styles';
+import { toast } from 'react-toastify';
+
+const questionsFiltersQuery = graphql(/* GraphQL */ `
+  query QuestionsFilters {
+    processosSeletivos {
+      id
+      name
+    }
+    anos {
+      id
+      ano
+    }
+    locais {
+      id
+      name
+    }
+    perfis {
+      id
+      name
+    }
+    areas {
+      id
+      name
+    }
+    subareas {
+      id
+      name
+    }
+    estados {
+      id
+      name
+    }
+    bancas {
+      id
+      name
+    }
+  }
+`)
+
+
+const questionQuantityQuery = graphql(/* GraphQL */ `
+  query GetQuestions {
+    questions {
       pagesQuantity
       quantity
     }
@@ -45,11 +75,15 @@ const questionsQuery = graphql(/* GraphQL */ `
 `)
 
 export default function Questoes() {
-  const [page, setPage] = useState(1);
-  const [pageInput, setPageInput] = useState(1);
+  const [questionNumber, setQuestionNumber] = useState(1)
+  const [questionInput, setQuestionInput] = useState(1)
 
-  const [result, executeQuery] = useQuery({ query: questionsQuery })
-  const { data } = result
+  const [resultFilter] = useQuery({ query: questionsFiltersQuery })
+  const { data: filterData } = resultFilter
+
+  const [resultQuestionsQuantity] = useQuery({ query: questionQuantityQuery })
+
+  const { data: questionQuantity } = resultQuestionsQuantity
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
@@ -66,116 +100,118 @@ export default function Questoes() {
   const [notebookBox, setNotebookBox] = useState(false);
   const [xrayBox, setXrayBox] = useState(false);
 
-  function selectedA(){
+  function selectedA() {
     setSelectA(true);
     setSelectB(false);
     setSelectC(false);
     setSelectD(false);
   }
-  function selectedB(){
+  function selectedB() {
     setSelectA(false);
     setSelectB(true);
     setSelectC(false);
     setSelectD(false);
   }
-  function selectedC(){
+  function selectedC() {
     setSelectA(false);
     setSelectB(false);
     setSelectC(true);
     setSelectD(false);
   }
-  function selectedD(){
+  function selectedD() {
     setSelectA(false);
     setSelectB(false);
     setSelectC(false);
     setSelectD(true);
   }
 
-
-  function showExplicationBox(){
+  function showExplicationBox() {
     setExplicationBox(!explicationBox);
     setCommentBox(false);
     setNotebookBox(false);
     setXrayBox(false);
   }
-  function showCommentBox(){
+  function showCommentBox() {
     setExplicationBox(false);
     setCommentBox(!commentBox);
     setNotebookBox(false);
     setXrayBox(false);
   }
-  function showNotebookBox(){
+  function showNotebookBox() {
     setExplicationBox(false);
     setCommentBox(false);
     setNotebookBox(!notebookBox);
     setXrayBox(false);
   }
-  function showXrayBox(){
+  function showXrayBox() {
     setExplicationBox(false);
     setCommentBox(false);
     setNotebookBox(false);
     setXrayBox(!xrayBox);
   }
 
+  function handleChangeQuestionByInput() {
+    if (questionQuantity?.questions.quantity) {
+      if (questionInput >= 1 && questionInput <= questionQuantity?.questions.quantity) {
+        setQuestionNumber(questionInput)
+      } else {
+        setQuestionNumber(1)
+        toast.error('Coloque um valor válido')
+      }
+    }
+  }
+
   return (
     <Container>
-     <Header/>
-     <Menu page='banco-de-questoes'/>
-     <Content>
-        <DefaultBoxQuestion
-        className={explicationBox ? 'show' : "hidden"}
-        h1='Essa questão ainda não possui gabarito comentando'
-        strong='Estamos trabalhando nisso!'
-        picture={professor}
-        alt='Professor dando aula'/>
-
-        <DefaultBoxQuestion
-        className={commentBox ? 'show' : "hidden"}
-        h1='Essa questão ainda não possui comentários'
-        strong='Seja o primeiro(a)!'
-        picture={typing}
-        alt='Rapaz digitando'
-        >
-          <CommentBar/>
-        </DefaultBoxQuestion>
-
-        <DefaultBoxQuestion
-        className={commentBox ? 'show' : "hidden"}
-        h1='Essa questão ainda não possui comentários'
-        strong='Seja o primeiro(a)!'
-        picture={typing}
-        alt='Rapaz digitando'
-        >
-          <CommentBar/>
-        </DefaultBoxQuestion>
-
-        <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
-          <Search>
-            <SearchInput/>
-            <Button>+ Criar Caderno</Button>
-          </Search>
-            <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno'/>
-        </DefaultBoxQuestion>
-
-        <DefaultBoxQuestion
-        className={xrayBox ? 'show' : "hidden"}
-        h1='Esta questão ainda não tem Raio-X'
-        strong='Estamos trabalhando nisso!'
-        picture={raiox}
-        alt='mulher com uma maquina de dados'/>
-
-
-        <Filter/>
+      <Header />
+      <Menu page='banco-de-questoes' />
+      <Content>
         <QuestionContainer>
-          <Navigation>
-            <span>{data?.questions.quantity || 0} questões encontradas</span>
+          <ContainerFilter>
+            <SearchInput placeholder='Pesquisar' />
+            <div className='inputs'>
+              <div className='Selects'>
+                <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} />
+                <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+              </div>
 
-            <PaginationBar pages={data?.questions.questions?.map((_, index) => index + 1) || []} />
+              <Fieldset>
+                <legend>Ocultar Questões</legend>
+                <Checkbox label='Dos cadernos de erros' />
+                <Checkbox label='Dos meus simulados' />
+                <Checkbox label='Anuladas' />
+                <Checkbox label='Desatualizadas' />
+              </Fieldset>
+            </div>
+
+            <div className='buttons'>
+              <ButtonFilter className='filter'>
+                <AiOutlineFilter />
+                Salvar Filtro
+              </ButtonFilter>
+              <ButtonFilter className='reset'>
+                <AiOutlineUndo />
+                Limpar Filtro
+              </ButtonFilter>
+            </div>
+
+          </ContainerFilter>
+
+          <Navigation>
+            <span>{questionQuantity?.questions.quantity || 0} questões encontradas</span>
+
+            {/* <PaginationBar pages={data?.questions.questions?.map((_, index) => index + 1) || []} /> */}
 
             <GoTo>
-              <input type='number' min={1} max={data?.questions.quantity || 0} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
+              <input type='number' min={1} defaultValue={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
               <span>Ir Para</span>
-              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
+              <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
             </GoTo>
 
           </Navigation>
@@ -183,7 +219,7 @@ export default function Questoes() {
           <QuestionStatement>
             <div className='title'>
               <h1>
-                Questão {page}
+                Questão {questionNumber}
               </h1>
               <ButtonReport>Reportar</ButtonReport>
             </div>
@@ -199,33 +235,69 @@ export default function Questoes() {
 
             <ul className='questionAlternatives'>
 
-                <li className={deleteA ? "deleted" : ""}>
-                  <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
-                  <p>O modelo de Estratégia Saúde da Família se torna prioritário e exclusivo</p>
-                  <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete/></button>
-                </li>
+              <li className={deleteA ? "deleted" : ""}>
+                <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
+                <p>O modelo de Estratégia Saúde da Família se torna prioritário e exclusivo</p>
+                <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
+              </li>
 
-                <li className={deleteB ? "deleted" : ""}>
-                  <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
-                  <p>Os profissionais podem se vincular em mais de uma equipe e ter carga horária de 10, 20 ou 30 horas semanais</p>
-                  <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete/></button>
-                </li>
+              <li className={deleteB ? "deleted" : ""}>
+                <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
+                <p>Os profissionais podem se vincular em mais de uma equipe e ter carga horária de 10, 20 ou 30 horas semanais</p>
+                <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
+              </li>
 
-                <li className={deleteC ? "deleted" : ""}>
-                  <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
-                  <p>O tempo destinado à educação permanente foi garantido com o mínimo de 8h</p>
-                  <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete/></button>
-                </li>
+              <li className={deleteC ? "deleted" : ""}>
+                <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
+                <p>O tempo destinado à educação permanente foi garantido com o mínimo de 8h</p>
+                <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
+              </li>
 
-                <li className={deleteD ? "deleted" : ""}>
-                  <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
-                  <p>Sem a definição clara de número de Agentes Comunitários de Saúde (ACS) por equipe, as equipes podem funcionar tendo apenas um ACS</p>
-                  <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete/></button>
-                </li>
+              <li className={deleteD ? "deleted" : ""}>
+                <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
+                <p>Sem a definição clara de número de Agentes Comunitários de Saúde (ACS) por equipe, as equipes podem funcionar tendo apenas um ACS</p>
+                <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
+              </li>
             </ul>
+
+            <DefaultBoxQuestion
+              className={explicationBox ? 'show' : "hidden"}
+              h1='Essa questão ainda não possui gabarito comentando'
+              strong='Estamos trabalhando nisso!'
+              picture={professor}
+              alt='Professor dando aula' />
+
+            <DefaultBoxQuestion
+              className={commentBox ? 'show' : "hidden"}
+              h1='Essa questão ainda não possui comentários'
+              strong='Seja o primeiro(a)!'
+              picture={typing}
+              alt='Rapaz digitando'
+            >
+              <CommentBar />
+            </DefaultBoxQuestion>
+
+
+            <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
+              <Search>
+                <SearchInput />
+                <Button>+ Criar Caderno</Button>
+              </Search>
+              <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' />
+            </DefaultBoxQuestion>
+
+            <DefaultBoxQuestion
+              className={xrayBox ? 'show' : "hidden"}
+              h1='Esta questão ainda não tem Raio-X'
+              strong='Estamos trabalhando nisso!'
+              picture={raiox}
+              alt='mulher com uma maquina de dados'
+            />
 
 
           </QuestionStatement>
+
+
 
           <QuestionButtons>
             <div className='resposta'>
@@ -235,25 +307,25 @@ export default function Questoes() {
             <ul className='actionsButton'>
               <li>
                 <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""}>
-                  <AiOutlineCompass/>
+                  <AiOutlineCompass />
                   <span>Explicação</span>
                 </button>
               </li>
               <li>
                 <button onClick={showCommentBox} className={commentBox ? 'open' : ""}>
-                  <AiOutlineComment/>
+                  <AiOutlineComment />
                   <span>Comentários</span>
                 </button>
               </li>
               <li>
                 <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""}>
-                  <AiOutlineBook/>
+                  <AiOutlineBook />
                   <span>Cadernos</span>
                 </button>
               </li>
               <li>
                 <button onClick={showXrayBox} className={xrayBox ? 'open' : ""}>
-                  <AiOutlineProfile/>
+                  <AiOutlineProfile />
                   <span>Raio-X</span>
                 </button>
               </li>
@@ -261,7 +333,7 @@ export default function Questoes() {
           </QuestionButtons>
 
         </QuestionContainer>
-     </Content>
+      </Content>
     </Container>
   )
 }

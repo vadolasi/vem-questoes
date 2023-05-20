@@ -7,9 +7,17 @@ export const Container = styled('ul', {
     listStyle: "none",
 
     display: "flex",
+    alignItems: "center",
     flexDirection: "column",
+    boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.05);',
+    clipPath: 'inset(0px -15px 0px 0px)',
+
 
     gap: '13px',
+
+    'li': {
+      width: '100%',
+    },
 
     'li a': {
         width: '100%',

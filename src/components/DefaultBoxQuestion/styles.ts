@@ -1,28 +1,18 @@
 import { styled } from "@/styles"
 
 export const Modal = styled("div", {
-    width: "929px",
-    height: "526px",
-
+    width: "100%",
     padding: "30px 25px",
-
-    position: "absolute",
-    left: '50%',
-    top: "0",
-    transform: 'translate(-50%, 50%)',
-
-    zIndex: '2',
+    marginTop: "42px",
 
     background: "$white_1",
     border: "1px solid $border",
     borderRadius: "23px",
 
-
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-
 
     overflowY: "auto",
 
