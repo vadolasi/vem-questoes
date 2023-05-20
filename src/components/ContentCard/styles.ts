@@ -43,10 +43,18 @@ export const Menu = styled("div", {
 
     overflowY: "auto",
 
+    '.spin':{
+        marginLeft: '40%',
+        marginTop: '30%',
+},
 
-   '.spin':{
+
+
+   '@media (max-width: 1200px)': {
+    '.spin':{
         marginLeft: '35%',
         marginTop: '40%',
    },
+  }
     
 })

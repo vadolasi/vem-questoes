@@ -69,8 +69,8 @@ export const OfferCard = styled('div', {
         borderRadius: '23px',
 
         '.spin':{
-                marginLeft: '35%',
-                marginTop: '40%',
+                marginLeft: '40%',
+                marginTop: '30%',
         },
 
 
@@ -158,6 +158,11 @@ export const OfferCard = styled('div', {
 
                 'img':{
                         display: "none"
-                }
+                },
+
+                '.spin':{
+                        marginLeft: '35%',
+                        marginTop: '40%',
+                },
               }
 })
