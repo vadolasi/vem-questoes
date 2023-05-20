@@ -406,13 +406,13 @@ export default function Questoes() {
   
                       <li className={deleteC ? "deleted" : ""}>
                         <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}.</p>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}</p>
                         <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteD ? "deleted" : ""}>
                         <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}.</p>
+                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}</p>
                         <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
                       </li>
                     </>
