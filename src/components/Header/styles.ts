@@ -10,7 +10,9 @@ export const Container = styled('header', {
     justifyContent: 'space-between',
 
     gridArea: 'header',
-    
+    border: '1px solid $white_1',
+    borderBottomWidth: '1px',
+
 
     ".Logo": {
         width: "85px",
@@ -27,9 +29,9 @@ export const Container = styled('header', {
     '.Mobile': {
         display: 'none',
         zIndex: 4,
-    },  
+    },
 
-    
+
     '@media (max-width: 1200px)': {
         '.Mobile':{
             display: 'flex',
@@ -101,7 +103,7 @@ export const Profile = styled('div', {
             top: '60px',
             left: '-150px',
           }
-    
+
     }
 });
 
@@ -182,13 +184,4 @@ export const DropMenu = styled("ul", {
 
 
 
-})
-
-export const Line = styled("div", {
-  height: '1px',
-  zIndex: 6,
-
-  display: "flex",
-  width: '100vw',
-  backgroundColor: "$white_1"
 })
