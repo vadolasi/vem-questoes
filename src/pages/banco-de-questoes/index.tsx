@@ -12,13 +12,14 @@ import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 import { Select } from '@/components/Select';
 import { Checkbox } from '@/components/Checkbox'
+import { NotebookCard } from '@/components/NotebookCard';
 
 import professor from '@/assets/professor.png';
 import typing from '@/assets/typing.png';
 import notebook from '@/assets/Notebook.png';
 import raiox from '@/assets/raiox.png';
 import { graphql } from '@/gql';
-import { useQuery } from 'urql';
+import { useQuery, useMutation } from 'urql';
 import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 import { AiOutlineFilter, AiOutlineUndo } from 'react-icons/ai';
@@ -63,6 +64,39 @@ const questionsFiltersQuery = graphql(/* GraphQL */ `
       id
       name
     }
+  }
+`)
+
+const notebooksQuery = graphql(/* GraphQL */ `
+  query NotebooksQuery {
+    notebooks {
+      id
+      name
+      description
+      questions {
+        id
+      }
+    }
+  }
+`);
+
+const createNotebookMutation = graphql(/* GraphQL */ `
+  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {
+    addNotebook(
+      name: $name
+      description: $description
+      questions: $questions
+    ) {
+      id
+      name
+      description
+    }
+  }
+`);
+
+const deleteNotebookMutation = graphql(/* GraphQL */`
+  mutation DeleteNotebook($id: String!) {
+    deleteNotebook(id: $id)
   }
 `)
 
@@ -133,7 +167,13 @@ export default function Questoes() {
       page: questionNumber, itemsPerPage: 1
     }
   })
+
   const { data, fetching } = resultQuestion
+
+  const [resultNotebook, executeQuery] = useQuery({ query: notebooksQuery })
+  const { data: notebookData } = resultNotebook
+  const [, executeCreateNotebook] = useMutation(createNotebookMutation)
+  const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
@@ -224,6 +264,16 @@ export default function Questoes() {
         toast.error('Coloque um valor válido')
       }
     }
+  }
+
+  const addNotebook = async () => {
+    await executeCreateNotebook({ name: "Título", questions: [] })
+    executeQuery({ requestPolicy: "network-only" })
+  }
+
+  const deleteNotebook = async (id: string) => {
+    await executeDeleteNotebook({ id })
+    executeQuery({ requestPolicy: "network-only" })
   }
 
   useEffect(() => {
@@ -457,9 +507,13 @@ export default function Questoes() {
               <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
                 <Search>
                   <SearchInput />
-                  <Button>+ Criar Caderno</Button>
+                  <Button onClick={addNotebook}>+ Criar Caderno</Button>
                 </Search>
-                <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' />
+                <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
+                {notebookData?.notebooks && notebookData.notebooks.map((notebook, index) => (
+                  <NotebookCard id={notebook.id} key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+                ))}
+                </DefaultSearchPage>
               </DefaultBoxQuestion>
 
               <DefaultBoxQuestion

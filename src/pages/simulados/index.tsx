@@ -53,7 +53,7 @@ export default function Home() {
       <Search>
         <SearchInput/>
         <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
-        <Button text='Criar' onClick={createSimulado}/>
+        <Button onClick={createSimulado}>Criar</Button>
       </Search>
         <DefaultSearchPage text={array.length > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
         {array && array.map((exam, index) => (
