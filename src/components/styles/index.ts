@@ -68,6 +68,12 @@ export const OfferCard = styled('div', {
         border: '1px solid $border',
         borderRadius: '23px',
 
+        '.spin':{
+                marginLeft: '35%',
+                marginTop: '40%',
+        },
+
+
         '.Header': {
                 height: '122px',
                 padding: '16px',
@@ -85,7 +91,7 @@ export const OfferCard = styled('div', {
                         display: 'flex',
                         flexDirection: "column",
                         alignItems: "flex-start",
-
+                        
                         "h1": {
                                 fontWeight: 700,
                                 fontSize: '20px',
@@ -143,6 +149,8 @@ export const OfferCard = styled('div', {
 
                         display: "grid",
                         placeContent: "center",
+
+
                 }
         },
         '@media (max-width: 1200px)': {
