@@ -28,6 +28,8 @@ export const Container = styled('div', {
         background: '$blue_2',
         borderRadius: '23px 23px 0 0',
     },
+
+    
     
     '@media (max-width: 1200px)': {
         width: '350px',
@@ -40,4 +42,19 @@ export const Menu = styled("div", {
     padding: "24px 18px",
 
     overflowY: "auto",
+
+    '.spin':{
+        marginLeft: '40%',
+        marginTop: '30%',
+},
+
+
+
+   '@media (max-width: 1200px)': {
+    '.spin':{
+        marginLeft: '35%',
+        marginTop: '40%',
+   },
+  }
+    
 })

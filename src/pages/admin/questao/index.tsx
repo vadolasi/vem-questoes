@@ -26,6 +26,9 @@ export default function Admin() {
   const [alternativaD, setAlternativaD] = useState('');
   const [checkD, setCheckD] = useState(false);
 
+  const [explicacao, setExplicacao] = useState('');
+  const [link, setLink] = useState('')
+
   function isCorrectA(){
     setCheckA(!checkA);
     setCheckB(false);
@@ -186,6 +189,27 @@ export default function Admin() {
                         onChange={(e) => setAlternativaD(e.target.value)}
                         />
                     </div>
+                  </div>
+                  <div className="fieldset-wrapper">
+                <legend>Explicação</legend>
+
+              <div className="input-wrapper">
+                <label htmlFor="explicacao">Explicação</label>
+                <textarea  id="textarea" 
+                placeholder="Digite aqui a explicacao da questão"
+                value={explicacao}
+                onChange={(e) => setExplicacao(e.target.value)}
+                />
+              </div>
+
+                <div className="input-wrapper">
+                  <label htmlFor="link">link</label>
+                  <input type="text" id="link" 
+                  placeholder="coloque o link do video aqui"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  />
+                  </div>
                   </div>
                 </div>
 

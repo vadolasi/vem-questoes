@@ -131,7 +131,7 @@ export default function Questoes() {
       page: questionNumber, itemsPerPage: 1
     }
   })
-  const { data } = resultQuestion
+  const { data, fetching } = resultQuestion
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
