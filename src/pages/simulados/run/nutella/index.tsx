@@ -10,7 +10,7 @@ import { Container, Content} from '../../../../components/styles/simulados';
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { Timer } from '@/components/Timer';
-import { PaginationBar } from '@/components/PaginationBar';
+
 
 
 export default function Questoes() {
@@ -93,69 +93,142 @@ export default function Questoes() {
      <Content>
         <Timer title='Simulado de Respiração'/>
         <QuestionContainer>
-          <Navigation>
-            <span>{questions.length} questões encontradas</span>
+        <Navigation>
+              <span>{data?.questions.quantity || 0} questões</span>
 
-            <PaginationBar pages={questions}/>
+              {pages && questionNumber && (
+                <ContainerPagination>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber - 1)}  disabled={questionNumber==1}>
+                    <AiOutlineLeft />
+                  </ButtonPagination>
+                  <MenuPagination>
 
-            <GoTo>
-              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
-              <span>Ir Para</span>
-              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
-            </GoTo>
+                    {questionNumber <= 5 ? <>
+                      <button className={questionNumber == 1 ? 'current' : ''} onClick={() => setQuestionNumber(1)}>
+                        1
+                      </button>
+                      <button className={questionNumber == 2 ? 'current' : ''} onClick={() => setQuestionNumber(2)}>
+                        2
+                      </button>
+                      <button className={questionNumber == 3 ? 'current' : ''} onClick={() => setQuestionNumber(3)}>
+                        3
+                      </button>
+                      <button className={questionNumber == 4 ? 'current' : ''} onClick={() => setQuestionNumber(4)}>
+                         4
+                      </button>
+                      <button className={questionNumber == 5 ? 'current' : ''} onClick={() => setQuestionNumber(5)}>
+                         5
+                      </button>
+                      <button className={questionNumber == 6 ? 'current' : ''} onClick={() => setQuestionNumber(6)}>
+                         6
+                      </button>
+                      <button className={questionNumber == 7 ? 'current' : ''} onClick={() => setQuestionNumber(7)}>
+                         7
+                      </button>
+                      <button className={questionNumber == 8 ? 'current' : ''} onClick={() => setQuestionNumber(8)}>
+                         8
+                      </button>
+                      <button className={questionNumber == 9 ? 'current' : ''} onClick={() => setQuestionNumber(9)}>
+                         9
+                      </button>
+                    </> : <>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-4)}>
+                              {questionNumber - 4}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-3)}>
+                              {questionNumber - 3}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-2)}>
+                              {questionNumber - 2}
+                    </button>
+                    <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber-1)}>
+                              {questionNumber - 1}
+                    </button>
+                    <button
+                              className='current'>
+                              {questionNumber}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+1)}>
+                              {questionNumber + 1}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+2)}>
+                              {questionNumber + 2}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+3)}>
+                              {questionNumber + 3}
+                      </button>
+                      <button
+                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+4)}>
+                              {questionNumber + 4}
+                      </button>
 
-          </Navigation>
+                    </>}
 
-          <QuestionStatement>
-            <div className='title'>
-              <h1>
-                Questão {page}
-              </h1>
-              <ButtonReport>Reportar</ButtonReport>
-            </div>
 
-            <div className='questionInfo'>
-              <p>A Atenção Primária à Saúde (APS) no Brasil passou por mudanças importantes com a revisão da Política Nacional de Atenção Básica, por meio da Portaria nº 2.436, de 21 de setembro de 2017. Considerando as alterações relacionadas à dimensão organizativa e funcional e de gestão, a alternativa que aponta mudanças trazidas pela política é:</p>
-              <ul>
-                <li><strong>Ano:</strong> 2021</li>
-                <li><strong>Banca:</strong> UNISEU</li>
-                <li><strong>Prova:</strong> Residência para Fisioterapeutas</li>
+
+
+                  </MenuPagination>
+                  <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
+                    <AiOutlineRight />
+                  </ButtonPagination>
+
+                </ContainerPagination>
+              )}
+
+
+              <GoTo>
+                <input type='number' min={1} value={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
+                <span>Ir Para</span>
+                <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
+              </GoTo>
+
+            </Navigation>
+
+            <QuestionStatement>
+              <div className='title'>
+                <h1>
+                  Questão {questionNumber}
+                </h1>
+                <ButtonReport>Reportar</ButtonReport>
+              </div>
+
+              <div className='questionInfo'>
+                {fetching?
+                <div className='load'>
+                  <p>Carregando...</p>
+                </div> : <p>{currentQuestion?.enunciado}</p>}
+                <ul>
+                  <li><strong>Ano:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.ano?.ano}</>}</li>
+                  <li><strong>Banca:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.banca?.name}</>}</li>
+                  <li><strong>Prova:</strong> {fetching? <SpinnerCircular color="#f0f0fc" size="20" className='spin'/> : <>{currentQuestion?.processoSeletivo?.name}</>}</li>
+                </ul>
+              </div>
+
+              <ul className='questionAlternatives'>
+                {
+                  currentQuestion?.alternatives  &&  currentQuestion?.alternatives.map((alternative) => (
+                    <li className={alternativeDeleted.includes(alternative.id) ? "deleted" : ""} key={alternative.id}>
+                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect)}>{alternative.letter}</button>
+                      <p>{fetching ? 'Carregando...': alternative.text}</p>
+                      <button className='delete' onClick={() => handleAlternativeDeleted(alternative.id)}><AiOutlineDelete /></button>
+                    </li>
+                  )
+                  )}
               </ul>
-            </div>
 
-            <ul className='questionAlternatives'>
+            </QuestionStatement>
 
-                <li className={deleteA ? "deleted" : ""}>
-                  <button onClick={selectedA} className={!deleteA && selectA ? "selected" : ""} disabled={deleteA}>A</button>
-                  <p>O modelo de Estratégia Saúde da Família se torna prioritário e exclusivo</p>
-                  <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete/></button>
-                </li>
-
-                <li className={deleteB ? "deleted" : ""}>
-                  <button onClick={selectedB} className={!deleteB && selectB ? "selected" : ""} disabled={deleteB}> B</button>
-                  <p>Os profissionais podem se vincular em mais de uma equipe e ter carga horária de 10, 20 ou 30 horas semanais</p>
-                  <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete/></button>
-                </li>
-
-                <li className={deleteC ? "deleted" : ""}>
-                  <button onClick={selectedC} className={!deleteC && selectC ? "selected" : ""} disabled={deleteC}>C</button>
-                  <p>O tempo destinado à educação permanente foi garantido com o mínimo de 8h</p>
-                  <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete/></button>
-                </li>
-
-                <li className={deleteD ? "deleted" : ""}>
-                  <button onClick={selectedD} className={!deleteD && selectD ? "selected" : ""} disabled={deleteD}>D</button>
-                  <p>Sem a definição clara de número de Agentes Comunitários de Saúde (ACS) por equipe, as equipes podem funcionar tendo apenas um ACS</p>
-                  <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete/></button>
-                </li>
-            </ul>
-
-
-          </QuestionStatement>
 
           <QuestionButtons>
-            <div className='resposta'>
-              <button>Responder</button>
+          <div className='resposta'>
+                <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
             </div>
           </QuestionButtons>
 
