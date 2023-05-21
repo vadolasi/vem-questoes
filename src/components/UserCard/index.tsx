@@ -28,7 +28,7 @@ export const UserCard: FC<UserCardInterface> = ({position, picture, name, goals,
             <div className="examInfo">
                 <span><AiOutlineCheck/>{goals}</span>
                 <span><AiOutlineQuestionCircle/>{questions}</span>
-                <span><AiOutlinePercentage/>{100*goals/questions || 0}</span>
+                <span><AiOutlinePercentage/>{(100*goals/questions).toFixed(2) || 0}</span>
             </div>
 
         </Container>

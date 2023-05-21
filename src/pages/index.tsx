@@ -85,7 +85,7 @@ export default function Home() {
           <ContentCard title='Estatísticas'>
           {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> : 
           <div className='box'>
-           <CircularProgressbar value={percentage} text={`${percentage}%`} className='circle'/>
+           <CircularProgressbar value={percentage} text={`${percentage.toFixed(2)}%`} className='circle'/>
            <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
            </div>
            }
