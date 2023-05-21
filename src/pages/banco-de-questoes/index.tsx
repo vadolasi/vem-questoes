@@ -29,6 +29,16 @@ import { toast } from 'react-toastify';
 import Confetti from 'react-confetti';
 
 import { SpinnerCircular } from 'spinners-react';
+import { CommentCard } from '@/components/commentCard';
+
+const meQuery = graphql(/* GraphQL */ `
+  query Me {
+    me {
+      name
+      photoUrl
+    }
+  }
+`);
 
 const questionsFiltersQuery = graphql(/* GraphQL */ `
   query QuestionsFilters {
@@ -175,6 +185,10 @@ export default function Questoes() {
   const { data: notebookData } = resultNotebook
   const [, executeCreateNotebook] = useMutation(createNotebookMutation)
   const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
+
+  const [result] = useQuery({ query: meQuery })
+
+  const { data: meData, } = result
 
   const [deleteA, setDeleteA] = useState(false);
   const [deleteB, setDeleteB] = useState(false);
@@ -500,8 +514,12 @@ export default function Questoes() {
                 strong='Seja o primeiro(a)!'
                 picture={typing}
                 alt='Rapaz digitando'
+                content={true}
               >
+                <>
+                <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
                 <CommentBar />
+                </>
               </DefaultBoxQuestion>
 
 
@@ -524,7 +542,6 @@ export default function Questoes() {
                 picture={raiox}
                 alt='mulher com uma maquina de dados'
               />
-
 
             </QuestionStatement>
 
