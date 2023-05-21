@@ -460,25 +460,25 @@ export default function Questoes() {
                   currentQuestion?.alternatives &&  (
                     <>
                       <li className={deleteA ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(1)} className={`${isSelected === 1 && 'selected' } ${isCorrect == 1 ? 'certo' : `${isSelected === 1 && isCorrect && 'errado' }`}`} disabled={deleteA || isCorrect}>A</button>
+                        <button onClick={() => setIsSelected(1)} className={`${isSelected === 1 && 'selected' } ${isCorrect == 1 ? 'certo' : `${isSelected === 1 && isCorrect && 'errado' }`}`} disabled={deleteA || Boolean(isCorrect)}>A</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[0].text}</p>
                         <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteB ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(2)} className={`${isSelected === 2 ? 'selected' : ''} ${isCorrect == 2 ? 'certo' : `${isSelected === 2 && isCorrect && 'errado' }`}`} disabled={deleteB || isCorrect}> B</button>
+                        <button onClick={() => setIsSelected(2)} className={`${isSelected === 2 ? 'selected' : ''} ${isCorrect == 2 ? 'certo' : `${isSelected === 2 && isCorrect && 'errado' }`}`} disabled={deleteB || Boolean(isCorrect)}> B</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[1].text}</p>
                         <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteC ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(3)} className={`${isSelected === 3 ? 'selected' : ''} ${isCorrect == 3 ? 'certo' : `${isSelected === 3 && isCorrect && 'errado' }`}`} disabled={deleteC || isCorrect}>C</button>
+                        <button onClick={() => setIsSelected(3)} className={`${isSelected === 3 ? 'selected' : ''} ${isCorrect == 3 ? 'certo' : `${isSelected === 3 && isCorrect && 'errado' }`}`} disabled={deleteC || Boolean(isCorrect)}>C</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}</p>
                         <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
                       </li>
   
                       <li className={deleteD ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(4)} className={`${isSelected === 4 ? 'selected' : ''} ${isCorrect == 4 ? 'certo' : `${isSelected === 4 && isCorrect && 'errado' }`}`} disabled={deleteD || isCorrect}>D</button>
+                        <button onClick={() => setIsSelected(4)} className={`${isSelected === 4 ? 'selected' : ''} ${isCorrect == 4 ? 'certo' : `${isSelected === 4 && isCorrect && 'errado' }`}`} disabled={deleteD || Boolean(isCorrect)}>D</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}</p>
                         <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
                       </li>
