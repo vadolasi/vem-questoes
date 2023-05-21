@@ -18,6 +18,7 @@ import { Simulado, SimuladoType } from "./models/simulado.model"
 import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
 import { QuestionsResponse } from "./responses/questions.response"
 import { SimuladosResponse } from "./responses/simulados.response"
+import { AddAnswerResponse } from "./responses/addAnswer"
 
 function getRequestedFields(info: GraphQLResolveInfo): string[] {
   const fieldList: string[] = [];
@@ -122,7 +123,6 @@ export class QuestionsResolver {
       apenasRespondidas,
       apenasRespondidasCertas,
       apenasRespondidasErradas
-
     )
   }
 
@@ -138,12 +138,12 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Mutation(() => Boolean)
+  @Mutation(() => AddAnswerResponse)
   async addAnswer(
     @CurrentUserID() userId: string,
     @Arg("questionId") questionId: string,
     @Arg("alternativeId") alternativeId: string,
-    @Arg("simuladoId") simuladoId: string
+    @Arg("simuladoId", { nullable: true }) simuladoId?: string
   ) {
     return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId)
   }

@@ -31,6 +31,18 @@ import Confetti from 'react-confetti';
 import { SpinnerCircular } from 'spinners-react';
 import { CommentCard } from '@/components/commentCard';
 
+const resolverQuestionMutation = graphql(/* GraphQL */ `
+  mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
+    addAnswer(
+      questionId: $questionId
+      alternativeId: $alternativeId
+    ) {
+      correct
+      correctAlternative
+    }
+  }
+`)
+
 const meQuery = graphql(/* GraphQL */ `
   query Me {
     me {
@@ -147,10 +159,9 @@ const getQuestionQuery = graphql(/* GraphQL */ `
           id
           text
           letter
-          correct
         }
         comments {
-          id,
+          id
           content
         }
       }
@@ -164,6 +175,7 @@ export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
+  const [, resolveQuestion] = useMutation(resolverQuestionMutation)
 
   const { width, height } = useWindowDimensions();
 
@@ -244,39 +256,18 @@ export default function Questoes() {
     setXrayBox(!xrayBox);
   }
 
-  function answerQuestion(){
-    if(!isSelected){
+  async function answerQuestion() {
+    if (!isSelected) {
       return toast.error("Selecione uma alternativa")
     }
-    if(isCorrect) {
-     return setQuestionNumber(questionNumber => questionNumber + 1)
+    if (currentQuestion?.alternatives) {
+      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected })
+      setIsCorrect(result.data?.addAnswer.correctAlternative || null)
+      if (result.data?.addAnswer.correct) {
+        setIsConfettiActive(true)
+      }
     }
-    if(currentQuestion?.alternatives){
-      currentQuestion.alternatives.map(alternative => {
-        if(alternative.correct){
-          setIsCorrect(alternative.id)
-        }
-      })
-      if(isSelected == '1' && isCorrect == '1'){
-        setIsConfettiActive(true)
-      }
-      if(isSelected == '2' && isCorrect == '2'){
-        setIsConfettiActive(true)
-      }
-      if(isSelected == '3' && isCorrect == '3'){
-        setIsConfettiActive(true)
-      }
-      if(isSelected == '4' && isCorrect == '4'){
-        setIsConfettiActive(true)
-      }
-      if(isSelected == '5' && isCorrect == '5'){
-        setIsConfettiActive(true)
-      }
   }
-
-
-  }
-
 
   function handleChangeQuestionByInput() {
     if (data?.questions.quantity) {

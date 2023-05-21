@@ -192,7 +192,7 @@ export class QuestionsService {
     })
   }
 
-  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId: string) {
+  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string) {
     const alternative = await this.prisma.alternative.findUnique({
       where: {
         id: alternativeId
@@ -227,7 +227,7 @@ export class QuestionsService {
       }
     })
 
-    return alternative.correct
+    return { correct: alternative.correct, correctAlternative: alternative.id }
   }
 
   async addComment(userId: string, questionId: string, content: string) {
