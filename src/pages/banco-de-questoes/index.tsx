@@ -511,7 +511,7 @@ export default function Questoes() {
                 </Search>
                 <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
                 {notebookData?.notebooks && notebookData.notebooks.map((notebook, index) => (
-                  <NotebookCard id={notebook.id} key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+                  <NotebookCard id={notebook.id} key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)} add/>
                 ))}
                 </DefaultSearchPage>
               </DefaultBoxQuestion>

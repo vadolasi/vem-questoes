@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container } from './styles';
-import {AiOutlineRead, AiOutlineEdit, AiOutlineCheck, AiOutlineDelete} from 'react-icons/ai'
+import {AiOutlineRead, AiOutlineEdit, AiOutlineCheck, AiOutlineDelete, AiOutlinePlus} from 'react-icons/ai'
 import { graphql } from '@/gql';
 import { useMutation } from 'urql';
 
@@ -9,7 +9,9 @@ interface NotebookCardProps {
   title: string,
   description: string,
   questions: any[],
-  deleteClick?: any
+  deleteClick?: any,
+  add?: boolean,
+  addFunction?: any,
 }
 
 const updateNotebookMutation = graphql(/* GraphQL */ `
@@ -23,7 +25,7 @@ const updateNotebookMutation = graphql(/* GraphQL */ `
   }
 `);
 
-export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick }) => {
+export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick, add, addFunction }) => {
     const [titleCard, setTitleCard] = useState(title);
     const [descriptionCard, setDescriptionCard] = useState(description);
     const [edit, setEdit] = useState(true);
@@ -47,7 +49,7 @@ export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, descripti
             </div>
 
             <div className='Buttons'>
-                <button><AiOutlineRead/></button>
+                <button onClick={add ? addFunction : ''}>{add ? <AiOutlinePlus/> : <AiOutlineRead/>}</button>
                 <button onClick={() => setEdit(!edit)}> {edit ? <AiOutlineEdit/> : <AiOutlineCheck/> }</button>
                 <button onClick={deleteClick}><AiOutlineDelete/></button>
             </div>
