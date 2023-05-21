@@ -12,9 +12,10 @@ interface DefaultBoxQuestionProps {
     children?: any,
     className?: string,
     content?: boolean,
+    comment?: boolean
 }
 
-export const DefaultBoxQuestion: React.FC<DefaultBoxQuestionProps> = ({className, h1, strong, picture, alt='', children, content}) => {
+export const DefaultBoxQuestion: React.FC<DefaultBoxQuestionProps> = ({className, h1, strong, picture, alt='', children, content, comment}) => {
     return (
         <Modal className={className}>
             {!content ?
@@ -24,10 +25,16 @@ export const DefaultBoxQuestion: React.FC<DefaultBoxQuestionProps> = ({className
             <strong>{strong}</strong>
             </h1>}
             {picture && <Image src={picture} alt={alt}/>  }
-            <CommentBar />
+            {comment && 
+                <CommentBar />
+            }
+            
               </>:
               <>
-            {children}  
+              <div className='comments'>
+            {children} 
+            </div> 
+            <CommentBar />
             </>
            } 
         </Modal>
