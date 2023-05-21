@@ -190,10 +190,8 @@ export default function Questoes() {
 
   const { data: meData, } = result
 
-  const [deleteA, setDeleteA] = useState(false);
-  const [deleteB, setDeleteB] = useState(false);
-  const [deleteC, setDeleteC] = useState(false);
-  const [deleteD, setDeleteD] = useState(false);
+  const [alternativeDeleted, setAlternativeDeleted] = useState<string[]>([]);
+
 
   const [isSelected, setIsSelected] = useState<string | null>(null);
 
@@ -208,6 +206,19 @@ export default function Questoes() {
   const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
 
   console.log(currentQuestion?.alternatives)
+
+  function handleAlternativeDeleted(alternativeID: string){
+    const alredyDeleted = alternativeDeleted.includes(alternativeID)
+    
+    if(alredyDeleted){
+      const filteredDeleted = alternativeDeleted.filter(alternative => alternative !== alternativeID)
+      setAlternativeDeleted(filteredDeleted)
+    }else{
+      setAlternativeDeleted(prevState => [...prevState, alternativeID]);
+    }
+
+  }
+
 
   function showExplicationBox() {
     setExplicationBox(!explicationBox);
@@ -471,10 +482,10 @@ export default function Questoes() {
               <ul className='questionAlternatives'>
                 {
                   currentQuestion?.alternatives  &&  currentQuestion?.alternatives.map((alternative) => (
-                    <li className={deleteA ? "deleted" : ""} key={alternative.id}>
-                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={deleteA || Boolean(isCorrect)}>{alternative.letter}</button>
+                    <li className={alternativeDeleted.includes(alternative.id) ? "deleted" : ""} key={alternative.id}>
+                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect)}>{alternative.letter}</button>
                       <p>{fetching ? 'Carregando...': alternative.text}</p>
-                      <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
+                      <button className='delete' onClick={() => handleAlternativeDeleted(alternative.id)}><AiOutlineDelete /></button>
                     </li>
                   )
                   )}
