@@ -163,6 +163,7 @@ model RefreshToken {
 
 model Response {
   id            String      @id @default(cuid())
+  date          DateTime    @default(now())
   question      Question    @relation(fields: [questionId], references: [id])
   questionId    String
   alternative   Alternative @relation(fields: [alternativeId], references: [id])
