@@ -508,7 +508,7 @@ export default function Questoes() {
                 alt='Professor dando aula' />
 
               <DefaultBoxQuestion
-                className={commentBox ? 'show' : "hidden"}
+                className={!commentBox ? 'show' : "hidden"}
                 h1='Essa questão ainda não possui comentários'
                 strong='Seja o primeiro(a)!'
                 picture={typing}

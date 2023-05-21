@@ -15,8 +15,10 @@ export const CommentCard: React.FC<CommentCardProps> = ({image, name, hora, data
     return (
         <Container>
             <header>
+                <div className="info">
                 <Image src={image} alt="foto de perfil do usuario" width={36} height={36}/>
                  <p><strong>{name}</strong></p>
+                 </div>
 
                  <div className="hora">
                     <span>{hora}</span>
