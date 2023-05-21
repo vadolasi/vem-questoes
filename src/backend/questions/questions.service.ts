@@ -70,6 +70,7 @@ export class QuestionsService {
   }
 
   async getQuestions(
+    userId: string,
     page: number,
     itemsPerPage: number,
     requestedFields: string[],
@@ -81,10 +82,13 @@ export class QuestionsService {
     areaId?: string,
     subareaId?: string,
     estadoId?: string,
-    bancaId?: string
+    bancaId?: string,
+    apenasNaoRespondidas?: boolean,
+    apenasRespondidas?: boolean,
+    apenasRespondidasCertas?: boolean,
+    apenasRespondidasErradas?: boolean
   ) {
-    console.log(requestedFields)
-    const quantity = await this.prisma.question.count({
+     const quantity = await this.prisma.question.count({
       where: {
         OR: [
           {
@@ -138,7 +142,13 @@ export class QuestionsService {
         areaId,
         subareaId,
         estadoId,
-        bancaId
+        bancaId,
+        responses: {
+          some: {
+            userId: apenasRespondidas || apenasRespondidasCertas || apenasRespondidasErradas ? userId : undefined,
+            correct: apenasRespondidasCertas || apenasRespondidasErradas ? apenasRespondidasCertas : undefined
+          }
+        }
       },
       include: {
         processoSeletivo: requestedFields.includes("processoSeletivo"),
