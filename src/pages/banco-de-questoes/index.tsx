@@ -536,25 +536,25 @@ export default function Questoes() {
 
               <ul className='actionsButton'>
                 <li>
-                  <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""}>
+                  <button onClick={showExplicationBox} className={explicationBox ? 'open' : ""} disabled={!isCorrect}>
                     <AiOutlineCompass />
                     <span>Explicação</span>
                   </button>
                 </li>
                 <li>
-                  <button onClick={showCommentBox} className={commentBox ? 'open' : ""}>
+                  <button onClick={showCommentBox} className={commentBox ? 'open' : ""} disabled={!isCorrect}>
                     <AiOutlineComment />
                     <span>Comentários</span>
                   </button>
                 </li>
                 <li>
-                  <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""}>
+                  <button onClick={showNotebookBox} className={notebookBox ? 'open' : ""} disabled={!isCorrect}>
                     <AiOutlineBook />
                     <span>Cadernos</span>
                   </button>
                 </li>
                 <li>
-                  <button onClick={showXrayBox} className={xrayBox ? 'open' : ""}>
+                  <button onClick={showXrayBox} className={xrayBox ? 'open' : ""} disabled={!isCorrect}>
                     <AiOutlineProfile />
                     <span>Raio-X</span>
                   </button>
