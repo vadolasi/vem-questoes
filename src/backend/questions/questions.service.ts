@@ -143,12 +143,15 @@ export class QuestionsService {
         subareaId,
         estadoId,
         bancaId,
-        responses: {
+        responses: apenasRespondidas || apenasNaoRespondidas ? {
           some: {
             userId: apenasRespondidas || apenasRespondidasCertas || apenasRespondidasErradas ? userId : undefined,
             correct: apenasRespondidasCertas || apenasRespondidasErradas ? apenasRespondidasCertas : undefined
+          },
+          none: {
+            userId: apenasNaoRespondidas ? userId : undefined
           }
-        }
+        } : undefined
       },
       include: {
         processoSeletivo: requestedFields.includes("processoSeletivo"),

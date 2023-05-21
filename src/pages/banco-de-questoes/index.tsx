@@ -107,45 +107,45 @@ const getQuestionQuery = graphql(/* GraphQL */ `
       itemsPerPage: $itemsPerPage
     ) {
       questions {
-        id,
-        enunciado,
+        id
+        enunciado
         processoSeletivo {
           name
-        },
+        }
         ano {
           ano
-        },
+        }
         local {
           name
-        },
+        }
         perfil {
           name
-        },
+        }
         area {
           name
-        },
+        }
         subarea {
           name
-        },
+        }
         estado {
           name
-        },
+        }
         banca {
           name
-        },
+        }
         alternatives {
-          id,
-          text,
-          letter,
-          correct,
-        },
+          id
+          text
+          letter
+          correct
+        }
         comments {
           id,
-          content,
-        },
+          content
+        }
       }
-      pagesQuantity,
-      quantity,
+      pagesQuantity
+      quantity
     }
   }
 `)
@@ -154,6 +154,7 @@ export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
+  const [loadedPages, setLoadedPages] = useState([])
 
   const { width, height } = useWindowDimensions();
 
@@ -164,7 +165,7 @@ export default function Questoes() {
 
   const [resultQuestion] = useQuery({
     query: getQuestionQuery, variables: {
-      page: questionNumber, itemsPerPage: 1
+      page: questionNumber, itemsPerPage: 30
     }
   })
 
@@ -222,7 +223,7 @@ export default function Questoes() {
       return toast.error("Selecione uma alternativa")
     }
     if(isCorrect) {
-     return setQuestionNumber(questionNumber => questionNumber + 1) 
+     return setQuestionNumber(questionNumber => questionNumber + 1)
     }
     if(currentQuestion?.alternatives){
       if(currentQuestion?.alternatives[0].correct){
@@ -251,7 +252,7 @@ export default function Questoes() {
       }
   }
 
-  
+
   }
 
 
@@ -412,12 +413,12 @@ export default function Questoes() {
                               className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+4)}>
                               {questionNumber + 4}
                       </button>
-                    
-                    </>}
-                    
 
-                         
-            
+                    </>}
+
+
+
+
                   </MenuPagination>
                   <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
                     <AiOutlineRight />
@@ -444,7 +445,7 @@ export default function Questoes() {
               </div>
 
               <div className='questionInfo'>
-                {fetching? 
+                {fetching?
                 <div className='load'>
                   <p>Carregando...</p>
                 </div> : <p>{currentQuestion?.enunciado}</p>}
@@ -464,19 +465,19 @@ export default function Questoes() {
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[0].text}</p>
                         <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
                       </li>
-  
+
                       <li className={deleteB ? "deleted" : ""}>
                         <button onClick={() => setIsSelected(2)} className={`${isSelected === 2 ? 'selected' : ''} ${isCorrect == 2 ? 'certo' : `${isSelected === 2 && isCorrect && 'errado' }`}`} disabled={deleteB || Boolean(isCorrect)}> B</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[1].text}</p>
                         <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
                       </li>
-  
+
                       <li className={deleteC ? "deleted" : ""}>
                         <button onClick={() => setIsSelected(3)} className={`${isSelected === 3 ? 'selected' : ''} ${isCorrect == 3 ? 'certo' : `${isSelected === 3 && isCorrect && 'errado' }`}`} disabled={deleteC || Boolean(isCorrect)}>C</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}</p>
                         <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
                       </li>
-  
+
                       <li className={deleteD ? "deleted" : ""}>
                         <button onClick={() => setIsSelected(4)} className={`${isSelected === 4 ? 'selected' : ''} ${isCorrect == 4 ? 'certo' : `${isSelected === 4 && isCorrect && 'errado' }`}`} disabled={deleteD || Boolean(isCorrect)}>D</button>
                         <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}</p>

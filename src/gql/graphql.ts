@@ -173,6 +173,10 @@ export type QueryQuestionArgs = {
 
 export type QueryQuestionsArgs = {
   anoId?: InputMaybe<Scalars['String']>;
+  apenasNaoRespondidas?: InputMaybe<Scalars['Boolean']>;
+  apenasRespondidas?: InputMaybe<Scalars['Boolean']>;
+  apenasRespondidasCertas?: InputMaybe<Scalars['Boolean']>;
+  apenasRespondidasErradas?: InputMaybe<Scalars['Boolean']>;
   areaId?: InputMaybe<Scalars['String']>;
   bancaId?: InputMaybe<Scalars['String']>;
   estadoId?: InputMaybe<Scalars['String']>;
