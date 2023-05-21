@@ -195,9 +195,9 @@ export default function Questoes() {
   const [deleteC, setDeleteC] = useState(false);
   const [deleteD, setDeleteD] = useState(false);
 
-  const [isSelected, setIsSelected] = useState<number | null>(null);
+  const [isSelected, setIsSelected] = useState<string | null>(null);
 
-  const [isCorrect, setIsCorrect] = useState<number | null>(null);
+  const [isCorrect, setIsCorrect] = useState<string | null>(null);
 
   const [explicationBox, setExplicationBox] = useState(false);
   const [commentBox, setCommentBox] = useState(false);
@@ -206,6 +206,8 @@ export default function Questoes() {
 
   const currentQuestion = data?.questions.questions[0];
   const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
+
+  console.log(currentQuestion?.alternatives)
 
   function showExplicationBox() {
     setExplicationBox(!explicationBox);
@@ -240,28 +242,24 @@ export default function Questoes() {
      return setQuestionNumber(questionNumber => questionNumber + 1)
     }
     if(currentQuestion?.alternatives){
-      if(currentQuestion?.alternatives[0].correct){
-        setIsCorrect(1)
-      }
-      if(currentQuestion?.alternatives[1].correct){
-        setIsCorrect(2)
-      }
-      if(currentQuestion?.alternatives[2].correct){
-        setIsCorrect(3)
-      }
-      if(currentQuestion?.alternatives[3].correct){
-        setIsCorrect(4)
-      }
-      if(isSelected === 1 && currentQuestion?.alternatives[0].correct){
+      currentQuestion.alternatives.map(alternative => {
+        if(alternative.correct){
+          setIsCorrect(alternative.id)
+        }
+      })
+      if(isSelected == '1' && isCorrect == '1'){
         setIsConfettiActive(true)
       }
-      if(isSelected === 2 && currentQuestion?.alternatives[1].correct){
+      if(isSelected == '2' && isCorrect == '2'){
         setIsConfettiActive(true)
       }
-      if(isSelected === 3 && currentQuestion?.alternatives[2].correct){
+      if(isSelected == '3' && isCorrect == '3'){
         setIsConfettiActive(true)
       }
-      if(isSelected === 4 && currentQuestion?.alternatives[3].correct){
+      if(isSelected == '4' && isCorrect == '4'){
+        setIsConfettiActive(true)
+      }
+      if(isSelected == '5' && isCorrect == '5'){
         setIsConfettiActive(true)
       }
   }
@@ -472,32 +470,13 @@ export default function Questoes() {
 
               <ul className='questionAlternatives'>
                 {
-                  currentQuestion?.alternatives &&  (
-                    <>
-                      <li className={deleteA ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(1)} className={`${isSelected === 1 && 'selected' } ${isCorrect == 1 ? 'certo' : `${isSelected === 1 && isCorrect && 'errado' }`}`} disabled={deleteA || Boolean(isCorrect)}>A</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[0].text}</p>
-                        <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
-                      </li>
-
-                      <li className={deleteB ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(2)} className={`${isSelected === 2 ? 'selected' : ''} ${isCorrect == 2 ? 'certo' : `${isSelected === 2 && isCorrect && 'errado' }`}`} disabled={deleteB || Boolean(isCorrect)}> B</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[1].text}</p>
-                        <button className='delete' onClick={() => setDeleteB(!deleteB)}><AiOutlineDelete /></button>
-                      </li>
-
-                      <li className={deleteC ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(3)} className={`${isSelected === 3 ? 'selected' : ''} ${isCorrect == 3 ? 'certo' : `${isSelected === 3 && isCorrect && 'errado' }`}`} disabled={deleteC || Boolean(isCorrect)}>C</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[2].text}</p>
-                        <button className='delete' onClick={() => setDeleteC(!deleteC)}><AiOutlineDelete /></button>
-                      </li>
-
-                      <li className={deleteD ? "deleted" : ""}>
-                        <button onClick={() => setIsSelected(4)} className={`${isSelected === 4 ? 'selected' : ''} ${isCorrect == 4 ? 'certo' : `${isSelected === 4 && isCorrect && 'errado' }`}`} disabled={deleteD || Boolean(isCorrect)}>D</button>
-                        <p>{fetching ? 'Carregando...': currentQuestion?.alternatives[3].text}</p>
-                        <button className='delete' onClick={() => setDeleteD(!deleteD)}><AiOutlineDelete /></button>
-                      </li>
-                    </>
+                  currentQuestion?.alternatives  &&  currentQuestion?.alternatives.map((alternative) => (
+                    <li className={deleteA ? "deleted" : ""} key={alternative.id}>
+                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={deleteA || Boolean(isCorrect)}>{alternative.letter}</button>
+                      <p>{fetching ? 'Carregando...': alternative.text}</p>
+                      <button className='delete' onClick={() => setDeleteA(!deleteA)}><AiOutlineDelete /></button>
+                    </li>
+                  )
                   )}
               </ul>
 
