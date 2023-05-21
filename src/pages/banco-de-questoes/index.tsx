@@ -164,7 +164,6 @@ export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
-  const [loadedPages, setLoadedPages] = useState([])
 
   const { width, height } = useWindowDimensions();
 
@@ -175,7 +174,7 @@ export default function Questoes() {
 
   const [resultQuestion] = useQuery({
     query: getQuestionQuery, variables: {
-      page: questionNumber, itemsPerPage: 30
+      page: questionNumber, itemsPerPage: 1
     }
   })
 
@@ -188,10 +187,9 @@ export default function Questoes() {
 
   const [result] = useQuery({ query: meQuery })
 
-  const { data: meData, } = result
+  const { data: meData } = result
 
   const [alternativeDeleted, setAlternativeDeleted] = useState<string[]>([]);
-
 
   const [isSelected, setIsSelected] = useState<string | null>(null);
 
@@ -209,16 +207,14 @@ export default function Questoes() {
 
   function handleAlternativeDeleted(alternativeID: string){
     const alredyDeleted = alternativeDeleted.includes(alternativeID)
-    
-    if(alredyDeleted){
+
+    if (alredyDeleted) {
       const filteredDeleted = alternativeDeleted.filter(alternative => alternative !== alternativeID)
       setAlternativeDeleted(filteredDeleted)
-    }else{
+    } else {
       setAlternativeDeleted(prevState => [...prevState, alternativeID]);
     }
-
   }
-
 
   function showExplicationBox() {
     setExplicationBox(!explicationBox);
@@ -226,18 +222,21 @@ export default function Questoes() {
     setNotebookBox(false);
     setXrayBox(false);
   }
+
   function showCommentBox() {
     setExplicationBox(false);
     setCommentBox(!commentBox);
     setNotebookBox(false);
     setXrayBox(false);
   }
+
   function showNotebookBox() {
     setExplicationBox(false);
     setCommentBox(false);
     setNotebookBox(!notebookBox);
     setXrayBox(false);
   }
+
   function showXrayBox() {
     setExplicationBox(false);
     setCommentBox(false);
