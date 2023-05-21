@@ -1,6 +1,7 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 import { SimuladoType } from "./models/simulado.model"
+import { Alternative } from "@prisma/client"
 
 function getRandomEntries(arr: any[], n: number) {
   if (n >= arr.length) {
@@ -199,6 +200,14 @@ export class QuestionsService {
       }
     })
 
+    let correctAlternative: Alternative
+
+    if (!alternative?.correct) {
+      correctAlternative = (await this.prisma.alternative.findFirst({ where: { questionId, correct: true } }))!
+    } else {
+      correctAlternative = alternative
+    }
+
     if (!alternative) {
       throw new Error("Alternative not found")
     }
@@ -227,7 +236,7 @@ export class QuestionsService {
       }
     })
 
-    return { correct: alternative.correct, correctAlternative: alternative.id }
+    return { correct: alternative.correct, correctAlternative: correctAlternative.id }
   }
 
   async addComment(userId: string, questionId: string, content: string) {
