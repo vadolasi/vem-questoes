@@ -123,10 +123,39 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
 `)
 
 const getQuestionQuery = graphql(/* GraphQL */ `
-  query GetQuestions($page: Float, $itemsPerPage: Float) {
+  query GetQuestions(
+    $page: Float
+    $itemsPerPage: Float
+    $text: String
+    $processoSeletivoId: String
+    $anoId: String
+    $localId: String
+    $perilId: String
+    $areaId: String
+    $subareaId: String
+    $estadoId: String
+    $bancaId: String
+    $apenasRespondidas: Boolean
+    $apenasNaoRespondidas: Boolean
+    $apenasRespondidasCertas: Boolean
+    $apenasRespondidasErradas: Boolean
+  ) {
     questions(
       page: $page,
       itemsPerPage: $itemsPerPage
+      text: $text
+      processoSeletivoId: $processoSeletivoId
+      anoId: $anoId
+      localId: $localId
+      perfilId: $perilId
+      areaId: $areaId
+      subareaId: $subareaId
+      estadoId: $estadoId
+      bancaId: $bancaId
+      apenasRespondidas: $apenasRespondidas
+      apenasNaoRespondidas: $apenasNaoRespondidas
+      apenasRespondidasCertas: $apenasRespondidasCertas
+      apenasRespondidasErradas: $apenasRespondidasErradas
     ) {
       questions {
         id
@@ -176,6 +205,15 @@ export default function Questoes() {
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
   const [, resolveQuestion] = useMutation(resolverQuestionMutation)
+  const [text, setText] = useState<string | undefined>(undefined)
+  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string | undefined>(undefined)
+  const [filterAno, setFilterAno] = useState<string | undefined>(undefined)
+  const [filterLocal, setFilterLocal] = useState<string | undefined>(undefined)
+  const [filterPerfil, setFilterPerfil] = useState<string | undefined>(undefined)
+  const [filterArea, setFilterArea] = useState<string | undefined>(undefined)
+  const [filterSubarea, setFilterSubarea] = useState<string | undefined>(undefined)
+  const [filterEstado, setFilterEstado] = useState<string | undefined>(undefined)
+  const [filterBanca, setFilterBanca] = useState<string | undefined>(undefined)
 
   const { width, height } = useWindowDimensions();
 
@@ -184,9 +222,20 @@ export default function Questoes() {
   })
   const { data: filterData } = resultFilter
 
-  const [resultQuestion] = useQuery({
-    query: getQuestionQuery, variables: {
-      page: questionNumber, itemsPerPage: 1
+  const [resultQuestion, getQuestions] = useQuery({
+    query: getQuestionQuery,
+    variables: {
+      page: questionNumber,
+      itemsPerPage: 1,
+      text,
+      processoSeletivoId: filterProcessoSeletivo,
+      anoId: filterAno,
+      localId: filterLocal,
+      perilId: filterPerfil,
+      areaId: filterArea,
+      subareaId: filterSubarea,
+      estadoId: filterEstado,
+      bancaId: filterBanca
     }
   })
 
@@ -214,8 +263,6 @@ export default function Questoes() {
 
   const currentQuestion = data?.questions.questions[0];
   const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
-
-  console.log(currentQuestion?.alternatives)
 
   function handleAlternativeDeleted(alternativeID: string){
     const alredyDeleted = alternativeDeleted.includes(alternativeID)
@@ -259,6 +306,10 @@ export default function Questoes() {
   async function answerQuestion() {
     if (!isSelected) {
       return toast.error("Selecione uma alternativa")
+    }
+    if (isCorrect) {
+      setQuestionNumber(questionNumber + 1)
+      return
     }
     if (currentQuestion?.alternatives) {
       const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected })
@@ -316,17 +367,17 @@ export default function Questoes() {
         <Content>
           <QuestionContainer>
             <ContainerFilter>
-              <SearchInput placeholder='Pesquisar' />
+              <SearchInput placeholder='Pesquisar' onChange={text => setText(text)} />
               <div className='inputs'>
                 <div className='Selects'>
-                  <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} />
-                  <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} />
-                  <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} />
+                  <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterProcessoSeletivo(ev.target.value || undefined)} />
+                  <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} onChange={ev => setFilterAno(ev.target.value|| undefined)} />
+                  <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterLocal(ev.target.value || undefined)} />
+                  <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterPerfil(ev.target.value || undefined)} />
+                  <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterArea(ev.target.value || undefined)} />
+                  <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterSubarea(ev.target.value || undefined)} />
+                  <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterEstado(ev.target.value || undefined)} />
+                  <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterBanca(ev.target.value || undefined)} />
                 </div>
 
                 <Fieldset>
@@ -339,7 +390,7 @@ export default function Questoes() {
               </div>
 
               <div className='buttons'>
-                <ButtonFilter className='filter'>
+                <ButtonFilter className='filter' onClick={() => getQuestions()}>
                   <AiOutlineFilter />
                   Salvar Filtro
                 </ButtonFilter>
@@ -505,7 +556,7 @@ export default function Questoes() {
 
               <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
                 <Search>
-                  <SearchInput />
+                  <SearchInput onChange={() => {}} />
                   <Button onClick={addNotebook}>+ Criar Caderno</Button>
                 </Search>
                 <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>

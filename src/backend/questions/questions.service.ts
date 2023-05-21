@@ -120,7 +120,7 @@ export class QuestionsService {
 
     const questions = await this.prisma.question.findMany({
       where: {
-        OR: [
+        OR: text ? [
           {
             enunciado: {
               contains: text
@@ -135,7 +135,7 @@ export class QuestionsService {
               }
             }
           }
-        ],
+        ] : undefined,
         processoSeletivoId,
         anoId,
         localId,

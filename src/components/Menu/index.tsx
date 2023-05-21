@@ -12,7 +12,6 @@ interface menuProps {
 }
 
 export const Menu: FC<menuProps> = ({page}) => {
-    console.log(page)
     return(
         <Container>
             <li>

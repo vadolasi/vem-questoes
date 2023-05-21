@@ -11,7 +11,7 @@ export const Select = ({ options, label, ...rest }: SelectProps) => {
     <Container>
       <label htmlFor={label}>{label}</label>
       <select id={label} {...rest}>
-        <option defaultValue=''></option>
+        <option defaultValue={undefined} value={undefined}></option>
 
         {options && options.map(({ value, option }) => (
           <option key={value} label={option} value={value}>{option}</option>

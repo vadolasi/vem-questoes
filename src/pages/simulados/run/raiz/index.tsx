@@ -183,11 +183,11 @@ export default function Questoes() {
               )}
 
 
-              <GoTo>
-                <input type='number' min={1} value={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
-                <span>Ir Para</span>
-                <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
-              </GoTo>
+            <GoTo>
+              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
+              <span>Ir Para</span>
+              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
+            </GoTo>
 
             </Navigation>
 
