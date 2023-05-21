@@ -99,9 +99,9 @@ export default function Questoes() {
             <PaginationBar pages={questions}/>
 
             <GoTo>
-              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
+              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => setPageInput(e.target.value)}/>
               <span>Ir Para</span>
-              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
+              <button onClick={() => setPage(pageInput)}><AiOutlineRight/></button>
             </GoTo>
 
           </Navigation>
