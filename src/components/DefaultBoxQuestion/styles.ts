@@ -39,5 +39,15 @@ export const Modal = styled("div", {
             height: "300px",
             margin: 0,
         }
-    }
+    },
+
+    ".comments":{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '10px',
+
+        height: '270px',
+        overflowY: 'auto'
+    },
 })
