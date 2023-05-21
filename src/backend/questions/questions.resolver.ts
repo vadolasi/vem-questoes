@@ -98,12 +98,14 @@ export class QuestionsResolver {
   @Authorized()
   @Query(() => QuestionsResponse)
   async questions(
-    @Args() { page, itemsPerPage, text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId }: GetQuestionsInput,
-    @Info() info: GraphQLResolveInfo
+    @Args() { page, itemsPerPage, text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId, apenasNaoRespondidas, apenasRespondidas, apenasRespondidasCertas, apenasRespondidasErradas }: GetQuestionsInput,
+    @Info() info: GraphQLResolveInfo,
+    @CurrentUserID() userId: string
   ) {
     const requestedFields = getRequestedFields(info).filter(field => field.startsWith("questions.")).map(field => field.split(".")[1])
 
     return await this.questionsService.getQuestions(
+      userId,
       page,
       itemsPerPage,
       requestedFields,
@@ -115,7 +117,12 @@ export class QuestionsResolver {
       areaId,
       subareaId,
       estadoId,
-      bancaId
+      bancaId,
+      apenasNaoRespondidas,
+      apenasRespondidas,
+      apenasRespondidasCertas,
+      apenasRespondidasErradas
+
     )
   }
 

@@ -34,4 +34,16 @@ export class GetQuestionsInput {
 
   @Field({ nullable: true })
   bancaId?: string
+
+  @Field({ nullable: true })
+  apenasRespondidas?: boolean
+
+  @Field({ nullable: true })
+  apenasNaoRespondidas?: boolean
+
+  @Field({ nullable: true })
+  apenasRespondidasCertas?: boolean
+
+  @Field({ nullable: true })
+  apenasRespondidasErradas?: boolean
 }
