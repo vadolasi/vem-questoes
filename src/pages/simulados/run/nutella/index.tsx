@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { GoTo, Navigation, QuestionContainer, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
 
 import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
+import { AiOutlineHourglass, AiOutlinePlayCircle, AiOutlinePauseCircle } from 'react-icons/ai';
 
 import { QuestionStatement } from "../../../../components/styles/banco-de-questoes"
 
@@ -139,12 +140,62 @@ export default function Questoes() {
     setIsSelected(null)
   }, [questionNumber])
 
+  const [horas, setHoras] = useState<number>(0);
+    const [minutos, setMinutos] = useState<number>(0);
+    const [segundos, setSegundos] = useState<number>(0);
+
+    const [play, setPlay] = useState<boolean>(false);
+
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout;
+    
+        if (play) {
+          intervalId = setInterval(() => {
+            setSegundos((segundos) => {
+              let newSegundos = segundos + 1;
+              let newMinutos = minutos;
+              let newHoras = horas;
+    
+              if (newSegundos >= 60) {
+                newSegundos = 0;
+                newMinutos += 1;
+              }
+    
+              if (newMinutos >= 60) {
+                newMinutos = 0;
+                newHoras += 1;
+              }
+    
+              setSegundos(newSegundos);
+              setMinutos(newMinutos);
+              setHoras(newHoras);
+            });
+          }, 1000);
+        }
+    
+        return () => {
+          clearInterval(intervalId);
+        };
+      }, [play, segundos, minutos, horas]);
+
+
   return (
     <Container>
      <Header/>
      <Menu page=''/>
      <Content>
-        <Timer title='Simulado de Respiração'/>
+        <Timer>
+          <h1>Simulado</h1>
+            <div className='TimerContainer'>
+                <AiOutlineHourglass/>
+            <div className='Timer'>
+                <span>{horas < 10 ? '0' + horas : horas}:</span>
+                <span>{minutos < 10 ? '0' + minutos : minutos}:</span>
+                <span>{segundos < 10 ? '0' + segundos : segundos}</span>
+            </div>
+                <button onClick={() => {setPlay(!play)}}>{play ? <AiOutlinePauseCircle/> : <AiOutlinePlayCircle/>}</button>
+            </div>
+        </Timer>
         <QuestionContainer>
 
         <Navigation>
@@ -265,7 +316,7 @@ export default function Questoes() {
                 {
                   currentQuestion?.alternatives  &&  currentQuestion?.alternatives.map((alternative) => (
                     <li className={alternativeDeleted.includes(alternative.id) ? "deleted" : ""} key={alternative.id}>
-                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect)}>{alternative.letter}</button>
+                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect) || !play}>{alternative.letter}</button>
                       <p>{fetching ? 'Carregando...': alternative.text}</p>
                       <button className='delete' onClick={() => handleAlternativeDeleted(alternative.id)}><AiOutlineDelete /></button>
                     </li>
@@ -275,7 +326,7 @@ export default function Questoes() {
             </QuestionStatement>
           <QuestionButtons>
             <div className='resposta'>
-              <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
+              <button onClick={answerQuestion} disabled={fetching || !play}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
             </div>
           </QuestionButtons>
         </QuestionContainer>
