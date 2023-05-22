@@ -16,8 +16,7 @@ interface ModalProps {
   onClick?: any,
   href?: string | undefined,
   className?: string,
-  create: boolean,
-
+  create: boolean
 }
 
 const GetAreasQuery = graphql(/* GraphQL */ `
@@ -113,8 +112,8 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href})
                 <>
                     <h1>Executar simulado no modo</h1>
                     <div className="RunSimulado">
-                        <Link className='ButtonSimulado' href={`/simulados/run/nutella?id=${href}`}><AiOutlineFire/>Raiz</Link>
-                        <Link className='ButtonSimulado' href={`/simulados/run/raiz?id=${href}`}><AiOutlineCoffee/>Nutella</Link>
+                        <Link className='ButtonSimulado' href={`/simulados/run/raiz?id=${href}`}><AiOutlineFire/>Raiz</Link>
+                        <Link className='ButtonSimulado' href={`/simulados/run/nutella?id=${href}`}><AiOutlineCoffee/>Nutella</Link>
                     </div>
                 </>
                 }

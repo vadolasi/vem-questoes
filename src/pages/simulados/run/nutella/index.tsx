@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
+import { GoTo, Navigation, QuestionContainer, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
 
 import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
+
+import { QuestionStatement } from "../../../../components/styles/banco-de-questoes"
+
 import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
 
 import { Container, Content} from '../../../../components/styles/simulados';
@@ -88,7 +91,7 @@ export default function Questoes() {
 
   const { data, fetching } = resultQuestion
 
-  const currentQuestion = data?.simulado.questions[0];
+  const currentQuestion = data?.simulado.questions[questionNumber];
   const pages = data?.simulado.questions?.map((_, index) => index + 1) || [];
 
   function handleAlternativeDeleted(alternativeID: string){
@@ -101,7 +104,6 @@ export default function Questoes() {
       setAlternativeDeleted(prevState => [...prevState, alternativeID]);
     }
   }
-
 
   async function answerQuestion() {
     if (!isSelected) {
@@ -222,10 +224,6 @@ export default function Questoes() {
                       </button>
 
                     </>}
-
-
-
-
                   </MenuPagination>
                   <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
                     <AiOutlineRight />
@@ -272,21 +270,16 @@ export default function Questoes() {
                       <button className='delete' onClick={() => handleAlternativeDeleted(alternative.id)}><AiOutlineDelete /></button>
                     </li>
                   )
-                  )}
+                )}
               </ul>
-
             </QuestionStatement>
-
-
           <QuestionButtons>
             <div className='resposta'>
               <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
             </div>
           </QuestionButtons>
-
         </QuestionContainer>
      </Content>
     </Container>
   )
 }
-

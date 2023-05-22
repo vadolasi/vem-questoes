@@ -576,8 +576,6 @@ export default function Questoes() {
 
             </QuestionStatement>
 
-
-
             <QuestionButtons>
               <div className='resposta'>
                 <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
