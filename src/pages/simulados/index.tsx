@@ -49,7 +49,7 @@ export default function Home() {
      <Menu page=''/>
      <Content>
       <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
-      <Modal className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+      
       <Search>
         <SearchInput onChange={() => {}} />
         <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
@@ -57,7 +57,10 @@ export default function Home() {
       </Search>
         <DefaultSearchPage text={array.length > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
           {array && array.map((exam, index) => (
+            <>
             <ExamBar key={index} title={exam.title} questions={exam.questions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+            <Modal  href={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+            </>
           ))}
         </DefaultSearchPage>
      </Content>
