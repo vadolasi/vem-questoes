@@ -21,60 +21,41 @@ import { SpinnerCircular } from 'spinners-react';
 
 import { toast } from 'react-toastify';
 import Confetti from 'react-confetti';
+import { useSearchParams } from 'next/navigation';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
-  query GetQuestions(
-    $page: Float
-    $itemsPerPage: Float
-  ) {
+  query GetSimulado2($id: String!) {
+    simulado(id: $id) {
+      totalMinutes
+      totalQuestions
       questions {
         id
         enunciado
-        processoSeletivo {
-          name
+        alternatives {
+          id
+          letter
+          text
         }
         ano {
           ano
         }
-        local {
-          name
-        }
-        perfil {
-          name
-        }
-        area {
-          name
-        }
-        subarea {
-          name
-        }
-        estado {
-          name
-        }
         banca {
           name
         }
-        alternatives {
-          id
-          text
-          letter
-        }
-        comments {
-          id
-          content
+        processoSeletivo {
+          name
         }
       }
-      pagesQuantity
-      quantity
     }
   }
 `)
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
-  mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
+  mutation ResolveQuestionOdSimulado2($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
     addAnswer(
       questionId: $questionId
       alternativeId: $alternativeId
+      simuladoId: $simuladoId
     ) {
       correct
       correctAlternative
@@ -94,18 +75,21 @@ export default function Questoes() {
 
   const [isCorrect, setIsCorrect] = useState<string | null>(null);
 
+  const params = useSearchParams()
+
+  const id = params.get("id")
+
   const [resultQuestion, getQuestions] = useQuery({
     query: getQuestionQuery,
     variables: {
-      page: questionNumber,
-      itemsPerPage: 1,
+      id: id!
     }
   })
 
   const { data, fetching } = resultQuestion
 
-  const currentQuestion = data?.questions.questions[0];
-  const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
+  const currentQuestion = data?.simulado.questions[questionNumber];
+  const pages = data?.simulado.questions?.map((_, index) => index + 1) || [];
 
   function handleAlternativeDeleted(alternativeID: string){
     const alredyDeleted = alternativeDeleted.includes(alternativeID)
@@ -128,7 +112,7 @@ export default function Questoes() {
       return
     }
     if (currentQuestion?.alternatives) {
-      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected })
+      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected, simuladoId: id! })
       setIsCorrect(result.data?.addAnswer.correctAlternative || null)
       if (result.data?.addAnswer.correct) {
         setIsConfettiActive(true)
@@ -137,8 +121,8 @@ export default function Questoes() {
   }
 
   function handleChangeQuestionByInput() {
-    if (data?.questions.quantity) {
-      if (questionInput >= 1 && questionInput <= data?.questions.quantity) {
+    if (data?.simulado.questions.length) {
+      if (questionInput >= 1 && questionInput <= data?.simulado.questions.length) {
         setQuestionNumber(questionInput)
       } else {
         setQuestionNumber(1)
@@ -153,10 +137,10 @@ export default function Questoes() {
     setIsSelected(null)
   }, [questionNumber])
 
-  const [seconds, setSeconds] = useState(0); 
+  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [hours, setHours] = useState(Math.floor(3*data?.questions.quantity / 60));
-  const [minutes, setMinutes] = useState(3*data?.questions.quantity % 60);
+  const [hours, setHours] = useState(Math.floor(3*(data?.simulado.questions.length || 0) / 60));
+  const [minutes, setMinutes] = useState(3*(data?.simulado.questions.length || 0) % 60);
 
   const toggle = () => {
     setIsActive(!isActive);
@@ -207,12 +191,12 @@ export default function Questoes() {
                 <button onClick={toggle}>{isActive ? <AiOutlinePauseCircle/> : <AiOutlinePlayCircle/>}</button>
             </div>
 
-        
+
         </TimerInverse>
         <QuestionContainer>
 
         <Navigation>
-              <span>{data?.questions.quantity || 0} questões</span>
+              <span>{(data?.simulado.questions.length || 0)} questões</span>
 
               {pages && questionNumber && (
                 <ContainerPagination>

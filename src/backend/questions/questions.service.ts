@@ -381,4 +381,28 @@ export class QuestionsService {
       })
     }
   }
+
+  async relatorioDeDesempenho(userId: string) {
+    const responses = await this.prisma.response.findMany({
+      where: { userId }
+    })
+
+    const total: { [key: string]: number } = {}
+    const corrects: { [key: string]: number } = {}
+
+    for (const response of responses) {
+      const date = response.date.toISOString().split("T")[0].replace("-", "/")
+
+      if (!Object.keys(total).includes(date)) {
+        total[date] = 0
+        corrects[date] = 0
+      }
+
+      total[date] += 1
+
+      if (response.correct) {
+        corrects[date] += 1
+      }
+    }
+  }
 }
