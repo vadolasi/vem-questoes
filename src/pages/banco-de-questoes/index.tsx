@@ -24,7 +24,7 @@ import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 import { AiOutlineFilter, AiOutlineUndo } from 'react-icons/ai';
 
-import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from './styles';
+import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../components/styles';
 import { toast } from 'react-toastify';
 import Confetti from 'react-confetti';
 

@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
 
-import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../banco-de-questoes/styles';
+import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
 import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
 
 import { Container, Content} from '../../../../components/styles/simulados';

@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons  } from '../../../../components/styles/raiz';
 import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
-import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../banco-de-questoes/styles';
+import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
 
 import { Container, Content} from '../../../../components/styles/simulados';
 
@@ -160,7 +160,7 @@ export default function Questoes() {
      <Content>
         <TimerInverse title='Simulado de Respiração' time={3*data?.questions.quantity}/>
         <QuestionContainer>
-       
+
         <Navigation>
               <span>{data?.questions.quantity || 0} questões</span>
 
