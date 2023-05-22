@@ -148,31 +148,33 @@ export default function Questoes() {
 
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
-    
+
         if (play) {
           intervalId = setInterval(() => {
             setSegundos((segundos) => {
               let newSegundos = segundos + 1;
               let newMinutos = minutos;
               let newHoras = horas;
-    
+
               if (newSegundos >= 60) {
                 newSegundos = 0;
                 newMinutos += 1;
               }
-    
+
               if (newMinutos >= 60) {
                 newMinutos = 0;
                 newHoras += 1;
               }
-    
+
               setSegundos(newSegundos);
               setMinutos(newMinutos);
               setHoras(newHoras);
+
+              return newSegundos
             });
           }, 1000);
         }
-    
+
         return () => {
           clearInterval(intervalId);
         };
