@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useState } from 'react';
 
 import { Container, Content, Search } from '../../components/styles/simulados';
@@ -12,25 +13,12 @@ import { ExamBar } from '@/components/ExamBar';
 import { Modal } from '@/components/Modal';
 
 import simulado from '@/assets/Test.png'
-import { graphql } from '@/gql';
-import { useQuery } from 'urql';
-
-const simuladosQuery = graphql(/* GraphQL */ `
-  query MeusSimulados {
-    simulados {
-      simulados {
-        id
-        totalQuestions
-        name
-      }
-    }
-  }
-`)
 
 export default function Home() {
-  const [result] = useQuery({ query: simuladosQuery })
-
-  const { data } = result
+  const [array, setArray] = useState<any[]>([
+    {title: 'Simulado 1', descripition: "caderno feito agr", questions: ['1', '2', '3', 4, 5]},
+    {title: 'Simulado 2', descripition: "caderno feito agr", questions: ['questao1', 'qua', 'qua']},
+  ]);
 
   const [showExamModal, setShowExamModal] = useState(false);
   const [showSimuladoModal, setShowSimuladoModal] = useState(false);
@@ -41,15 +29,17 @@ export default function Home() {
     if(!confirmDelete){
       return
     }
-  }
+    setArray(prevState => prevState.filter(notebook => notebook !== deleted))
+}
 
   function createSimulado(){
-    if (!value) {
+    if(!value){
       return alert('Selecione um tipo de simulado.')
     }
 
     value == 'Personalizado'?
       setShowExamModal(!showExamModal) : {
+
     }
   }
 
@@ -59,15 +49,18 @@ export default function Home() {
      <Menu page=''/>
      <Content>
       <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
-      <Modal className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+      
       <Search>
         <SearchInput onChange={() => {}} />
         <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
         <Button onClick={createSimulado}>Criar</Button>
       </Search>
-        <DefaultSearchPage text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
-          {data?.simulados && data.simulados.simulados.map((exam, index) => (
-            <ExamBar key={index} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+        <DefaultSearchPage text={array.length > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={array.length > 0}>
+          {array && array.map((exam, index) => (
+            <>
+            <ExamBar key={index} title={exam.title} questions={exam.questions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+            <Modal  href={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+            </>
           ))}
         </DefaultSearchPage>
      </Content>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {FiX} from 'react-icons/fi'
 import {AiOutlineFire, AiOutlineCoffee} from 'react-icons/ai'
 
@@ -13,9 +14,10 @@ import { useMutation, useQuery } from 'urql';
 
 interface ModalProps {
   onClick?: any,
-  title?: string,
+  href?: string | undefined,
   className?: string,
   create: boolean,
+
 }
 
 const GetAreasQuery = graphql(/* GraphQL */ `
@@ -42,7 +44,7 @@ const createSimuladoMutation = graphql(/* GraphQL */ `
   }
 `)
 
-export const Modal: React.FC<ModalProps> = ({ onClick, className, create, title}) => {
+export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href}) => {
     const [matters, setMatter] = useState(1);
     const [getAreasQueryResult] = useQuery({ query: GetAreasQuery })
     const [] = useMutation(createSimuladoMutation)
@@ -111,8 +113,8 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, title}
                 <>
                     <h1>Executar simulado no modo</h1>
                     <div className="RunSimulado">
-                        <button className='ButtonSimulado'><AiOutlineFire/>Raiz</button>
-                        <button className='ButtonSimulado'><AiOutlineCoffee/>Nutella</button>
+                        <Link className='ButtonSimulado' href={`/simulados/run/nutella?id=${href}`}><AiOutlineFire/>Raiz</Link>
+                        <Link className='ButtonSimulado' href={`/simulados/run/raiz?id=${href}`}><AiOutlineCoffee/>Nutella</Link>
                     </div>
                 </>
                 }

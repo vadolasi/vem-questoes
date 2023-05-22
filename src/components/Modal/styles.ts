@@ -131,7 +131,10 @@ export const ModalWindow = styled("div", {
             fontWeight: 700,
             lineHeight: '27px',
 
-            background: '$blue_1'
+            background: '$blue_1',
+
+            color: '$text',
+            textDecoration: 'none',
             }
         }
     
