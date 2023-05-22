@@ -1,5 +1,7 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
+import { Role } from "./models/user.model"
+import { hash } from "bcrypt"
 
 @Service()
 export class UsersService {
@@ -21,8 +23,22 @@ export class UsersService {
 
   async leaderBoard() {
     return this.prisma.user.findMany({
+      where: { role: "USER" },
       orderBy: { totalCorrect: "desc" },
       take: 10
+    })
+  }
+
+  async createUser(name: string, email: string, password: string, role: Role) {
+    return await this.prisma.user.create({
+      data: {
+        email,
+        name,
+        password: await hash(password, 12),
+        role: Role[role] as "USER" | "DEVELOPER" | "ADMIN",
+        totalCorrect: 0,
+        totalQuestions: 0
+      }
     })
   }
 }

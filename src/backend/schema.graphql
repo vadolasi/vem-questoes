@@ -24,6 +24,13 @@ type User {
   name: String!
   totalQuestions: Float!
   totalCorrect: Float!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
 }
 
 type ProcessoSeletivo {
@@ -126,6 +133,7 @@ enum SimuladoType {
 }
 
 type Mutation {
+  createUser(role: Role!, password: String!, name: String!, email: String!): User!
   login(email: String!, password: String!): Boolean!
   refreshToken: Boolean!
   addAnswer(simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!

@@ -1,6 +1,29 @@
 import { useState } from "react"
 import { Container, Page } from "../../../components/styles/questao"
 import { Button } from "@/components/Button"
+import { graphql } from "@/gql";
+import { useMutation } from "urql";
+import { Role } from "@/gql/graphql";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+const createUserMutation = graphql(/* GraphQL */`
+  mutation CreateUser(
+    $name: String!
+    $email: String!
+    $password: String!
+    $role: Role!
+  ) {
+    createUser(
+      name: $name
+      email: $email
+      password: $password
+      role: $role
+    ) {
+      id
+    }
+  }
+`)
 
 export default function Admin() {
   const [name, setName] = useState('');
@@ -8,6 +31,23 @@ export default function Admin() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
 
+  const [, execute] = useMutation(createUserMutation)
+
+  const router = useRouter()
+
+  const onSubmit = async () => {
+    const result = await execute({
+      name,
+      email,
+      password,
+      role: role as Role
+    })
+
+    if (result.data?.createUser.id) {
+      toast("Usuário criado com sucesso!", { type: "success" })
+      router.push("/admin")
+    }
+  }
 
   return (
     <Container>
@@ -22,45 +62,42 @@ export default function Admin() {
               <legend>Informações do usuário</legend>
 
               <div className="input-wrapper">
-                  <label htmlFor="name">nome</label>
-                  <input type="text" id="name" 
-                  placeholder="coloque o nome do usuário"
+                  <label htmlFor="name">Nome</label>
+                  <input type="text" id="name"
+                  placeholder="Coloque o nome do usuário"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   />
                   </div>
               <div className="input-wrapper">
-                  <label htmlFor="email">email</label>
-                  <input type="email" id="email" 
-                  placeholder="coloque o nome do usuário"
+                  <label htmlFor="email">Email</label>
+                  <input type="email" id="email"
+                  placeholder="Coloque o email do usuário"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   />
                   </div>
               <div className="input-wrapper">
-                  <label htmlFor="password">senha</label>
-                  <input type="text" id="password" 
-                  placeholder="coloque o nome do usuário"
+                  <label htmlFor="password">Senha</label>
+                  <input type="password" id="password"
+                  placeholder="Defina uma senha para o usuário"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   />
                   </div>
               <div className="input-wrapper">
-                  <label htmlFor="role">senha</label>
-                  <select 
-                  id="role" 
-                  placeholder="coloque o nome do usuário"
+                  <label htmlFor="role">Cargo</label>
+                  <select
+                  id="role"
+                  placeholder="Defina um cargo para o usuário"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="USER">usuário</option>
-                    <option value="ADM">Administrador</option>
+                    <option value="USER">Usuário</option>
+                    <option value="ADMIN">Administrador</option>
                   </select>
                   </div>
-
-
-
-                <Button>Cadastrar</Button>
+                <Button onClick={onSubmit}>Cadastrar</Button>
             </div>
           </fieldset>
          </form>

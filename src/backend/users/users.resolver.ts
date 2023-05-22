@@ -1,7 +1,7 @@
-import { Authorized, Query, Resolver } from "type-graphql"
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql"
 import { Service } from "typedi"
 import { UsersService } from "./users.service"
-import { User } from "./models/user.model"
+import { Role, User } from "./models/user.model"
 import { CurrentUserID } from "../auth"
 
 @Service()
@@ -21,5 +21,16 @@ export class UserResolver {
   @Authorized()
   async leaderBoard() {
     return this.usersService.leaderBoard()
+  }
+
+  @Mutation(returns => User)
+  @Authorized()
+  async createUser(
+    @Arg("email") email: string,
+    @Arg("name") name: string,
+    @Arg("password") password: string,
+    @Arg("role") role: Role
+  ) {
+    return await this.usersService.createUser(name, email, password, role)
   }
 }

@@ -33,18 +33,18 @@ enum TicketStatus {
 }
 
 model User {
-  id             String @id @default(cuid())
-  email          String @unique
-  photoUrl       String @default("https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg")
+  id             String   @id @default(cuid())
+  email          String   @unique
+  photoUrl       String   @default("https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg")
   name           String
   password       String
-  role           Role   @default(USER)
+  role           Role     @default(USER)
   refreshTokens  RefreshToken[]
   simulados      Simulado[]
   responses      Response[]
   totalQuestions Int
   totalCorrect   Int
-  createdAt      DateTime
+  createdAt      DateTime @default(now())
   tickets        Ticket[]
   comments       Comment[]
   notebooks      Notebook[]
