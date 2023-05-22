@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import { AiOutlineRight, AiOutlineDelete, AiOutlineCompass, AiOutlineComment, AiOutlineBook, AiOutlineProfile} from 'react-icons/ai'
+import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
 
-import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons, Search  } from '../../../../components/styles/nuttela';
+import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../banco-de-questoes/styles';
+import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
 
 import { Container, Content} from '../../../../components/styles/simulados';
 
@@ -11,80 +12,145 @@ import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { Timer } from '@/components/Timer';
 
+import { graphql } from '@/gql';
+import { useQuery, useMutation } from 'urql';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
+import { SpinnerCircular } from 'spinners-react';
+
+import { toast } from 'react-toastify';
+import Confetti from 'react-confetti';
+
+const getQuestionQuery = graphql(/* GraphQL */ `
+  query GetQuestions(
+    $page: Float
+    $itemsPerPage: Float
+  ) {
+      questions {
+        id
+        enunciado
+        processoSeletivo {
+          name
+        }
+        ano {
+          ano
+        }
+        local {
+          name
+        }
+        perfil {
+          name
+        }
+        area {
+          name
+        }
+        subarea {
+          name
+        }
+        estado {
+          name
+        }
+        banca {
+          name
+        }
+        alternatives {
+          id
+          text
+          letter
+        }
+        comments {
+          id
+          content
+        }
+      }
+      pagesQuantity
+      quantity
+    }
+  }
+`)
+
+const resolverQuestionMutation = graphql(/* GraphQL */ `
+  mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
+    addAnswer(
+      questionId: $questionId
+      alternativeId: $alternativeId
+    ) {
+      correct
+      correctAlternative
+    }
+  }
+`)
 
 export default function Questoes() {
-  const [questions, setQuestions] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [questionNumber, setQuestionNumber] = useState(1)
+  const [questionInput, setQuestionInput] = useState(1)
+  const [isConfettiActive, setIsConfettiActive] = useState(false);
+  const [, resolveQuestion] = useMutation(resolverQuestionMutation)
 
-  const [page, setPage] = useState(1);
-  const [pageInput, setPageInput] = useState(1);
+  const [alternativeDeleted, setAlternativeDeleted] = useState<string[]>([]);
 
-  const [deleteA, setDeleteA] = useState(false);
-  const [deleteB, setDeleteB] = useState(false);
-  const [deleteC, setDeleteC] = useState(false);
-  const [deleteD, setDeleteD] = useState(false);
+  const [isSelected, setIsSelected] = useState<string | null>(null);
 
-  const [selectA, setSelectA] = useState(false);
-  const [selectB, setSelectB] = useState(false);
-  const [selectC, setSelectC] = useState(false);
-  const [selectD, setSelectD] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<string | null>(null);
 
-  const [explicationBox, setExplicationBox] = useState(false);
-  const [commentBox, setCommentBox] = useState(false);
-  const [notebookBox, setNotebookBox] = useState(false);
-  const [xrayBox, setXrayBox] = useState(false);
+  const [resultQuestion, getQuestions] = useQuery({
+    query: getQuestionQuery,
+    variables: {
+      page: questionNumber,
+      itemsPerPage: 1,
+    }
+  })
 
-  function selectedA(){
-    setSelectA(true);
-    setSelectB(false);
-    setSelectC(false);
-    setSelectD(false);
-  }
-  function selectedB(){
-    setSelectA(false);
-    setSelectB(true);
-    setSelectC(false);
-    setSelectD(false);
-  }
-  function selectedC(){
-    setSelectA(false);
-    setSelectB(false);
-    setSelectC(true);
-    setSelectD(false);
-  }
-  function selectedD(){
-    setSelectA(false);
-    setSelectB(false);
-    setSelectC(false);
-    setSelectD(true);
+  const { data, fetching } = resultQuestion
+
+  const currentQuestion = data?.questions.questions[0];
+  const pages = data?.questions.questions?.map((_, index) => index + 1) || [];
+
+  function handleAlternativeDeleted(alternativeID: string){
+    const alredyDeleted = alternativeDeleted.includes(alternativeID)
+
+    if (alredyDeleted) {
+      const filteredDeleted = alternativeDeleted.filter(alternative => alternative !== alternativeID)
+      setAlternativeDeleted(filteredDeleted)
+    } else {
+      setAlternativeDeleted(prevState => [...prevState, alternativeID]);
+    }
   }
 
 
-  function showExplicationBox(){
-    setExplicationBox(!explicationBox);
-    setCommentBox(false);
-    setNotebookBox(false);
-    setXrayBox(false);
-  }
-  function showCommentBox(){
-    setExplicationBox(false);
-    setCommentBox(!commentBox);
-    setNotebookBox(false);
-    setXrayBox(false);
-  }
-  function showNotebookBox(){
-    setExplicationBox(false);
-    setCommentBox(false);
-    setNotebookBox(!notebookBox);
-    setXrayBox(false);
-  }
-  function showXrayBox(){
-    setExplicationBox(false);
-    setCommentBox(false);
-    setNotebookBox(false);
-    setXrayBox(!xrayBox);
+  async function answerQuestion() {
+    if (!isSelected) {
+      return toast.error("Selecione uma alternativa")
+    }
+    if (isCorrect) {
+      setQuestionNumber(questionNumber + 1)
+      return
+    }
+    if (currentQuestion?.alternatives) {
+      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected })
+      setIsCorrect(result.data?.addAnswer.correctAlternative || null)
+      if (result.data?.addAnswer.correct) {
+        setIsConfettiActive(true)
+      }
+    }
   }
 
+  function handleChangeQuestionByInput() {
+    if (data?.questions.quantity) {
+      if (questionInput >= 1 && questionInput <= data?.questions.quantity) {
+        setQuestionNumber(questionInput)
+      } else {
+        setQuestionNumber(1)
+        toast.error('Coloque um valor válido')
+      }
+    }
+  }
+  
+  useEffect(() => {
+    setQuestionInput(questionNumber)
+    setIsCorrect(null)
+    setIsSelected(null)
+  }, [questionNumber])
 
   return (
     <Container>
@@ -93,6 +159,7 @@ export default function Questoes() {
      <Content>
         <Timer title='Simulado de Respiração'/>
         <QuestionContainer>
+
         <Navigation>
               <span>{data?.questions.quantity || 0} questões</span>
 
@@ -183,11 +250,11 @@ export default function Questoes() {
               )}
 
 
-            <GoTo>
-              <input type='number'min={questions[0]} max={questions.length} value={pageInput} onChange={(e: any) => {setPageInput(e.target.value), console.log(e.target.value)}}/>
-              <span>Ir Para</span>
-              <button onClick={() => {setPage(pageInput), console.log(page)}}><AiOutlineRight/></button>
-            </GoTo>
+              <GoTo>
+                <input type='number' min={1} value={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />
+                <span>Ir Para</span>
+                <button onClick={handleChangeQuestionByInput}><AiOutlineRight /></button>
+              </GoTo>
 
             </Navigation>
 
