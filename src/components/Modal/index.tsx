@@ -69,43 +69,43 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href})
                 <Select label='Nº de Áreas' options={[{ value: 1, option: "1" }, { value: 2, option: "2" }, { value: 3, option: "3" }, { value: 4, option: "4" }, { value: 5, option: "5" }, { value: 5, option: "5" }, { value: 6, option: "6" }, { value: 7, option: "7" }, { value: 8, option: "8" }, { value: 9, option: "9" }]} value={matters} onChange={(e: any) => setMatter(e.target.value)}/>
                 </div>
                     <div className={matters >= 1 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 2 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 3 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 4 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 5 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 6 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 7 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 8 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 9 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <div className={matters >= 10 ? 'ExamInfos' : 'hidden'}>
-                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={selecetArea} />
+                        <Select label='Área' options={data?.areas!.filter(area => !selectedAreas.includes(area.id)).map(area => ({ option: area.name, value: area.id })) || []} onChange={ev => selecetArea(ev.target.value)} />
                         <Input type='number' text='Nº de questões' min={1} max={10}/>
                     </div>
                     <Button>Salvar</Button>
