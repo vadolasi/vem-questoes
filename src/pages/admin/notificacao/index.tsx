@@ -12,7 +12,7 @@ export default function Admin() {
           <h1>Cadastrar Notificação</h1>
           <p>Dispare suas notificações aqui!</p>
          </header>
-         <form id="questao">
+         <form id="notificacao">
           <fieldset>
             <div className="fieldset-wrapper">
               <legend>Notificação</legend>

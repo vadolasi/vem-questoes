@@ -7,6 +7,7 @@ export default function Admin() {
     <Container>
          <Button link="/admin/questao">Criar questão</Button>
          <Button link="/admin/notificacao">Criar notificação</Button>
+         <Button link="/admin/criarUsuario">Criar Usuário</Button>
     </Container>
   )
 }

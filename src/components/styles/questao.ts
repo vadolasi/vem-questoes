@@ -66,6 +66,7 @@ export const Page = styled("div", {
         padding: '64px',
 
         gap: '30px',
+        
 
         fieldset: {
             border: 'none',
@@ -136,6 +137,19 @@ export const Page = styled("div", {
 
                         padding: '5px',
                     },
+
+                    select:{
+                        background: '#FAFAFC',
+
+                        height: '56px',
+
+                        border: '1px solid $border',
+                        borderRadius: '8px',
+
+                        outline: 0,
+
+                        padding: '5px',
+                    }
                 },
 
                 '.wrapper':{
