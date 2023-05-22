@@ -4,22 +4,22 @@ import {AiOutlinePlaySquare, AiOutlineDelete} from 'react-icons/ai'
 
 interface ExamBarProps {
     title: string,
-    questions: any[],
+    questions: number,
     deleteClick?: any,
     onClick?: any,
 }
 
 export const ExamBar: React.FC<ExamBarProps> = ({title, questions, deleteClick, onClick}) => {
     const [titleCard, setTitleCard] = useState(title);
-    
+
     return (
         <Container>
-            <div className='Titulos'> 
+            <div className='Titulos'>
                 <input type="text" className={'title'} readOnly={true} value={titleCard}/>
             </div>
 
             <div className='Questions'>
-                <h1>Questões <br/> {questions.length}</h1>
+                <h1>Questões <br/> {questions}</h1>
             </div>
 
             <div className='Buttons'>

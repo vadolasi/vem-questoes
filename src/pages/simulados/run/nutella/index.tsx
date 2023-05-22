@@ -79,7 +79,7 @@ export default function Questoes() {
 
   const id = params.get("id")
 
-  const [resultQuestion, getQuestions] = useQuery({
+  const [resultQuestion] = useQuery({
     query: getQuestionQuery,
     variables: {
       id: id!
@@ -279,8 +279,8 @@ export default function Questoes() {
 
 
           <QuestionButtons>
-          <div className='resposta'>
-                <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
+            <div className='resposta'>
+              <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
             </div>
           </QuestionButtons>
 
