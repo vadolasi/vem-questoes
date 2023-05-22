@@ -222,6 +222,15 @@ export class QuestionsResolver {
   }
 
   @Authorized()
+  @Query(() => Simulado)
+  async simulado(
+    @CurrentUserID() userId: string,
+    @Arg("id") id: string
+  ) {
+    return await this.questionsService.simulado(id, userId)
+  }
+
+  @Authorized()
   @Mutation(() => Simulado)
   async createSimulado(
     @CurrentUserID() userId: string,

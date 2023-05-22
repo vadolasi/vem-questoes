@@ -321,6 +321,19 @@ export class QuestionsService {
     return { simulados, pagesQuantity: Math.ceil(quantity / itemsPerPage) }
   }
 
+  async simulado(id: string, userId: string) {
+    const simulado = await this.prisma.simulado.findFirst({
+      where: { id, userId },
+      include: { questions: { include: { alternatives: true, ano: true, banca: true, processoSeletivo: true } } }
+    })
+
+    if (!simulado) {
+      throw new Error("Simulado not found!")
+    }
+
+    return simulado
+  }
+
   async createSimulado(userId: string, name: string, type: SimuladoType, areas?: { areaId: string, quantity: number }[]) {
     if (type === SimuladoType.Custom && areas) {
       const totalQuestions = areas?.reduce((counter, area) => area.quantity + counter, 0)!

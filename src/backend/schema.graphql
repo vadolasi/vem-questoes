@@ -14,6 +14,7 @@ type Query {
   notebooks: [NotebookModel!]!
   notebook(notebookId: String!): NotebookModel!
   simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
+  simulado(id: String!): Simulado!
 }
 
 type User {
