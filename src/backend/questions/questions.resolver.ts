@@ -19,6 +19,7 @@ import { AreaToSimuladoInput } from "./inputs/areaForSimulado.input"
 import { QuestionsResponse } from "./responses/questions.response"
 import { SimuladosResponse } from "./responses/simulados.response"
 import { AddAnswerResponse } from "./responses/addAnswer"
+import { RelatorioResponse } from "./responses/relatorio"
 
 function getRequestedFields(info: GraphQLResolveInfo): string[] {
   const fieldList: string[] = [];
@@ -239,5 +240,13 @@ export class QuestionsResolver {
     @Arg("areas", type => [AreaToSimuladoInput]) areas: AreaToSimuladoInput[]
   ) {
     return await this.questionsService.createSimulado(userId, name, type, areas)
+  }
+
+  @Authorized()
+  @Query(returns => [RelatorioResponse])
+  async relatorio(
+    @CurrentUserID() userId: string
+  ) {
+    return await this.questionsService.relatorioDeDesempenho(userId)
   }
 }

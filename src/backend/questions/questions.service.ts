@@ -391,7 +391,7 @@ export class QuestionsService {
     const corrects: { [key: string]: number } = {}
 
     for (const response of responses) {
-      const date = response.date.toISOString().split("T")[0].replace("-", "/")
+      const date = response.date.toISOString().split("T")[0].split("-").reverse().join("/")
 
       if (!Object.keys(total).includes(date)) {
         total[date] = 0
@@ -404,5 +404,13 @@ export class QuestionsService {
         corrects[date] += 1
       }
     }
+
+    const result: { date: string, total: number, totalCorrect: number }[] = []
+
+    for (const key of Object.keys(total)) {
+      result.push({ date: key, total: total[key], totalCorrect: corrects[key] })
+    }
+
+    return result
   }
 }
