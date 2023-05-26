@@ -51,6 +51,23 @@ export const Page = styled("div", {
         },
     },
 
+    '.Main':{
+        display: "flex",
+        flexDirection: "column",
+
+        background: '$white_1',
+        width: '750px',
+
+        marginTop: '58px',
+
+        height: '500px',
+        borderRadius: '20px',
+
+        padding: '64px',
+        
+        overflowY: 'auto'
+    },
+
     form: {
         display: "flex",
         flexDirection: "column",
@@ -149,7 +166,8 @@ export const Page = styled("div", {
                         outline: 0,
 
                         padding: '5px',
-                    }
+                    },
+
                 },
 
                 '.wrapper':{
