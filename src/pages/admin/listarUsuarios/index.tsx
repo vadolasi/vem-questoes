@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Container, Page } from "../../../components/styles/questao"
 import { ListUserCard } from '../../../components/ListUserCard'
 import { graphql } from "@/gql";
-import { useMutation } from "urql";
+import { useMutation, useQuery } from "urql";
 import { Role } from "@/gql/graphql";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -28,6 +28,19 @@ const createUserMutation = graphql(/* GraphQL */`
   }
 `)
 
+
+const usuariosQuerys = graphql(/* GraphQL */ `
+  query usuarios {
+      User {
+        id
+        image
+        name
+        email
+        role
+      }
+  }
+`)
+
 export default function Admin() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +48,10 @@ export default function Admin() {
   const [role, setRole] = useState('');
 
   const [, execute] = useMutation(createUserMutation)
+  const [result, executeQuery] = useQuery({ query: usuariosQuerys })
+
+
+  const { data } = result
 
   const router = useRouter()
 
@@ -60,7 +77,7 @@ export default function Admin() {
           <p>Tenha controle dos seus usuários</p>
          </header>
         <div className="Main">
-            <ListUserCard image={cover} name="oioioi" email="oioioi" role="user"/>
+            <ListUserCard image={cover} name="oioioi" email="oioioi" role="user" onClick={() => {}}/>
         </div>
         </Page>
     </Container>

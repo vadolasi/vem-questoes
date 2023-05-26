@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { AiOutlineDelete } from 'react-icons/ai'
 import { Container } from './styles'
 
+
 interface listUserCardProps {
     image: any,
     name: string,
@@ -10,6 +11,9 @@ interface listUserCardProps {
     role: string,
     onClick: any,
 }
+
+
+
 
 export const ListUserCard: React.FC<listUserCardProps> = ({image, name, email, role, onClick}) => {
     return (
