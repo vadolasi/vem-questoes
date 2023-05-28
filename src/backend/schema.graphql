@@ -1,6 +1,7 @@
 type Query {
   me: User
   leaderBoard: [User!]
+  users: [User!]!
   processosSeletivos: [ProcessoSeletivo!]!
   anos: [Ano!]!
   locais: [Local!]!

@@ -30,14 +30,14 @@ const createUserMutation = graphql(/* GraphQL */`
 
 
 const usuariosQuerys = graphql(/* GraphQL */ `
-  query usuarios {
-      User {
-        id
-        image
-        name
-        email
-        role
-      }
+  query Users {
+    users {
+      id
+      photoUrl
+      name
+      email
+      role
+    }
   }
 `)
 
@@ -50,8 +50,7 @@ export default function Admin() {
   const [, execute] = useMutation(createUserMutation)
   const [result, executeQuery] = useQuery({ query: usuariosQuerys })
 
-
-  const { data } = result
+  const { data: users } = result
 
   const router = useRouter()
 
@@ -77,7 +76,9 @@ export default function Admin() {
           <p>Tenha controle dos seus usuários</p>
          </header>
         <div className="Main">
-            <ListUserCard image={cover} name="oioioi" email="oioioi" role="user" onClick={() => {}}/>
+          {users?.users.map(user => (
+            <ListUserCard image={user.photoUrl} name={user.name} email={user.email} role={user.role.toLowerCase()} onClick={() => {}}/>
+          ))}
         </div>
         </Page>
     </Container>

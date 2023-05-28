@@ -19,7 +19,7 @@ export const ListUserCard: React.FC<listUserCardProps> = ({image, name, email, r
     return (
         <Container>
             <div className='profile'>
-                <Image src={image} alt={`foto de perfil de ${name}`}/>
+                <Image src={image} width={7} height={7} alt={`foto de perfil de ${name}`}/>
                 <p>{name}</p>
                 <p>{email}</p>
                 <p>{role}</p>

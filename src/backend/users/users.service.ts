@@ -43,6 +43,14 @@ export class UsersService {
   }
 
   async getUsers() {
-    return await this.prisma.user.findMany({})
+    return (await this.prisma.user.findMany({})).map(user => ({
+      id: user.id,
+      photoUrl: user.photoUrl,
+      email: user.email,
+      name: user.name,
+      totalQuestions: user.totalQuestions,
+      totalCorrect: user.totalCorrect,
+      role: Role[user.role]
+    }))
   }
 }

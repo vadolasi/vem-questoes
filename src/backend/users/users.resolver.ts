@@ -36,7 +36,7 @@ export class UserResolver {
 
   @Query(returns => [User])
   @Authorized()
-  async getUsers() {
+  async users() {
     return await this.usersService.getUsers()
   }
 }

@@ -20,6 +20,7 @@ const documents = {
     "\n  mutation CreateSimulado($name: String!, $type: SimuladoType!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: $type\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
     "\n  mutation UpdateNotebook($id: String!, $name: String, $description: String, $questions: [String!]) {\n    updateNotebook(\n      notebookId: $id\n      name: $name\n      description: $description\n      questions: $questions\n    )\n  }\n": types.UpdateNotebookDocument,
     "\n  mutation CreateUser(\n    $name: String!\n    $email: String!\n    $password: String!\n    $role: Role!\n  ) {\n    createUser(\n      name: $name\n      email: $email\n      password: $password\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.CreateUserDocument,
+    "\n  query Users {\n    users {\n      id\n      photoUrl\n      name\n      email\n      role\n    }\n  }\n": types.UsersDocument,
     "\n  mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionDocument,
     "\n  query NotebooksQuery {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksQueryDocument,
     "\n  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n      questions: $questions\n    ) {\n      id\n      name\n      description\n    }\n  }\n": types.CreateNotebookDocument,
@@ -77,6 +78,10 @@ export function graphql(source: "\n  mutation UpdateNotebook($id: String!, $name
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateUser(\n    $name: String!\n    $email: String!\n    $password: String!\n    $role: Role!\n  ) {\n    createUser(\n      name: $name\n      email: $email\n      password: $password\n      role: $role\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateUser(\n    $name: String!\n    $email: String!\n    $password: String!\n    $role: Role!\n  ) {\n    createUser(\n      name: $name\n      email: $email\n      password: $password\n      role: $role\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Users {\n    users {\n      id\n      photoUrl\n      name\n      email\n      role\n    }\n  }\n"): (typeof documents)["\n  query Users {\n    users {\n      id\n      photoUrl\n      name\n      email\n      role\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
