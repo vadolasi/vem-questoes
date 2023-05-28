@@ -5,7 +5,7 @@ import { Container } from './styles';
 
 interface SearchInputProps {
   placeholder?: string;
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({ placeholder, onChange }) => {
