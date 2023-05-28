@@ -29,7 +29,7 @@ export default function Admin() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('USER');
 
   const [, execute] = useMutation(createUserMutation)
 

@@ -37,15 +37,6 @@ const [optionsBar, setOptionsBar] = useState({
     chartArea: { width: "50%", height: "70%" },
   });
 
-  const [dataBar, setDataBar] = useState([
-    ['Data', 'Total', 'Certas'],
-    ['01/03/2023', 10, 8],
-    ['01/04/2023', 25, 22],
-    ['01/05/2023', 32, 14],
-    ['01/06/2023', 11, 11],
-    ['01/07/2023', 15, 15],
-  ])
-
   const { data } = result
 
   const erros = data?.me?.totalQuestions! - data?.me?.totalCorrect! || 0
@@ -63,7 +54,6 @@ const [optionsBar, setOptionsBar] = useState({
             <span><strong>{data?.me?.totalCorrect}</strong> Acertos</span>
             <span><strong>{erros}</strong> Erros</span>
 
-
      <Chart
      chartType="AreaChart"
      width="100%"
@@ -76,6 +66,3 @@ const [optionsBar, setOptionsBar] = useState({
     </Container>
   )
 }
-
-
-

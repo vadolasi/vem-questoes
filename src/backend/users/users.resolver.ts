@@ -33,4 +33,10 @@ export class UserResolver {
   ) {
     return await this.usersService.createUser(name, email, password, role)
   }
+
+  @Query(returns => [User])
+  @Authorized()
+  async getUsers() {
+    return await this.usersService.getUsers()
+  }
 }

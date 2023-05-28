@@ -32,6 +32,12 @@ enum TicketStatus {
   DONE
 }
 
+model Notification {
+  id    String @id @default(cuid())
+  title String
+  body  String
+}
+
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
