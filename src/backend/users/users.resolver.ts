@@ -1,4 +1,4 @@
-import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql"
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql"
 import { Service } from "typedi"
 import { UsersService } from "./users.service"
 import { Role, User } from "./models/user.model"

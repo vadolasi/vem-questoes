@@ -44,7 +44,7 @@ const resolverQuestionMutation = graphql(/* GraphQL */ `
 `)
 
 const meQuery = graphql(/* GraphQL */ `
-  query Me {
+  query Me2 {
     me {
       name
       photoUrl
@@ -549,7 +549,7 @@ export default function Questoes() {
                 comment={true}
               >
                 <>
-                <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                  <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
                 </>
               </DefaultBoxQuestion>
 

@@ -18,6 +18,11 @@ const meQuery = graphql(/* GraphQL */ `
       name
       photoUrl
     }
+    notifications {
+      id
+      title
+      body
+    }
   }
 `);
 
@@ -40,7 +45,9 @@ export const Header = () => {
           <AiOutlineBell className='notificacoes' onClick={() => setShowNotificacoes(!showNotificacoes)} />
           <div className={`notificacoesBox ${showNotificacoes ? '' : 'hidden'}`}>
             <h1>Notificações</h1>
-            <NotificacoesCard>Notificação test</NotificacoesCard>
+            {data?.notifications.map(notification => (
+              <NotificacoesCard>{notification.body}</NotificacoesCard>
+            ))}
           </div>
           <ProfileInfo>
             {fetching ? <SpinnerCircular size={40} color="#f0f0fc" /> :

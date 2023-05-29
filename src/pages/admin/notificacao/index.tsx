@@ -1,9 +1,32 @@
 import { useState } from "react"
 import { Container, Page } from "../../../components/styles/questao"
 import { Button } from "@/components/Button"
+import { graphql } from "@/gql";
+import { useMutation } from "urql";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+
+const createNotificationMutation = graphql(/* GraphQL */`
+  mutation CreateNotification($title: String!, $body: String!) {
+    createNotification(
+      title: $title
+      body: $body
+    ) {
+      id
+    }
+  }
+`)
 
 export default function Admin() {
   const [notificacao, setNotificacao] = useState('');
+  const [, executeMutation] = useMutation(createNotificationMutation)
+  const router = useRouter()
+
+  const onSubmit = async () => {
+    await executeMutation({ title: "sem título", body: notificacao })
+    toast("Notificação criada com sucesso", { type: "success" })
+    router.push("/admin")
+  }
 
   return (
     <Container>
@@ -19,14 +42,14 @@ export default function Admin() {
 
               <div className="input-wrapper">
                 <label htmlFor="textarea">Notificação</label>
-                <textarea  id="textarea" 
+                <textarea  id="textarea"
                 placeholder="Digite aqui a notificacao"
                 value={notificacao}
                 onChange={(e) => setNotificacao(e.target.value)}
                 />
               </div>
 
-                <Button>Cadastrar</Button>
+                <Button onClick={onSubmit}>Cadastrar</Button>
             </div>
           </fieldset>
          </form>

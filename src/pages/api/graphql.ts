@@ -13,6 +13,7 @@ import { printSchema } from "graphql"
 import { writeFile } from "fs/promises"
 import { GqlContext } from "@/backend/gqlContext"
 import { QuestionsResolver } from "@/backend/questions/questions.resolver"
+import { NotificationsResolver } from "@/backend/notifications/notifications.resolver"
 
 export const config = {
   api: {
@@ -21,7 +22,7 @@ export const config = {
 }
 
 const schema = await buildSchema({
-  resolvers: [UserResolver, AuthResolver, QuestionsResolver],
+  resolvers: [UserResolver, AuthResolver, QuestionsResolver, NotificationsResolver],
   container: Container,
   authChecker,
   validate: { forbidUnknownValues: false }

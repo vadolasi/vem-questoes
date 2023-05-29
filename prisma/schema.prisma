@@ -36,6 +36,15 @@ model Notification {
   id    String @id @default(cuid())
   title String
   body  String
+  users NotificationToUser[]
+}
+
+model NotificationToUser {
+  id String      @id          @default(cuid())
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  notificationId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 model User {
@@ -54,6 +63,7 @@ model User {
   tickets        Ticket[]
   comments       Comment[]
   notebooks      Notebook[]
+  notifications  NotificationToUser[]
 }
 
 model Alternative {

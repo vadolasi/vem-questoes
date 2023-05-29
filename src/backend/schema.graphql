@@ -17,6 +17,7 @@ type Query {
   simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
   simulado(id: String!): Simulado!
   relatorio: [RelatorioResponse!]!
+  notifications: [Notification!]!
 }
 
 type User {
@@ -140,6 +141,12 @@ type RelatorioResponse {
   totalCorrect: Float!
 }
 
+type Notification {
+  id: ID!
+  title: String!
+  body: String!
+}
+
 type Mutation {
   createUser(role: Role!, password: String!, name: String!, email: String!): User!
   login(email: String!, password: String!): Boolean!
@@ -150,6 +157,8 @@ type Mutation {
   updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
   deleteNotebook(id: String!): Boolean!
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
+  createNotification(body: String!, title: String!): Notification!
+  readNotifications(notificationIds: [String!]!): Boolean!
 }
 
 type AddAnswerResponse {
