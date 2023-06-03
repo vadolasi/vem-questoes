@@ -6,9 +6,10 @@ import { Button } from '../Button';
 
 interface ReportBoxProps {
     show?: boolean
+    question?: any
 }
 
-export const ReportBox: React.FC<ReportBoxProps> = ({show}) => {
+export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
     const [selectValue, setSelectValue] = useState('');
     const [title, setTitle] = useState('');
     const [motivo, setMotivo] = useState('');

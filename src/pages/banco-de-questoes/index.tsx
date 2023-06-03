@@ -507,7 +507,7 @@ export default function Questoes() {
                   Questão {questionNumber}
                 </h1>
                 <ButtonReport onClick={() => setShowReportBox(!showReportBox)}>Reportar</ButtonReport>
-                <ReportBox show={showReportBox}/>
+                <ReportBox show={showReportBox} question={currentQuestion}/>
               </div>
 
               <div className='questionInfo'>
