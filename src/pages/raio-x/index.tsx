@@ -58,9 +58,9 @@ export default function Home() {
         <Button>Buscar</Button>
       </Search>
         <DefaultSearchPage text='Raio-X completo da sua prova!' picture={raioX} alt='Mulher avaliando informações sobre algo' content={response.length > 0}>
-          {response && response.map((response, index) => (
+          {response && response.map(response => (
             <XrayButton
-            key={index}
+            key={String(response)}
             disciplina={response.disciplina}
             relevancia={response.relevancia}
             desempenho={response.desempenho}

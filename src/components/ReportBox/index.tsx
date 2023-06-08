@@ -11,18 +11,16 @@ interface ReportBoxProps {
 
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
- 
+import { TicketType } from '@/gql/graphql';
+
 const createReportMutation = graphql(/* GraphQL */ `
-  mutation CreateReport($title: String!, $content: String, $TicketType: String) {
-    addReport(
+  mutation CreateReport($title: String!, $content: String!, $type: TicketType!) {
+    addTicket(
       title: $title
       content: $content
-      type: $TicketType
+      type: $type
     ) {
       id
-      title
-      content
-      TicketType
     }
   }
 `);
@@ -35,7 +33,7 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
     const [, executeCreateReport] = useMutation(createReportMutation);
 
     const addReport = async () => {
-        await executeCreateReport({ title: title, content: motivo, type: selectValue})
+        await executeCreateReport({ title: title, content: motivo, type: "BUG" as TicketType })
       }
 
     return (

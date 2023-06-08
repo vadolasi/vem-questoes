@@ -72,7 +72,7 @@ export default function Home() {
       </Search>
         <DefaultSearchPage text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
           {data?.notebooks && data.notebooks.map((notebook, index) => (
-            <NotebookCard id={notebook.id} key={index} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+            <NotebookCard id={notebook.id} key={notebook.id} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
           ))}
         </DefaultSearchPage>
      </Content>

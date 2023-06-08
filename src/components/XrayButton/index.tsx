@@ -20,8 +20,8 @@ export const XrayButton: React.FC<XrayButtonProps> = ({disciplina, relevancia, d
                 <span><AiOutlineBulb/>Meu desempenho: <strong>{desempenho}%</strong></span>
             </MatterInfo>
             <SpecificInfos className={show ? '' : 'hidden'}>
-                {assuntos && assuntos.map((assunto: any, index: any) => (
-                 <div key={index}>
+                {assuntos && assuntos.map((assunto: any) => (
+                 <div key={assunto.assunto}>
                     <span>{assunto.assunto}</span>
                     <span>Relevância na disciplina: <strong>{assunto.relevancia}%</strong></span>
                  </div>
