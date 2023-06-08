@@ -39,7 +39,7 @@ model NotificationToUser {
   id String      @id          @default(cuid())
   notification   Notification @relation(fields: [notificationId], references: [id])
   notificationId String
-  user           User         @relation(fields: [userId], references: [id])
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
 }
 
@@ -104,14 +104,14 @@ model Comment {
   content    String
   question   Question @relation(fields: [questionId], references: [id])
   questionId String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 }
 
 model Notebook {
   id          String @id @default(cuid())
   name        String
-  user        User   @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   questions   Question[]
   description String?
@@ -170,7 +170,7 @@ model RefreshToken {
   createdAt DateTime
   revoked   Boolean @default(false)
   expiresAt DateTime
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 }
 
@@ -184,7 +184,7 @@ model Response {
   simulado      Simulado?   @relation(fields: [simuladoId], references: [id])
   simuladoId    String?
   correct       Boolean
-  user          User        @relation(fields: [userId], references: [id])
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
 }
 
@@ -193,7 +193,7 @@ model Simulado {
   name           String
   questions      Question[]
   responses      Response[]
-  user           User       @relation(fields: [userId], references: [id])
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   createdAt      DateTime   @default(now())
   totalQuestions Int
@@ -206,7 +206,7 @@ model Ticket {
   content    String
   type       TicketType
   status     TicketStatus @default(OPEN)
-  user       User         @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   createdAt  DateTime     @default(now())
   question   Question?    @relation(fields: [questionId], references: [id])

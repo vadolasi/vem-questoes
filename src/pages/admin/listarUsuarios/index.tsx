@@ -77,7 +77,7 @@ export default function Admin() {
          </header>
         <div className="Main">
           {users?.users.map(user => (
-            <ListUserCard key={user.id} image={user.photoUrl} name={user.name} email={user.email} role={user.role.toLowerCase()} onClick={() => {}}/>
+            <ListUserCard key={user.id} id={user.id} image={user.photoUrl} name={user.name} email={user.email} role={user.role.toLowerCase()} />
           ))}
         </div>
         </Page>
