@@ -73,6 +73,8 @@ export const QuestionStatement = styled("div", {
         alignItems: "center",
         justifyContent: "space-between",
 
+        position: 'relative',
+
         "h1":{
             fontSize:'24px',
             lineHeight: '33px',

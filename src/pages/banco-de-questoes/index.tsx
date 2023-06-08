@@ -6,7 +6,7 @@ import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, Q
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
 import { DefaultBoxQuestion } from '@/components/DefaultBoxQuestion';
-import { CommentBar } from '@/components/CommentBar';
+import { ReportBox } from '@/components/ReportBox';
 import { SearchInput } from '@/components/SearchInput';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
@@ -214,6 +214,7 @@ export default function Questoes() {
   const [filterSubarea, setFilterSubarea] = useState<string | undefined>(undefined)
   const [filterEstado, setFilterEstado] = useState<string | undefined>(undefined)
   const [filterBanca, setFilterBanca] = useState<string | undefined>(undefined)
+  const [showReportBox, setShowReportBox] = useState(false)
 
   const { width, height } = useWindowDimensions();
 
@@ -505,7 +506,8 @@ export default function Questoes() {
                 <h1>
                   Questão {questionNumber}
                 </h1>
-                <ButtonReport>Reportar</ButtonReport>
+                <ButtonReport onClick={() => setShowReportBox(!showReportBox)}>Reportar</ButtonReport>
+                <ReportBox show={showReportBox} question={currentQuestion}/>
               </div>
 
               <div className='questionInfo'>
