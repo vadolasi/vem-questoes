@@ -39,4 +39,12 @@ export class UserResolver {
   async users() {
     return await this.usersService.getUsers()
   }
+
+  @Mutation(returns => Boolean)
+  @Authorized()
+  async deleteUser(
+    @Arg("id") userId: string
+  ) {
+    return await this.usersService.deleteUser(userId)
+  }
 }

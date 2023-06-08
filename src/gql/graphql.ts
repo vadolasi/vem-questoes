@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type AddAnswerResponse = {
@@ -74,13 +76,16 @@ export type Mutation = {
   addAnswer: AddAnswerResponse;
   addComment: Scalars['Boolean'];
   addNotebook: NotebookModel;
+  addTicket: Ticket;
   createNotification: Notification;
   createSimulado: Simulado;
   createUser: User;
   deleteNotebook: Scalars['Boolean'];
+  deleteUser: Scalars['Boolean'];
   login: Scalars['Boolean'];
   readNotifications: Scalars['Boolean'];
   refreshToken: Scalars['Boolean'];
+  resolveTicket: Scalars['Boolean'];
   updateNotebook: Scalars['Boolean'];
 };
 
@@ -102,6 +107,14 @@ export type MutationAddNotebookArgs = {
   description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   questions: Array<Scalars['String']>;
+};
+
+
+export type MutationAddTicketArgs = {
+  content: Scalars['String'];
+  question?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: TicketType;
 };
 
 
@@ -131,6 +144,11 @@ export type MutationDeleteNotebookArgs = {
 };
 
 
+export type MutationDeleteUserArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -139,6 +157,11 @@ export type MutationLoginArgs = {
 
 export type MutationReadNotificationsArgs = {
   notificationIds: Array<Scalars['String']>;
+};
+
+
+export type MutationResolveTicketArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -188,6 +211,7 @@ export type Query = {
   notebook: NotebookModel;
   notebooks: Array<NotebookModel>;
   notifications: Array<Notification>;
+  openedRickets?: Maybe<Array<Ticket>>;
   perfis: Array<Perfil>;
   processosSeletivos: Array<ProcessoSeletivo>;
   question: Array<Question>;
@@ -301,6 +325,24 @@ export type Subarea = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
+
+export type Ticket = {
+  __typename?: 'Ticket';
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: User;
+  question: Question;
+  role: TicketType;
+  title: Scalars['String'];
+};
+
+export enum TicketType {
+  Bug = 'BUG',
+  Feature = 'FEATURE',
+  Other = 'OTHER',
+  Question = 'QUESTION'
+}
 
 export type User = {
   __typename?: 'User';

@@ -18,6 +18,7 @@ type Query {
   simulado(id: String!): Simulado!
   relatorio: [RelatorioResponse!]!
   notifications: [Notification!]!
+  openedRickets: [Ticket!]
 }
 
 type User {
@@ -147,8 +148,31 @@ type Notification {
   body: String!
 }
 
+type Ticket {
+  id: ID!
+  title: String!
+  content: String!
+  role: TicketType!
+  name: User!
+  createdAt: DateTime!
+  question: Question!
+}
+
+enum TicketType {
+  BUG
+  FEATURE
+  QUESTION
+  OTHER
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 type Mutation {
   createUser(role: Role!, password: String!, name: String!, email: String!): User!
+  deleteUser(id: String!): Boolean!
   login(email: String!, password: String!): Boolean!
   refreshToken: Boolean!
   addAnswer(simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
@@ -159,6 +183,8 @@ type Mutation {
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
   createNotification(body: String!, title: String!): Notification!
   readNotifications(notificationIds: [String!]!): Boolean!
+  addTicket(question: String, type: TicketType!, content: String!, title: String!): Ticket!
+  resolveTicket(id: String!): Boolean!
 }
 
 type AddAnswerResponse {

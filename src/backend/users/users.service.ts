@@ -35,7 +35,7 @@ export class UsersService {
         email,
         name,
         password: await hash(password, 12),
-        role: Role[role] as "USER" | "DEVELOPER" | "ADMIN",
+        role: Role[role] as keyof typeof Role,
         totalCorrect: 0,
         totalQuestions: 0
       }
@@ -52,5 +52,10 @@ export class UsersService {
       totalCorrect: user.totalCorrect,
       role: Role[user.role]
     }))
+  }
+
+  async deleteUser(id: string) {
+    await this.prisma.user.delete({ where: { id } })
+    return true
   }
 }

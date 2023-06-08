@@ -3,7 +3,8 @@ import { authExchange } from '@urql/exchange-auth'
 
 import { graphql } from "./gql";
 
-import { cacheExchange } from '@urql/exchange-graphcache';
+import { offlineExchange } from '@urql/exchange-graphcache';
+import { makeDefaultStorage } from '@urql/exchange-graphcache/default-storage';
 
 const refreshTokenMutation = graphql(/* GraphQL */ `
   mutation RefreshToken {
@@ -11,10 +12,17 @@ const refreshTokenMutation = graphql(/* GraphQL */ `
   }
 `);
 
+export const storage = makeDefaultStorage({
+  idbName: 'graphcache-v3',
+  maxAge: 7
+})
+
+const cache = offlineExchange({ storage })
+
 export const client = new Client({
   url: '/api/graphql',
   exchanges: [
-    cacheExchange({}),
+    cache,
     authExchange(async utils => {
       return {
         didAuthError: (error) => {
@@ -24,7 +32,8 @@ export const client = new Client({
           return operation
         },
         async refreshAuth() {
-          await utils.mutate(refreshTokenMutation, {});
+          const result = await utils.mutate(refreshTokenMutation, {});
+          result.error?.message
         },
       };
     }),
