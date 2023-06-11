@@ -204,7 +204,7 @@ export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
-  const [, resolveQuestion] = useMutation(resolverQuestionMutation)
+  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
   const [text, setText] = useState<string | undefined>(undefined)
   const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string | undefined>(undefined)
   const [filterAno, setFilterAno] = useState<string | undefined>(undefined)
@@ -580,7 +580,7 @@ export default function Questoes() {
 
             <QuestionButtons>
               <div className='resposta'>
-                <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
+                <Button onClick={answerQuestion} loading={loadingReponse}>{!isCorrect ? 'Responder' : 'Próximo'}</Button>
               </div>
 
               <ul className='actionsButton'>
@@ -617,4 +617,3 @@ export default function Questoes() {
     </>
   )
 }
-
