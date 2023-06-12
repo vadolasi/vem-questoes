@@ -27,10 +27,10 @@ export const ContainerFilter = styled("div", {
     },
 
     '.Selects':{
-        display: 'grid',
-        gridTemplateColumns: "228px 228px 228px",
-        gridTemplateRows: "auto auto",
-        gap: "10px"
+        display: 'flex',
+        flexWrap: "wrap",
+        gap: "10px",
+        width: "100%"
     },
 
     '.buttons': {
@@ -64,7 +64,6 @@ export const ContainerFilter = styled("div", {
 
 export const Fieldset = styled("fieldset", {
     border: "none",
-    width: '100%',
 
     "legend": {
         fontFamily: 'Nunito',

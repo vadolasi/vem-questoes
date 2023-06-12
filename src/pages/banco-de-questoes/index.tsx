@@ -230,14 +230,14 @@ export default function Questoes() {
   const [isConfettiActive, setIsConfettiActive] = useState(false);
   const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
   const [text, setText] = useState<string | undefined>(undefined)
-  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string[]>([])
-  const [filterAno, setFilterAno] = useState<string[]>([])
-  const [filterLocal, setFilterLocal] = useState<string[]>([])
-  const [filterPerfil, setFilterPerfil] = useState<string[]>([])
-  const [filterArea, setFilterArea] = useState<string[]>([])
-  const [filterSubarea, setFilterSubarea] = useState<string[]>([])
-  const [filterEstado, setFilterEstado] = useState<string[]>([])
-  const [filterBanca, setFilterBanca] = useState<string[]>([])
+  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<{ value: string, label: string }[]>([])
+  const [filterAno, setFilterAno] = useState<{ value: string, label: string }[]>([])
+  const [filterLocal, setFilterLocal] = useState<{ value: string, label: string }[]>([])
+  const [filterPerfil, setFilterPerfil] = useState<{ value: string, label: string }[]>([])
+  const [filterArea, setFilterArea] = useState<{ value: string, label: string }[]>([])
+  const [filterSubarea, setFilterSubarea] = useState<{ value: string, label: string }[]>([])
+  const [filterEstado, setFilterEstado] = useState<{ value: string, label: string }[]>([])
+  const [filterBanca, setFilterBanca] = useState<{ value: string, label: string }[]>([])
   const [showReportBox, setShowReportBox] = useState(false)
 
   const [, executeAddQuestionToNotebook] = useMutation(addQuestionToNotebookMutation)
@@ -253,32 +253,40 @@ export default function Questoes() {
   const [filter, setFilter] = useState({
     itemsPerPage: 1,
     text,
-    processoSeletivoIds: filterProcessoSeletivo,
-    anoIds: filterAno,
-    localIds: filterLocal,
-    perilIds: filterPerfil,
-    areaIds: filterArea,
-    subareaIds: filterSubarea,
-    estadoIds: filterEstado,
-    bancaIds: filterBanca
+    processoSeletivoIds: filterProcessoSeletivo.map(item => item.value),
+    anoIds: filterAno.map(item => item.value),
+    localIds: filterLocal.map(item => item.value),
+    perilIds: filterPerfil.map(item => item.value),
+    areaIds: filterArea.map(item => item.value),
+    subareaIds: filterSubarea.map(item => item.value),
+    estadoIds: filterEstado.map(item => item.value),
+    bancaIds: filterBanca.map(item => item.value)
   })
 
   const updateFilter = () => {
     setFilter({
       itemsPerPage: 1,
       text,
-      processoSeletivoIds: filterProcessoSeletivo,
-      anoIds: filterAno,
-      localIds: filterLocal,
-      perilIds: filterPerfil,
-      areaIds: filterArea,
-      subareaIds: filterSubarea,
-      estadoIds: filterEstado,
-      bancaIds: filterBanca
+      processoSeletivoIds: filterProcessoSeletivo.map(item => item.value),
+      anoIds: filterAno.map(item => item.value),
+      localIds: filterLocal.map(item => item.value),
+      perilIds: filterPerfil.map(item => item.value),
+      areaIds: filterArea.map(item => item.value),
+      subareaIds: filterSubarea.map(item => item.value),
+      estadoIds: filterEstado.map(item => item.value),
+      bancaIds: filterBanca.map(item => item.value)
     })
   }
 
   const clearFilter = () => {
+    setFilterProcessoSeletivo([])
+    setFilterAno([])
+    setFilterLocal([])
+    setFilterPerfil([])
+    setFilterArea([])
+    setFilterSubarea([])
+    setFilterEstado([])
+    setFilterBanca([])
     setFilter({
       itemsPerPage: 1,
       text: undefined,
@@ -432,14 +440,14 @@ export default function Questoes() {
               <SearchInput placeholder='Pesquisar' onChange={text => setText(text)} />
               <div className='inputs'>
                 <div className='Selects'>
-                  <RSelect placeholder="Processos seletivos" isMulti options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterProcessoSeletivo([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Anos" isMulti options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []} onChange={options => setFilterAno([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Locais" isMulti options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterLocal([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Perfis" isMulti options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterPerfil([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Areas" isMulti options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterArea([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Subareas" isMulti options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterSubarea([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Estados" isMulti options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterEstado([...options.map(option => option.value)])} />
-                  <RSelect placeholder="Bancas" isMulti options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterBanca([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Processos seletivos" value={filterProcessoSeletivo} isMulti options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterProcessoSeletivo([...options])} />
+                  <RSelect placeholder="Anos" isMulti options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []} onChange={options => setFilterAno([...options])} />
+                  <RSelect placeholder="Locais" isMulti options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterLocal([...options])} />
+                  <RSelect placeholder="Perfis" isMulti options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterPerfil([...options])} />
+                  <RSelect placeholder="Areas" isMulti options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterArea([...options])} />
+                  <RSelect placeholder="Subareas" isMulti options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterSubarea([...options])} />
+                  <RSelect placeholder="Estados" isMulti options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterEstado([...options])} />
+                  <RSelect placeholder="Bancas" isMulti options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterBanca([...options])} />
                 </div>
 
                 <Fieldset>

@@ -23,9 +23,7 @@ export const Container = styled("div", {
     },
 
     '.Selects':{
-        display: 'grid',
-        gridTemplateColumns: "228px 228px 228px",
-        gridTemplateRows: "auto auto",
+        display: 'flex',
         gap: "10px"
     },
 
@@ -50,9 +48,7 @@ export const Container = styled("div", {
     '@media (max-width: 1200px)': {
     width: "350px",
     '.Selects':{
-        display: 'grid',
-        gridTemplateColumns: "150px",
-        gridTemplateRows: "auto auto auto auto",
+        display: 'flex',
         gap: "10px"
     },
 }
@@ -60,7 +56,7 @@ export const Container = styled("div", {
 
 export const Fieldset = styled("fieldset", {
     border: "none",
-    
+
     "legend": {
         fontFamily: 'Nunito',
         fontWeight: 700,
