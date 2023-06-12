@@ -10,7 +10,7 @@ type Query {
   subareas: [Subarea!]!
   estados: [Estado!]!
   bancas: [Banca!]!
-  questions(page: Float = 1, itemsPerPage: Float = 10, text: String, processoSeletivoId: String, anoId: String, localId: String, perfilId: String, areaId: String, subareaId: String, estadoId: String, bancaId: String, apenasRespondidas: Boolean, apenasNaoRespondidas: Boolean, apenasRespondidasCertas: Boolean, apenasRespondidasErradas: Boolean): QuestionsResponse!
+  questions(page: Float = 1, itemsPerPage: Float = 10, text: String, processoSeletivoIds: [String!] = [], anoIds: [String!] = [], localIds: [String!] = [], perfilIds: [String!] = [], areaIds: [String!] = [], subareaIds: [String!] = [], estadoIds: [String!] = [], bancaIds: [String!] = [], apenasRespondidas: Boolean, apenasNaoRespondidas: Boolean, apenasRespondidasCertas: Boolean, apenasRespondidasErradas: Boolean): QuestionsResponse!
   question(id: String!): [Question!]!
   notebooks: [NotebookModel!]!
   notebook(notebookId: String!): NotebookModel!

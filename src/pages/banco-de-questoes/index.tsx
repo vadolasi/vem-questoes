@@ -31,6 +31,8 @@ import Confetti from 'react-confetti';
 import { SpinnerCircular } from 'spinners-react';
 import { CommentCard } from '@/components/commentCard';
 
+import RSelect from 'react-select'
+
 const resolverQuestionMutation = graphql(/* GraphQL */ `
   mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
     addAnswer(
@@ -149,14 +151,14 @@ const getQuestionQuery = graphql(/* GraphQL */ `
     $page: Float
     $itemsPerPage: Float
     $text: String
-    $processoSeletivoId: String
-    $anoId: String
-    $localId: String
-    $perilId: String
-    $areaId: String
-    $subareaId: String
-    $estadoId: String
-    $bancaId: String
+    $processoSeletivoIds: [String!]
+    $anoIds: [String!]
+    $localIds: [String!]
+    $perilIds: [String!]
+    $areaIds: [String!]
+    $subareaIds: [String!]
+    $estadoIds: [String!]
+    $bancaIds: [String!]
     $apenasRespondidas: Boolean
     $apenasNaoRespondidas: Boolean
     $apenasRespondidasCertas: Boolean
@@ -166,14 +168,14 @@ const getQuestionQuery = graphql(/* GraphQL */ `
       page: $page,
       itemsPerPage: $itemsPerPage
       text: $text
-      processoSeletivoId: $processoSeletivoId
-      anoId: $anoId
-      localId: $localId
-      perfilId: $perilId
-      areaId: $areaId
-      subareaId: $subareaId
-      estadoId: $estadoId
-      bancaId: $bancaId
+      processoSeletivoIds: $processoSeletivoIds
+      anoIds: $anoIds
+      localIds: $localIds
+      perfilIds: $perilIds
+      areaIds: $areaIds
+      subareaIds: $subareaIds
+      estadoIds: $estadoIds
+      bancaIds: $bancaIds
       apenasRespondidas: $apenasRespondidas
       apenasNaoRespondidas: $apenasNaoRespondidas
       apenasRespondidasCertas: $apenasRespondidasCertas
@@ -228,14 +230,14 @@ export default function Questoes() {
   const [isConfettiActive, setIsConfettiActive] = useState(false);
   const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
   const [text, setText] = useState<string | undefined>(undefined)
-  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string | undefined>(undefined)
-  const [filterAno, setFilterAno] = useState<string | undefined>(undefined)
-  const [filterLocal, setFilterLocal] = useState<string | undefined>(undefined)
-  const [filterPerfil, setFilterPerfil] = useState<string | undefined>(undefined)
-  const [filterArea, setFilterArea] = useState<string | undefined>(undefined)
-  const [filterSubarea, setFilterSubarea] = useState<string | undefined>(undefined)
-  const [filterEstado, setFilterEstado] = useState<string | undefined>(undefined)
-  const [filterBanca, setFilterBanca] = useState<string | undefined>(undefined)
+  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string[]>([])
+  const [filterAno, setFilterAno] = useState<string[]>([])
+  const [filterLocal, setFilterLocal] = useState<string[]>([])
+  const [filterPerfil, setFilterPerfil] = useState<string[]>([])
+  const [filterArea, setFilterArea] = useState<string[]>([])
+  const [filterSubarea, setFilterSubarea] = useState<string[]>([])
+  const [filterEstado, setFilterEstado] = useState<string[]>([])
+  const [filterBanca, setFilterBanca] = useState<string[]>([])
   const [showReportBox, setShowReportBox] = useState(false)
 
   const [, executeAddQuestionToNotebook] = useMutation(addQuestionToNotebookMutation)
@@ -251,28 +253,28 @@ export default function Questoes() {
   const [filter, setFilter] = useState({
     itemsPerPage: 1,
     text,
-    processoSeletivoId: filterProcessoSeletivo,
-    anoId: filterAno,
-    localId: filterLocal,
-    perilId: filterPerfil,
-    areaId: filterArea,
-    subareaId: filterSubarea,
-    estadoId: filterEstado,
-    bancaId: filterBanca
+    processoSeletivoIds: filterProcessoSeletivo,
+    anoIds: filterAno,
+    localIds: filterLocal,
+    perilIds: filterPerfil,
+    areaIds: filterArea,
+    subareaIds: filterSubarea,
+    estadoIds: filterEstado,
+    bancaIds: filterBanca
   })
 
   const updateFilter = () => {
     setFilter({
       itemsPerPage: 1,
       text,
-      processoSeletivoId: filterProcessoSeletivo,
-      anoId: filterAno,
-      localId: filterLocal,
-      perilId: filterPerfil,
-      areaId: filterArea,
-      subareaId: filterSubarea,
-      estadoId: filterEstado,
-      bancaId: filterBanca
+      processoSeletivoIds: filterProcessoSeletivo,
+      anoIds: filterAno,
+      localIds: filterLocal,
+      perilIds: filterPerfil,
+      areaIds: filterArea,
+      subareaIds: filterSubarea,
+      estadoIds: filterEstado,
+      bancaIds: filterBanca
     })
   }
 
@@ -280,14 +282,14 @@ export default function Questoes() {
     setFilter({
       itemsPerPage: 1,
       text: undefined,
-      processoSeletivoId: undefined,
-      anoId: undefined,
-      localId: undefined,
-      perilId: undefined,
-      areaId: undefined,
-      subareaId: undefined,
-      estadoId: undefined,
-      bancaId: undefined
+      processoSeletivoIds: [],
+      anoIds: [],
+      localIds: [],
+      perilIds: [],
+      areaIds: [],
+      subareaIds: [],
+      estadoIds: [],
+      bancaIds: []
     })
   }
 
@@ -430,14 +432,14 @@ export default function Questoes() {
               <SearchInput placeholder='Pesquisar' onChange={text => setText(text)} />
               <div className='inputs'>
                 <div className='Selects'>
-                  <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterProcessoSeletivo(ev.target.value || undefined)} />
-                  <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} onChange={ev => setFilterAno(ev.target.value|| undefined)} />
-                  <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterLocal(ev.target.value || undefined)} />
-                  <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterPerfil(ev.target.value || undefined)} />
-                  <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterArea(ev.target.value || undefined)} />
-                  <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterSubarea(ev.target.value || undefined)} />
-                  <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterEstado(ev.target.value || undefined)} />
-                  <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterBanca(ev.target.value || undefined)} />
+                  <RSelect placeholder="Processos seletivos" isMulti options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterProcessoSeletivo([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Anos" isMulti options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []} onChange={options => setFilterAno([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Locais" isMulti options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterLocal([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Perfis" isMulti options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterPerfil([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Areas" isMulti options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterArea([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Subareas" isMulti options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterSubarea([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Estados" isMulti options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterEstado([...options.map(option => option.value)])} />
+                  <RSelect placeholder="Bancas" isMulti options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterBanca([...options.map(option => option.value)])} />
                 </div>
 
                 <Fieldset>
@@ -539,9 +541,6 @@ export default function Questoes() {
                       </button>
 
                     </>}
-
-
-
 
                   </MenuPagination>
                   <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >

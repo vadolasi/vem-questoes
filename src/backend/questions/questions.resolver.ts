@@ -100,7 +100,7 @@ export class QuestionsResolver {
   @Authorized()
   @Query(() => QuestionsResponse)
   async questions(
-    @Args() { page, itemsPerPage, text, processoSeletivoId, anoId, localId, perfilId, areaId, subareaId, estadoId, bancaId, apenasNaoRespondidas, apenasRespondidas, apenasRespondidasCertas, apenasRespondidasErradas }: GetQuestionsInput,
+    @Args() { page, itemsPerPage, text, processoSeletivoIds, anoIds, localIds, perfilIds, areaIds, subareaIds, estadoIds, bancaIds, apenasNaoRespondidas, apenasRespondidas, apenasRespondidasCertas, apenasRespondidasErradas }: GetQuestionsInput,
     @Info() info: GraphQLResolveInfo,
     @CurrentUserID() userId: string
   ) {
@@ -112,14 +112,14 @@ export class QuestionsResolver {
       itemsPerPage,
       requestedFields,
       text,
-      processoSeletivoId,
-      anoId,
-      localId,
-      perfilId,
-      areaId,
-      subareaId,
-      estadoId,
-      bancaId,
+      processoSeletivoIds,
+      anoIds,
+      localIds,
+      perfilIds,
+      areaIds,
+      subareaIds,
+      estadoIds,
+      bancaIds,
       apenasNaoRespondidas,
       apenasRespondidas,
       apenasRespondidasCertas,
