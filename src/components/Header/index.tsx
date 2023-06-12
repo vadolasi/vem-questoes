@@ -46,7 +46,7 @@ export const Header = () => {
           <div className={`notificacoesBox ${showNotificacoes ? '' : 'hidden'}`}>
             <h1>Notificações</h1>
             {data?.notifications.map(notification => (
-              <NotificacoesCard>{notification.body}</NotificacoesCard>
+              <NotificacoesCard key={notification.id}>{notification.body}</NotificacoesCard>
             ))}
           </div>
           <ProfileInfo>

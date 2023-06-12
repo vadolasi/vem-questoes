@@ -213,6 +213,26 @@ export class QuestionsResolver {
   }
 
   @Authorized()
+  @Mutation(() => NotebookModel)
+  async addQuestionToNotebook(
+    @CurrentUserID() userId: string,
+    @Arg("id") notebookId: string,
+    @Arg("questionId") questionId: string
+  ) {
+    return await this.questionsService.addQuestionToNotebook(userId, notebookId, questionId)
+  }
+
+  @Authorized()
+  @Mutation(() => NotebookModel)
+  async removeQuestionFromNotebook(
+    @CurrentUserID() userId: string,
+    @Arg("id") notebookId: string,
+    @Arg("questionId") questionId: string
+  ) {
+    return await this.questionsService.removeQuestionFromNotebook(userId, notebookId, questionId)
+  }
+
+  @Authorized()
   @Query(() => SimuladosResponse)
   async simulados(
     @CurrentUserID() userId: string,

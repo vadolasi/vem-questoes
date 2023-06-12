@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container } from './styles';
-import {AiOutlineRead, AiOutlineEdit, AiOutlineCheck, AiOutlineDelete, AiOutlinePlus} from 'react-icons/ai'
+import { AiOutlineEdit, AiOutlineCheck, AiOutlineDelete, AiOutlinePlus, AiOutlineMinus, AiOutlineRead} from 'react-icons/ai'
 import { graphql } from '@/gql';
 import { useMutation } from 'urql';
 
@@ -11,7 +11,10 @@ interface NotebookCardProps {
   questions: any[],
   deleteClick?: any,
   add?: boolean,
-  addFunction?: any,
+  addFunction?: () => void,
+  removeFunction?: () => void
+  edit?: boolean,
+  currentQuestion?: string
 }
 
 const updateNotebookMutation = graphql(/* GraphQL */ `
@@ -25,23 +28,23 @@ const updateNotebookMutation = graphql(/* GraphQL */ `
   }
 `);
 
-export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick, add, addFunction }) => {
+export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick, add, edit, currentQuestion, addFunction, removeFunction }) => {
     const [titleCard, setTitleCard] = useState(title);
     const [descriptionCard, setDescriptionCard] = useState(description);
-    const [edit, setEdit] = useState(true);
+    const [editing, setEditing] = useState(true);
     const [, executeMutation] = useMutation(updateNotebookMutation)
 
     useEffect(() => {
       if (titleCard !== title || descriptionCard !== description) {
         executeMutation({ id, name: titleCard, description: descriptionCard })
       }
-    }, [edit])
+    }, [editing])
 
     return (
         <Container>
             <div className='Titulos'>
-                <input type="text" className={edit ? 'title' : 'title edit'} readOnly={edit} value={titleCard} onChange={e => setTitleCard(e.target.value)}/>
-                <input type="text" className={edit ? 'description' : 'description edit'} readOnly={edit} value={descriptionCard} onChange={e => setDescriptionCard(e.target.value)}/>
+              <input type="text" className={editing ? 'title' : 'title edit'} readOnly={editing} value={titleCard} onChange={e => setTitleCard(e.target.value)}/>
+              <input type="text" className={editing ? 'description' : 'description edit'} readOnly={editing} value={descriptionCard} onChange={e => setDescriptionCard(e.target.value)}/>
             </div>
 
             <div className='Questions'>
@@ -49,9 +52,21 @@ export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, descripti
             </div>
 
             <div className='Buttons'>
-                <button onClick={add ? addFunction : ''}>{add ? <AiOutlinePlus/> : <AiOutlineRead/>}</button>
-                <button onClick={() => setEdit(!edit)}> {edit ? <AiOutlineEdit/> : <AiOutlineCheck/> }</button>
-                <button onClick={deleteClick}><AiOutlineDelete/></button>
+                {add ? (
+                  questions.map(question => question.id).includes(currentQuestion) ? (
+                    <button onClick={removeFunction}><AiOutlineMinus/></button>
+                  ) : (
+                    <button onClick={addFunction}><AiOutlinePlus/></button>
+                  )
+                ) : (
+                  <button><AiOutlineRead/></button>
+                )}
+                {edit && (
+                  <>
+                    <button onClick={() => setEditing(!editing)}> {editing ? <AiOutlineEdit/> : <AiOutlineCheck/> }</button>
+                    <button onClick={deleteClick}><AiOutlineDelete/></button>
+                  </>
+                )}
             </div>
         </Container>
     );

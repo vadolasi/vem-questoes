@@ -25,18 +25,17 @@ export const DefaultBoxQuestion: React.FC<DefaultBoxQuestionProps> = ({className
             <strong>{strong}</strong>
             </h1>}
             {picture && <Image src={picture} alt={alt}/>  }
-            {comment && 
-                <CommentBar />
-            }
-            
+
               </>:
               <>
               <div className='comments'>
-            {children} 
-            </div> 
-            <CommentBar />
+            {children}
+            </div>
+            {comment &&
+                <CommentBar />
+            }
             </>
-           } 
+           }
         </Modal>
     );
 };

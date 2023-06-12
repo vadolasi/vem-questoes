@@ -122,6 +122,28 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
   }
 `)
 
+const addQuestionToNotebookMutation = graphql(/* GraphQL */`
+  mutation AddQuestionToNotebook($id: String!, $questionId: String!) {
+    addQuestionToNotebook(
+      id: $id
+      questionId: $questionId
+    ) {
+      id
+    }
+  }
+`)
+
+const removeQuestionFromNotebookMutation = graphql(/* GraphQL */`
+  mutation RemoveQuestionFromNotebook($id: String!, $questionId: String!) {
+    removeQuestionFromNotebook(
+      id: $id
+      questionId: $questionId
+    ) {
+      id
+    }
+  }
+`)
+
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetQuestions(
     $page: Float
@@ -216,6 +238,9 @@ export default function Questoes() {
   const [filterBanca, setFilterBanca] = useState<string | undefined>(undefined)
   const [showReportBox, setShowReportBox] = useState(false)
 
+  const [, executeAddQuestionToNotebook] = useMutation(addQuestionToNotebookMutation)
+  const [, executeRemoveQuestionFromNotebook] = useMutation(removeQuestionFromNotebookMutation)
+
   const { width, height } = useWindowDimensions();
 
   const [resultFilter] = useQuery({
@@ -223,10 +248,21 @@ export default function Questoes() {
   })
   const { data: filterData } = resultFilter
 
-  const [resultQuestion, getQuestions] = useQuery({
-    query: getQuestionQuery,
-    variables: {
-      page: questionNumber,
+  const [filter, setFilter] = useState({
+    itemsPerPage: 1,
+    text,
+    processoSeletivoId: filterProcessoSeletivo,
+    anoId: filterAno,
+    localId: filterLocal,
+    perilId: filterPerfil,
+    areaId: filterArea,
+    subareaId: filterSubarea,
+    estadoId: filterEstado,
+    bancaId: filterBanca
+  })
+
+  const updateFilter = () => {
+    setFilter({
       itemsPerPage: 1,
       text,
       processoSeletivoId: filterProcessoSeletivo,
@@ -237,6 +273,29 @@ export default function Questoes() {
       subareaId: filterSubarea,
       estadoId: filterEstado,
       bancaId: filterBanca
+    })
+  }
+
+  const clearFilter = () => {
+    setFilter({
+      itemsPerPage: 1,
+      text: undefined,
+      processoSeletivoId: undefined,
+      anoId: undefined,
+      localId: undefined,
+      perilId: undefined,
+      areaId: undefined,
+      subareaId: undefined,
+      estadoId: undefined,
+      bancaId: undefined
+    })
+  }
+
+  const [resultQuestion] = useQuery({
+    query: getQuestionQuery,
+    variables: {
+      ...filter,
+      page: questionNumber
     }
   })
 
@@ -391,11 +450,11 @@ export default function Questoes() {
               </div>
 
               <div className='buttons'>
-                <ButtonFilter className='filter' onClick={() => getQuestions()}>
+                <ButtonFilter className='filter' onClick={updateFilter}>
                   <AiOutlineFilter />
                   Salvar Filtro
                 </ButtonFilter>
-                <ButtonFilter className='reset'>
+                <ButtonFilter className='reset' onClick={clearFilter}>
                   <AiOutlineUndo />
                   Limpar Filtro
                 </ButtonFilter>
@@ -534,47 +593,65 @@ export default function Questoes() {
                   )}
               </ul>
 
-              <DefaultBoxQuestion
-                className={explicationBox ? 'show' : "hidden"}
-                h1='Essa questão ainda não possui gabarito comentando'
-                strong='Estamos trabalhando nisso!'
-                picture={professor}
-                alt='Professor dando aula' />
+              {explicationBox && (
+                <DefaultBoxQuestion
+                  h1='Essa questão ainda não possui gabarito comentando'
+                  strong='Estamos trabalhando nisso!'
+                  picture={professor}
+                  alt='Professor dando aula'
+                />
+              )}
 
-              <DefaultBoxQuestion
-                className={commentBox ? 'show' : "hidden"}
-                h1='Essa questão ainda não possui comentários'
-                strong='Seja o primeiro(a)!'
-                picture={typing}
-                alt='Rapaz digitando'
-                content={true}
-                comment={true}
-              >
+              {commentBox && (
+                <DefaultBoxQuestion
+                  className={commentBox ? 'show' : "hidden"}
+                  h1='Essa questão ainda não possui comentários'
+                  strong='Seja o primeiro(a)!'
+                  picture={typing}
+                  alt='Rapaz digitando'
+                  content={true}
+                  comment={true}
+                >
+                  <>
+                    <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                  </>
+                </DefaultBoxQuestion>
+              )}
+
+              {notebookBox && (
                 <>
-                  <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                <DefaultBoxQuestion content={true} comment={false}>
+                  <Search>
+                    <SearchInput onChange={() => {}} />
+                    <Button onClick={addNotebook}>+ Criar Caderno</Button>
+                  </Search>
+                  <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
+                  {notebookData?.notebooks && notebookData.notebooks.map(({ id, name, questions, description }) => (
+                    <NotebookCard
+                      id={id}
+                      key={id}
+                      title={name}
+                      description={description || ""}
+                      questions={questions}
+                      currentQuestion={currentQuestion?.id}
+                      addFunction={() => executeAddQuestionToNotebook({ id, questionId: currentQuestion?.id! })}
+                      removeFunction={() => executeRemoveQuestionFromNotebook({ id, questionId: currentQuestion?.id! })}
+                      add
+                    />
+                  ))}
+                  </DefaultSearchPage>
+                </DefaultBoxQuestion>
                 </>
-              </DefaultBoxQuestion>
+              )}
 
-
-              <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
-                <Search>
-                  <SearchInput onChange={() => {}} />
-                  <Button onClick={addNotebook}>+ Criar Caderno</Button>
-                </Search>
-                <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
-                {notebookData?.notebooks && notebookData.notebooks.map((notebook, index) => (
-                  <NotebookCard id={notebook.id} key={notebook.id} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)} add/>
-                ))}
-                </DefaultSearchPage>
-              </DefaultBoxQuestion>
-
-              <DefaultBoxQuestion
-                className={xrayBox ? 'show' : "hidden"}
-                h1='Esta questão ainda não tem Raio-X'
-                strong='Estamos trabalhando nisso!'
-                picture={raiox}
-                alt='mulher com uma maquina de dados'
-              />
+              {xrayBox && (
+                <DefaultBoxQuestion
+                  h1='Esta questão ainda não tem Raio-X'
+                  strong='Estamos trabalhando nisso!'
+                  picture={raiox}
+                  alt='mulher com uma maquina de dados'
+                />
+              )}
 
             </QuestionStatement>
 

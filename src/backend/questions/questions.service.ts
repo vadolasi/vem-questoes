@@ -308,6 +308,48 @@ export class QuestionsService {
     return notebook
   }
 
+  async addQuestionToNotebook(userId: string, notebookId: string, questionId: string) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found")
+    }
+
+    return await this.prisma.notebook.update({
+      where: {
+        id: notebookId
+      },
+      data: {
+        questions: {
+          connect: {
+            id: questionId
+          }
+        }
+      }
+    })
+  }
+
+  async removeQuestionFromNotebook(userId: string, notebookId: string, questionId: string) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found")
+    }
+
+    return await this.prisma.notebook.update({
+      where: {
+        id: notebookId
+      },
+      data: {
+        questions: {
+          disconnect: {
+            id: questionId
+          }
+        }
+      }
+    })
+  }
+
   async simulados(page: number, itemsPerPage: number, userId: string) {
     const quantity = await this.prisma.simulado.count({ where: { userId } })
 
