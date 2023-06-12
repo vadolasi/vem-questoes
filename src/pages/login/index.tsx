@@ -61,7 +61,7 @@ export default function Login() {
             <Input text="Senha" value={password} type='password' placeholder='Mínimo 8 caracteres' onChange={(e: any) => setPassword(e.target.value)} />
           </div>
 
-          <Button disabled={loading} onClick={() => { handleLogin() }} >{loading ? <SpinnerCircular color="#f0f0fc" size="40" /> : 'Entrar'}</Button>
+          <Button loading={loading} onClick={handleLogin}>Entrar</Button>
 
           <ButtonText text='Esqueceu sua senha?' />
         </Form>

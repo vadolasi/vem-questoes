@@ -76,14 +76,14 @@ export class QuestionsService {
     itemsPerPage: number,
     requestedFields: string[],
     text?: string,
-    processoSeletivoId?: string,
-    anoId?: string,
-    localId?: string,
-    perfilId?: string,
-    areaId?: string,
-    subareaId?: string,
-    estadoId?: string,
-    bancaId?: string,
+    processoSeletivoIds?: string[],
+    anoIds?: string[],
+    localIds?: string[],
+    perfilIds?: string[],
+    areaIds?: string[],
+    subareaIds?: string[],
+    estadoIds?: string[],
+    bancaIds?: string[],
     apenasNaoRespondidas?: boolean,
     apenasRespondidas?: boolean,
     apenasRespondidasCertas?: boolean,
@@ -107,14 +107,30 @@ export class QuestionsService {
             }
           }
         ],
-        processoSeletivoId,
-        anoId,
-        localId,
-        perfilId,
-        areaId,
-        subareaId,
-        estadoId,
-        bancaId
+        processoSeletivoId: (processoSeletivoIds?.length || 0) > 0 ? {
+          in: processoSeletivoIds
+        } : undefined,
+        anoId: (anoIds?.length || 0) > 0 ? {
+          in: anoIds
+        } : undefined,
+        localId: (localIds?.length || 0) > 0 ? {
+          in: localIds
+        }: undefined,
+        perfilId: (perfilIds?.length || 0) > 0 ? {
+          in: perfilIds
+        } : undefined,
+        areaId: (areaIds?.length || 0) > 0 ? {
+          in: areaIds
+        }: undefined,
+        subareaId: (subareaIds?.length || 0) > 0 ? {
+          in: subareaIds
+        }: undefined,
+        estadoId: (estadoIds?.length || 0) > 0 ? {
+          in: estadoIds
+        } : undefined,
+        bancaId: (bancaIds?.length || 0) > 0 ? {
+          in: bancaIds
+        }: undefined,
       }
     })
 
@@ -136,14 +152,30 @@ export class QuestionsService {
             }
           }
         ] : undefined,
-        processoSeletivoId,
-        anoId,
-        localId,
-        perfilId,
-        areaId,
-        subareaId,
-        estadoId,
-        bancaId,
+        processoSeletivoId: (processoSeletivoIds?.length || 0) > 0 ? {
+          in: processoSeletivoIds
+        } : undefined,
+        anoId: (anoIds?.length || 0) > 0 ? {
+          in: anoIds
+        } : undefined,
+        localId: (localIds?.length || 0) > 0 ? {
+          in: localIds
+        }: undefined,
+        perfilId: (perfilIds?.length || 0) > 0 ? {
+          in: perfilIds
+        } : undefined,
+        areaId: (areaIds?.length || 0) > 0 ? {
+          in: areaIds
+        }: undefined,
+        subareaId: (subareaIds?.length || 0) > 0 ? {
+          in: subareaIds
+        }: undefined,
+        estadoId: (estadoIds?.length || 0) > 0 ? {
+          in: estadoIds
+        } : undefined,
+        bancaId: (bancaIds?.length || 0) > 0 ? {
+          in: bancaIds
+        }: undefined,
         responses: apenasRespondidas || apenasNaoRespondidas ? {
           some: {
             userId: apenasRespondidas || apenasRespondidasCertas || apenasRespondidasErradas ? userId : undefined,
@@ -306,6 +338,48 @@ export class QuestionsService {
     }
 
     return notebook
+  }
+
+  async addQuestionToNotebook(userId: string, notebookId: string, questionId: string) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found")
+    }
+
+    return await this.prisma.notebook.update({
+      where: {
+        id: notebookId
+      },
+      data: {
+        questions: {
+          connect: {
+            id: questionId
+          }
+        }
+      }
+    })
+  }
+
+  async removeQuestionFromNotebook(userId: string, notebookId: string, questionId: string) {
+    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+
+    if (!notebook) {
+      throw new Error("Notebook not found")
+    }
+
+    return await this.prisma.notebook.update({
+      where: {
+        id: notebookId
+      },
+      data: {
+        questions: {
+          disconnect: {
+            id: questionId
+          }
+        }
+      }
+    })
   }
 
   async simulados(page: number, itemsPerPage: number, userId: string) {

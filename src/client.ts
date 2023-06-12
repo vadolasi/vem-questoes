@@ -1,10 +1,10 @@
-import { Client, fetchExchange } from 'urql';
+import { Client, cacheExchange, fetchExchange } from 'urql';
 import { authExchange } from '@urql/exchange-auth'
 
 import { graphql } from "./gql";
 
 // import { offlineExchange } from '@urql/exchange-graphcache';
-import { makeDefaultStorage } from '@urql/exchange-graphcache/default-storage';
+// import { makeDefaultStorage } from '@urql/exchange-graphcache/default-storage';
 
 const refreshTokenMutation = graphql(/* GraphQL */ `
   mutation RefreshToken {
@@ -24,7 +24,7 @@ const cache = offlineExchange({ storage })
 export const client = new Client({
   url: '/api/graphql',
   exchanges: [
-    // cache,
+    cacheExchange,
     authExchange(async utils => {
       return {
         didAuthError: (error) => {

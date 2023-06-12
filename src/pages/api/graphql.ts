@@ -15,6 +15,7 @@ import { GqlContext } from "@/backend/gqlContext"
 import { QuestionsResolver } from "@/backend/questions/questions.resolver"
 import { NotificationsResolver } from "@/backend/notifications/notifications.resolver"
 import { TicketsResolver } from "@/backend/tickets/tickets.resolver"
+import { useResponseCache } from "@graphql-yoga/plugin-response-cache"
 
 export const config = {
   api: {
@@ -37,10 +38,15 @@ export default createYoga<GqlContext>({
   schema,
   graphqlEndpoint: "/api/graphql",
   renderGraphiQL,
-  plugins: [useGraphQlJit()],
+  plugins: [
+    useGraphQlJit(),
+    useResponseCache({
+      session: (request) => request.headers.get("Cookie")
+    })
+  ],
   context: ({ req, res }) => ({
     getUserId: () => {
-       const token = req.cookies.token
+      const token = req.cookies.token
 
       if (!token) {
         return null

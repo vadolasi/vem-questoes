@@ -31,6 +31,8 @@ import Confetti from 'react-confetti';
 import { SpinnerCircular } from 'spinners-react';
 import { CommentCard } from '@/components/commentCard';
 
+import RSelect from 'react-select'
+
 const resolverQuestionMutation = graphql(/* GraphQL */ `
   mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
     addAnswer(
@@ -122,19 +124,41 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
   }
 `)
 
+const addQuestionToNotebookMutation = graphql(/* GraphQL */`
+  mutation AddQuestionToNotebook($id: String!, $questionId: String!) {
+    addQuestionToNotebook(
+      id: $id
+      questionId: $questionId
+    ) {
+      id
+    }
+  }
+`)
+
+const removeQuestionFromNotebookMutation = graphql(/* GraphQL */`
+  mutation RemoveQuestionFromNotebook($id: String!, $questionId: String!) {
+    removeQuestionFromNotebook(
+      id: $id
+      questionId: $questionId
+    ) {
+      id
+    }
+  }
+`)
+
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetQuestions(
     $page: Float
     $itemsPerPage: Float
     $text: String
-    $processoSeletivoId: String
-    $anoId: String
-    $localId: String
-    $perilId: String
-    $areaId: String
-    $subareaId: String
-    $estadoId: String
-    $bancaId: String
+    $processoSeletivoIds: [String!]
+    $anoIds: [String!]
+    $localIds: [String!]
+    $perilIds: [String!]
+    $areaIds: [String!]
+    $subareaIds: [String!]
+    $estadoIds: [String!]
+    $bancaIds: [String!]
     $apenasRespondidas: Boolean
     $apenasNaoRespondidas: Boolean
     $apenasRespondidasCertas: Boolean
@@ -144,14 +168,14 @@ const getQuestionQuery = graphql(/* GraphQL */ `
       page: $page,
       itemsPerPage: $itemsPerPage
       text: $text
-      processoSeletivoId: $processoSeletivoId
-      anoId: $anoId
-      localId: $localId
-      perfilId: $perilId
-      areaId: $areaId
-      subareaId: $subareaId
-      estadoId: $estadoId
-      bancaId: $bancaId
+      processoSeletivoIds: $processoSeletivoIds
+      anoIds: $anoIds
+      localIds: $localIds
+      perfilIds: $perilIds
+      areaIds: $areaIds
+      subareaIds: $subareaIds
+      estadoIds: $estadoIds
+      bancaIds: $bancaIds
       apenasRespondidas: $apenasRespondidas
       apenasNaoRespondidas: $apenasNaoRespondidas
       apenasRespondidasCertas: $apenasRespondidasCertas
@@ -204,17 +228,20 @@ export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
-  const [, resolveQuestion] = useMutation(resolverQuestionMutation)
+  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
   const [text, setText] = useState<string | undefined>(undefined)
-  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<string | undefined>(undefined)
-  const [filterAno, setFilterAno] = useState<string | undefined>(undefined)
-  const [filterLocal, setFilterLocal] = useState<string | undefined>(undefined)
-  const [filterPerfil, setFilterPerfil] = useState<string | undefined>(undefined)
-  const [filterArea, setFilterArea] = useState<string | undefined>(undefined)
-  const [filterSubarea, setFilterSubarea] = useState<string | undefined>(undefined)
-  const [filterEstado, setFilterEstado] = useState<string | undefined>(undefined)
-  const [filterBanca, setFilterBanca] = useState<string | undefined>(undefined)
+  const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<{ value: string, label: string }[]>([])
+  const [filterAno, setFilterAno] = useState<{ value: string, label: string }[]>([])
+  const [filterLocal, setFilterLocal] = useState<{ value: string, label: string }[]>([])
+  const [filterPerfil, setFilterPerfil] = useState<{ value: string, label: string }[]>([])
+  const [filterArea, setFilterArea] = useState<{ value: string, label: string }[]>([])
+  const [filterSubarea, setFilterSubarea] = useState<{ value: string, label: string }[]>([])
+  const [filterEstado, setFilterEstado] = useState<{ value: string, label: string }[]>([])
+  const [filterBanca, setFilterBanca] = useState<{ value: string, label: string }[]>([])
   const [showReportBox, setShowReportBox] = useState(false)
+
+  const [, executeAddQuestionToNotebook] = useMutation(addQuestionToNotebookMutation)
+  const [, executeRemoveQuestionFromNotebook] = useMutation(removeQuestionFromNotebookMutation)
 
   const { width, height } = useWindowDimensions();
 
@@ -223,20 +250,62 @@ export default function Questoes() {
   })
   const { data: filterData } = resultFilter
 
-  const [resultQuestion, getQuestions] = useQuery({
-    query: getQuestionQuery,
-    variables: {
-      page: questionNumber,
+  const [filter, setFilter] = useState({
+    itemsPerPage: 1,
+    text,
+    processoSeletivoIds: filterProcessoSeletivo.map(item => item.value),
+    anoIds: filterAno.map(item => item.value),
+    localIds: filterLocal.map(item => item.value),
+    perilIds: filterPerfil.map(item => item.value),
+    areaIds: filterArea.map(item => item.value),
+    subareaIds: filterSubarea.map(item => item.value),
+    estadoIds: filterEstado.map(item => item.value),
+    bancaIds: filterBanca.map(item => item.value)
+  })
+
+  const updateFilter = () => {
+    setFilter({
       itemsPerPage: 1,
       text,
-      processoSeletivoId: filterProcessoSeletivo,
-      anoId: filterAno,
-      localId: filterLocal,
-      perilId: filterPerfil,
-      areaId: filterArea,
-      subareaId: filterSubarea,
-      estadoId: filterEstado,
-      bancaId: filterBanca
+      processoSeletivoIds: filterProcessoSeletivo.map(item => item.value),
+      anoIds: filterAno.map(item => item.value),
+      localIds: filterLocal.map(item => item.value),
+      perilIds: filterPerfil.map(item => item.value),
+      areaIds: filterArea.map(item => item.value),
+      subareaIds: filterSubarea.map(item => item.value),
+      estadoIds: filterEstado.map(item => item.value),
+      bancaIds: filterBanca.map(item => item.value)
+    })
+  }
+
+  const clearFilter = () => {
+    setFilterProcessoSeletivo([])
+    setFilterAno([])
+    setFilterLocal([])
+    setFilterPerfil([])
+    setFilterArea([])
+    setFilterSubarea([])
+    setFilterEstado([])
+    setFilterBanca([])
+    setFilter({
+      itemsPerPage: 1,
+      text: undefined,
+      processoSeletivoIds: [],
+      anoIds: [],
+      localIds: [],
+      perilIds: [],
+      areaIds: [],
+      subareaIds: [],
+      estadoIds: [],
+      bancaIds: []
+    })
+  }
+
+  const [resultQuestion] = useQuery({
+    query: getQuestionQuery,
+    variables: {
+      ...filter,
+      page: questionNumber
     }
   })
 
@@ -371,14 +440,14 @@ export default function Questoes() {
               <SearchInput placeholder='Pesquisar' onChange={text => setText(text)} />
               <div className='inputs'>
                 <div className='Selects'>
-                  <Select label='Processo seletivo' options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterProcessoSeletivo(ev.target.value || undefined)} />
-                  <Select label='Ano' options={filterData?.anos.map(({ id, ano }) => ({ value: id, option: ano.toString() })) || []} onChange={ev => setFilterAno(ev.target.value|| undefined)} />
-                  <Select label='Local' options={filterData?.locais.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterLocal(ev.target.value || undefined)} />
-                  <Select label='Perfil' options={filterData?.perfis.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterPerfil(ev.target.value || undefined)} />
-                  <Select label='Area' options={filterData?.areas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterArea(ev.target.value || undefined)} />
-                  <Select label='Subarea' options={filterData?.subareas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterSubarea(ev.target.value || undefined)} />
-                  <Select label='Estado' options={filterData?.estados.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterEstado(ev.target.value || undefined)} />
-                  <Select label='Banca' options={filterData?.bancas.map(({ id, name }) => ({ value: id, option: name })) || []} onChange={ev => setFilterBanca(ev.target.value || undefined)} />
+                  <RSelect placeholder="Processos seletivos" value={filterProcessoSeletivo} isMulti options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterProcessoSeletivo([...options])} />
+                  <RSelect placeholder="Anos" isMulti options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []} onChange={options => setFilterAno([...options])} />
+                  <RSelect placeholder="Locais" isMulti options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterLocal([...options])} />
+                  <RSelect placeholder="Perfis" isMulti options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterPerfil([...options])} />
+                  <RSelect placeholder="Areas" isMulti options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterArea([...options])} />
+                  <RSelect placeholder="Subareas" isMulti options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterSubarea([...options])} />
+                  <RSelect placeholder="Estados" isMulti options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterEstado([...options])} />
+                  <RSelect placeholder="Bancas" isMulti options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterBanca([...options])} />
                 </div>
 
                 <Fieldset>
@@ -391,11 +460,11 @@ export default function Questoes() {
               </div>
 
               <div className='buttons'>
-                <ButtonFilter className='filter' onClick={() => getQuestions()}>
+                <ButtonFilter className='filter' onClick={updateFilter}>
                   <AiOutlineFilter />
                   Salvar Filtro
                 </ButtonFilter>
-                <ButtonFilter className='reset'>
+                <ButtonFilter className='reset' onClick={clearFilter}>
                   <AiOutlineUndo />
                   Limpar Filtro
                 </ButtonFilter>
@@ -481,9 +550,6 @@ export default function Questoes() {
 
                     </>}
 
-
-
-
                   </MenuPagination>
                   <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
                     <AiOutlineRight />
@@ -534,53 +600,71 @@ export default function Questoes() {
                   )}
               </ul>
 
-              <DefaultBoxQuestion
-                className={explicationBox ? 'show' : "hidden"}
-                h1='Essa questão ainda não possui gabarito comentando'
-                strong='Estamos trabalhando nisso!'
-                picture={professor}
-                alt='Professor dando aula' />
+              {explicationBox && (
+                <DefaultBoxQuestion
+                  h1='Essa questão ainda não possui gabarito comentando'
+                  strong='Estamos trabalhando nisso!'
+                  picture={professor}
+                  alt='Professor dando aula'
+                />
+              )}
 
-              <DefaultBoxQuestion
-                className={commentBox ? 'show' : "hidden"}
-                h1='Essa questão ainda não possui comentários'
-                strong='Seja o primeiro(a)!'
-                picture={typing}
-                alt='Rapaz digitando'
-                content={true}
-                comment={true}
-              >
+              {commentBox && (
+                <DefaultBoxQuestion
+                  className={commentBox ? 'show' : "hidden"}
+                  h1='Essa questão ainda não possui comentários'
+                  strong='Seja o primeiro(a)!'
+                  picture={typing}
+                  alt='Rapaz digitando'
+                  content={true}
+                  comment={true}
+                >
+                  <>
+                    <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                  </>
+                </DefaultBoxQuestion>
+              )}
+
+              {notebookBox && (
                 <>
-                  <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                <DefaultBoxQuestion content={true} comment={false}>
+                  <Search>
+                    <SearchInput onChange={() => {}} />
+                    <Button onClick={addNotebook}>+ Criar Caderno</Button>
+                  </Search>
+                  <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
+                  {notebookData?.notebooks && notebookData.notebooks.map(({ id, name, questions, description }) => (
+                    <NotebookCard
+                      id={id}
+                      key={id}
+                      title={name}
+                      description={description || ""}
+                      questions={questions}
+                      currentQuestion={currentQuestion?.id}
+                      addFunction={() => executeAddQuestionToNotebook({ id, questionId: currentQuestion?.id! })}
+                      removeFunction={() => executeRemoveQuestionFromNotebook({ id, questionId: currentQuestion?.id! })}
+                      add
+                    />
+                  ))}
+                  </DefaultSearchPage>
+                </DefaultBoxQuestion>
                 </>
-              </DefaultBoxQuestion>
+              )}
 
-
-              <DefaultBoxQuestion className={notebookBox ? 'show' : "hidden"}>
-                <Search>
-                  <SearchInput onChange={() => {}} />
-                  <Button onClick={addNotebook}>+ Criar Caderno</Button>
-                </Search>
-                <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
-                {notebookData?.notebooks && notebookData.notebooks.map((notebook, index) => (
-                  <NotebookCard id={notebook.id} key={notebook.id} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)} add/>
-                ))}
-                </DefaultSearchPage>
-              </DefaultBoxQuestion>
-
-              <DefaultBoxQuestion
-                className={xrayBox ? 'show' : "hidden"}
-                h1='Esta questão ainda não tem Raio-X'
-                strong='Estamos trabalhando nisso!'
-                picture={raiox}
-                alt='mulher com uma maquina de dados'
-              />
+              {xrayBox && (
+                <DefaultBoxQuestion
+                  h1='Esta questão ainda não tem Raio-X'
+                  strong='Estamos trabalhando nisso!'
+                  picture={raiox}
+                  alt='mulher com uma maquina de dados'
+                />
+              )}
 
             </QuestionStatement>
 
             <QuestionButtons>
               <div className='resposta'>
-                <button onClick={answerQuestion} disabled={fetching}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
+                <Button onClick={answerQuestion} loading={loadingReponse}>{!isCorrect ? 'Responder' : 'Próximo'}</Button>
               </div>
 
               <ul className='actionsButton'>
@@ -617,4 +701,3 @@ export default function Questoes() {
     </>
   )
 }
-

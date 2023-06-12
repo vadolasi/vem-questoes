@@ -11,29 +11,29 @@ export class GetQuestionsInput {
   @Field({ nullable: true })
   text?: string
 
-  @Field({ nullable: true })
-  processoSeletivoId?: string
+  @Field(() => [String], { defaultValue: [] })
+  processoSeletivoIds: string[]
 
-  @Field({ nullable: true })
-  anoId?: string
+  @Field(() => [String], { defaultValue: [] })
+  anoIds: string[]
 
-  @Field({ nullable: true })
-  localId?: string
+  @Field(() => [String], { defaultValue: [] })
+  localIds: string[]
 
-  @Field({ nullable: true })
-  perfilId?: string
+  @Field(() => [String], { defaultValue: [] })
+  perfilIds: string[]
 
-  @Field({ nullable: true })
-  areaId?: string
+  @Field(() => [String], { defaultValue: [] })
+  areaIds: string[]
 
-  @Field({ nullable: true })
-  subareaId?: string
+  @Field(() => [String], { defaultValue: [] })
+  subareaIds: string[]
 
-  @Field({ nullable: true })
-  estadoId?: string
+  @Field(() => [String], { defaultValue: [] })
+  estadoIds: string[]
 
-  @Field({ nullable: true })
-  bancaId?: string
+  @Field(() => [String], { defaultValue: [] })
+  bancaIds: string[]
 
   @Field({ nullable: true })
   apenasRespondidas?: boolean

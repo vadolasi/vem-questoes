@@ -15,7 +15,7 @@ import { Modal } from '@/components/Modal';
 import simulado from '@/assets/Test.png'
 
 import { graphql } from '@/gql';
-import { useQuery } from 'urql';
+import { useMutation, useQuery } from 'urql';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -29,6 +29,18 @@ const simuladosQuery = graphql(/* GraphQL */ `
   }
 `)
 
+const createSimuladoMutation = graphql(/* GraphQL */`
+  mutation CreateRandomSimualdo($name: String!) {
+    createSimulado(
+      type: Random
+      name: $name
+      areas: []
+    ) {
+      id
+    }
+  }
+`)
+
 export default function Home() {
   const [result] = useQuery({ query: simuladosQuery })
 
@@ -37,6 +49,7 @@ export default function Home() {
   const [showExamModal, setShowExamModal] = useState(false);
   const [showSimuladoModal, setShowSimuladoModal] = useState(false);
   const [value, setValue] = useState('')
+  const [, execute] = useMutation(createSimuladoMutation)
 
   function handleRemoveExam(deleted: any){
     const confirmDelete = confirm(`deseja excluir o caderno ${deleted.title}`);
@@ -45,13 +58,15 @@ export default function Home() {
     }
 }
 
-  function createSimulado(){
+  async function createSimulado(){
     if(!value){
       return alert('Selecione um tipo de simulado.')
     }
 
-    value == 'Personalizado'?
-      setShowExamModal(!showExamModal) : {
+    if (value == 'Personalizado') {
+      setShowExamModal(!showExamModal)
+    } else {
+      await execute({ name: "Simulado aleatório" })
     }
   }
 
