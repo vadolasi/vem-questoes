@@ -2,8 +2,6 @@ FROM node:18-alpine as builder
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache python3 py3-pip g++ make
-
 RUN npm i -g pnpm
 COPY package.json pnpm-lock.yaml prisma /tmp/
 RUN cd /tmp && pnpm i --ignore-scripts
