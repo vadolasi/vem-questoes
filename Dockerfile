@@ -2,8 +2,6 @@ FROM node:18 as builder
 
 WORKDIR /usr/src/app
 
-RUN apk add make g++ musl-dev libffi-dev
-
 COPY package.json pnpm-lock.yaml prisma /tmp/
 RUN cd /tmp pnpm i --ignore-scripts
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
