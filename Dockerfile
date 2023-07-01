@@ -2,7 +2,7 @@ FROM node:18-alpine as builder
 
 WORKDIR /usr/src/app
 
-RUN npm i pnpm
+RUN npm i -g pnpm
 COPY package.json pnpm-lock.yaml /tmp/
 RUN cd /tmp && pnpm i
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
