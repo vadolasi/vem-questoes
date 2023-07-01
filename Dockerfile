@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache python3 py3-pip g++ make
 
 RUN npm i -g pnpm
-COPY package.json pnpm-lock.yaml /tmp/
+COPY package.json pnpm-lock.yaml prisma /tmp/
 RUN cd /tmp && pnpm i
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 
