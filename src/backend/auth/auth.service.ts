@@ -1,6 +1,6 @@
 import { Service } from "typedi"
 import { UsersService } from "../users/users.service"
-import { compare } from "bcrypt"
+import { verify } from "argon2"
 import { PrismaService } from "../prisma"
 import jwt from "jsonwebtoken"
 import { GraphQLError } from "graphql"
@@ -16,7 +16,7 @@ export class AuthService {
     const user = await this.usersService.getByEmail(email)
     if (!user) throw new GraphQLError("No user found")
 
-    const valid = await compare(password, user.password)
+    const valid = await verify(password, user.password)
     if (!valid) throw new GraphQLError("Invalid password")
 
     const { id: refreshToken } = await this.prisma.refreshToken.create({
