@@ -2,7 +2,7 @@ FROM node:18-alpine as builder
 
 WORKDIR /usr/src/app
 
-RUN apk add make g++ python3 git
+RUN apk add make g++ python3 git musl-dev libffi-dev
 
 RUN npm i -g pnpm node-pre-gyp
 COPY package.json pnpm-lock.yaml prisma /tmp/
