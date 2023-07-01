@@ -1,7 +1,7 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 import { Role } from "./models/user.model"
-import { hash } from "bcryptjs"
+import { hash } from "bcrypt"
 
 @Service()
 export class UsersService {
