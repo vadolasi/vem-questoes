@@ -1,6 +1,6 @@
 import { Service } from "typedi"
 import { UsersService } from "../users/users.service"
-import { compare } from "bcrypt"
+import { compare } from "bcryptjs"
 import { PrismaService } from "../prisma"
 import jwt from "jsonwebtoken"
 import { GraphQLError } from "graphql"
