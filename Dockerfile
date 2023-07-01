@@ -6,13 +6,12 @@ RUN apk add --no-cache python3 py3-pip g++ make
 
 RUN npm i -g pnpm
 COPY package.json pnpm-lock.yaml prisma /tmp/
-RUN cd /tmp && pnpm i
+RUN cd /tmp && pnpm i --ignore-scripts
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY . /usr/src/app
-RUN pnpm exec prisma generate
-RUN pnpm build
+RUN pnpm exec prisma generate && pnpm build
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
