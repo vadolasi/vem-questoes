@@ -43,12 +43,25 @@ export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, descripti
     return (
         <Container>
             <div className='Titulos'>
-              <input type="text" className={editing ? 'title' : 'title edit'} readOnly={editing} value={titleCard} onChange={e => setTitleCard(e.target.value)}/>
-              <input type="text" className={editing ? 'description' : 'description edit'} readOnly={editing} value={descriptionCard} onChange={e => setDescriptionCard(e.target.value)}/>
+              {editing ? (
+                <>
+                  <span className="title" data-tooltip-id="tooltip" data-tooltip-content={titleCard}>
+                    {titleCard}
+                  </span>
+                  <span className="description" data-tooltip-id="tooltip" data-tooltip-content={descriptionCard}>
+                    {descriptionCard}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <input type="text" className="title edit" value={titleCard} onChange={e => setTitleCard(e.target.value)} />
+                  <input type="text" className="description edit" readOnly={editing} value={descriptionCard} onChange={e => setDescriptionCard(e.target.value)} />
+                </>
+              )}
             </div>
 
             <div className='Questions'>
-                <h1>Questões <br/> {questions.length}</h1>
+              <h1>Questões <br/> {questions.length}</h1>
             </div>
 
             <div className='Buttons'>

@@ -10,7 +10,6 @@ import { ReportBox } from '@/components/ReportBox';
 import { SearchInput } from '@/components/SearchInput';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
-import { Select } from '@/components/Select';
 import { Checkbox } from '@/components/Checkbox'
 import { NotebookCard } from '@/components/NotebookCard';
 
@@ -215,6 +214,11 @@ const getQuestionQuery = graphql(/* GraphQL */ `
         }
         comments {
           id
+          user {
+            id
+            name
+            photoUrl
+          }
           content
         }
       }
@@ -602,6 +606,7 @@ export default function Questoes() {
 
               {explicationBox && (
                 <DefaultBoxQuestion
+                  questionId={currentQuestion?.id || ""}
                   h1='Essa questão ainda não possui gabarito comentando'
                   strong='Estamos trabalhando nisso!'
                   picture={professor}
@@ -611,23 +616,26 @@ export default function Questoes() {
 
               {commentBox && (
                 <DefaultBoxQuestion
+                  questionId={currentQuestion?.id || ""}
                   className={commentBox ? 'show' : "hidden"}
                   h1='Essa questão ainda não possui comentários'
                   strong='Seja o primeiro(a)!'
                   picture={typing}
                   alt='Rapaz digitando'
-                  content={true}
+                  content={(currentQuestion?.comments?.length || 0) > 0}
                   comment={true}
                 >
                   <>
-                    <CommentCard image={meData?.me?.photoUrl} name={meData?.me?.name} hora={'11:00'} data='21/05/2023' comment='OIIIII'/>
+                    {currentQuestion?.comments?.map(comment => (
+                      <CommentCard key={comment.id} image={comment.user.photoUrl} name={comment.user.name} hora={'11:00'} data='21/05/2023' comment={comment.content} />
+                    ))}
                   </>
                 </DefaultBoxQuestion>
               )}
 
               {notebookBox && (
                 <>
-                <DefaultBoxQuestion content={true} comment={false}>
+                <DefaultBoxQuestion questionId={currentQuestion?.id || ""} content={true} comment={false}>
                   <Search>
                     <SearchInput onChange={() => {}} />
                     <Button onClick={addNotebook}>+ Criar Caderno</Button>
@@ -653,6 +661,7 @@ export default function Questoes() {
 
               {xrayBox && (
                 <DefaultBoxQuestion
+                  questionId={currentQuestion?.id || ""}
                   h1='Esta questão ainda não tem Raio-X'
                   strong='Estamos trabalhando nisso!'
                   picture={raiox}

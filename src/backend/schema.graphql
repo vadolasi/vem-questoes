@@ -108,6 +108,7 @@ type Alternative {
 type Comment {
   id: ID!
   content: String!
+  user: User!
 }
 
 type NotebookModel {

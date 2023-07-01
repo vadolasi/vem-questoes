@@ -10,6 +10,9 @@ import { client } from "@/client";
 import { useEffect } from "react";
 
 import Script from 'next/script';
+import { Tooltip } from 'react-tooltip'
+
+import 'react-tooltip/dist/react-tooltip.css'
 
 globalStyles();
 
@@ -43,6 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async={true} />
       </Head>
       <ToastContainer />
+      <Tooltip id="tooltip" />
       <Component {...pageProps} />
     </Provider>
   )

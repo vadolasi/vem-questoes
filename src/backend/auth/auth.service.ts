@@ -3,6 +3,7 @@ import { UsersService } from "../users/users.service"
 import { compare } from "bcrypt"
 import { PrismaService } from "../prisma"
 import jwt from "jsonwebtoken"
+import { GraphQLError } from "graphql"
 
 @Service()
 export class AuthService {
@@ -13,10 +14,10 @@ export class AuthService {
 
   async login(email: string, password: string) {
     const user = await this.usersService.getByEmail(email)
-    if (!user) throw new Error("No user found")
+    if (!user) throw new GraphQLError("No user found")
 
     const valid = await compare(password, user.password)
-    if (!valid) throw new Error("Invalid password")
+    if (!valid) throw new GraphQLError("Invalid password")
 
     const { id: refreshToken } = await this.prisma.refreshToken.create({
       data: {
@@ -45,8 +46,8 @@ export class AuthService {
       select: { expiresAt: true, user: { select: { id: true } } }
     })
 
-    if (!refreshTokenObject) throw new Error("Invalid refresh token")
-    if (refreshTokenObject.expiresAt < new Date()) throw new Error("Refresh token expired")
+    if (!refreshTokenObject) throw new GraphQLError("Invalid refresh token")
+    if (refreshTokenObject.expiresAt < new Date()) throw new GraphQLError("Refresh token expired")
 
     const userId = refreshTokenObject.user.id
 

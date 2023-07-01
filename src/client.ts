@@ -1,44 +1,40 @@
-import { Client, cacheExchange, fetchExchange } from 'urql';
-import { authExchange } from '@urql/exchange-auth'
+import { Client, CombinedError, cacheExchange, fetchExchange } from "urql"
+import { authExchange } from "@urql/exchange-auth"
 
-import { graphql } from "./gql";
-
-// import { offlineExchange } from '@urql/exchange-graphcache';
-// import { makeDefaultStorage } from '@urql/exchange-graphcache/default-storage';
+import { graphql } from "./gql"
+import Router from "next/router"
 
 const refreshTokenMutation = graphql(/* GraphQL */ `
   mutation RefreshToken {
     refreshToken
   }
-`);
+`)
 
-/*
-export const storage = makeDefaultStorage({
-  idbName: 'graphcache-v3',
-  maxAge: 7
-})
-
-const cache = offlineExchange({ storage })
-*/
+function checkError(error: CombinedError, message: string) {
+  return error && error.graphQLErrors.some(error => (error.extensions.originalError as unknown as Error).message === message)
+}
 
 export const client = new Client({
-  url: '/api/graphql',
+  url: "/api/graphql",
   exchanges: [
     cacheExchange,
     authExchange(async utils => {
       return {
         didAuthError: (error) => {
-          return true
+          return checkError(error, "jwt expired")
         },
         addAuthToOperation(operation) {
           return operation
         },
         async refreshAuth() {
-          const result = await utils.mutate(refreshTokenMutation, {});
-          result.error?.message
-        },
-      };
+          const result = await utils.mutate(refreshTokenMutation, {})
+
+          if (checkError(result.error!, "Refresh token expired")) {
+            Router.push("/login")
+          }
+        }
+      }
     }),
     fetchExchange
-  ],
-});
+  ]
+})

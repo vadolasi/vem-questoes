@@ -2,6 +2,7 @@ import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 import { SimuladoType } from "./models/simulado.model"
 import { Alternative } from "@prisma/client"
+import { GraphQLError } from "graphql"
 
 function getRandomEntries(arr: any[], n: number) {
   if (n >= arr.length) {
@@ -220,7 +221,11 @@ export class QuestionsService {
         subarea: requestedFields.includes("subarea"),
         estado: requestedFields.includes("estado"),
         banca: requestedFields.includes("banca"),
-        comments: requestedFields.includes("comments")
+        comments: {
+          include: {
+            user: true
+          }
+        }
       }
     })
   }
@@ -241,7 +246,7 @@ export class QuestionsService {
     }
 
     if (!alternative) {
-      throw new Error("Alternative not found")
+      throw new GraphQLError("Alternative not found")
     }
 
     await this.prisma.response.create({
@@ -301,7 +306,7 @@ export class QuestionsService {
     const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
-      throw new Error("Notebook not found!")
+      throw new GraphQLError("Notebook not found!")
     }
 
     await this.prisma.notebook.update({
@@ -334,7 +339,7 @@ export class QuestionsService {
     const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
-      throw new Error("Notebook not found")
+      throw new GraphQLError("Notebook not found")
     }
 
     return notebook
@@ -344,7 +349,7 @@ export class QuestionsService {
     const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
-      throw new Error("Notebook not found")
+      throw new GraphQLError("Notebook not found")
     }
 
     return await this.prisma.notebook.update({
@@ -365,7 +370,7 @@ export class QuestionsService {
     const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
-      throw new Error("Notebook not found")
+      throw new GraphQLError("Notebook not found")
     }
 
     return await this.prisma.notebook.update({
@@ -402,7 +407,7 @@ export class QuestionsService {
     })
 
     if (!simulado) {
-      throw new Error("Simulado not found!")
+      throw new GraphQLError("Simulado not found!")
     }
 
     return simulado

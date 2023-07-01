@@ -113,5 +113,5 @@ async function main() {
 }
 
 main()
-  .then()
+  .then(() => process.exit())
   .catch()

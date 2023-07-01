@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_URL")
 }
 
 enum Role {
@@ -106,6 +106,7 @@ model Comment {
   questionId String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
+  date       DateTime @default(now())
 }
 
 model Notebook {

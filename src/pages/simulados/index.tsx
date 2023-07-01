@@ -56,7 +56,7 @@ export default function Home() {
     if(!confirmDelete){
       return
     }
-}
+  }
 
   async function createSimulado(){
     if(!value){
@@ -72,16 +72,16 @@ export default function Home() {
 
   return (
     <Container>
-     <Header/>
-     <Menu page=''/>
-     <Content>
-      <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
+      <Header/>
+      <Menu page=''/>
+      <Content>
+        <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
 
-      <Search>
-        <SearchInput onChange={() => {}} />
-        <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
-        <Button onClick={createSimulado}>Criar</Button>
-      </Search>
+        <Search>
+          <SearchInput onChange={() => {}} />
+          <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
+          <Button onClick={createSimulado}>Criar</Button>
+        </Search>
         <DefaultSearchPage text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
           {data?.simulados && data.simulados.simulados.map((exam) => (
             <>
@@ -90,7 +90,7 @@ export default function Home() {
             </>
           ))}
         </DefaultSearchPage>
-     </Content>
+      </Content>
     </Container>
   )
 }
