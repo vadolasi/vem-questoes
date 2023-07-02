@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json pnpm-lock.yaml prisma ./
 RUN npm i -g pnpm && pnpm i --ignore-scripts
 COPY . .
-RUN pnpm exec prisma generate && NEXT_SHARP_PATH=/usr/src/app/node_modules/sharp pnpm build
+RUN pnpm exec prisma generate && pnpm build
 ENV NODE_ENV production
 ENV PORT 4000
 EXPOSE 4000

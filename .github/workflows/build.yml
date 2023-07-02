@@ -13,8 +13,8 @@ jobs:
           - { on: self-hosted, for: linux/arm64 }
           - { on: ubuntu-latest, for: linux/amd64 }
         app:
-          - { name: vem-questoes-frontend, dockerfile: ./frontend/Dockerfile }
-          - { name: vem-questoes-backend, dockefile: ./backend/Dockerfile }
+          - { name: vem-questoes-frontend, dir: ./frontend }
+          - { name: vem-questoes-backend, dir: ./backend }
 
     runs-on: ${{ matrix.runner.on }}
 
@@ -39,8 +39,8 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         platforms: ${{ matrix.runner.for }}
-        context: .
-        file: ${{ matrix.app.dockerfile }}
+        context: ${{ matrix.app.dir }}
+        file: ${{ matrix.app.dir }}/Dockerfile
         push: true
         tags: ${{ env.IMAGE_URL }}
 
