@@ -1,5 +1,5 @@
-import { Question } from "@/backend/questions/models/question.model"
-import { User } from "@/backend/users/models/user.model"
+import { Question } from "../../questions/models/question.model"
+import { User } from "../../users/models/user.model"
 import { ObjectType, Field, ID } from "type-graphql"
 import { registerEnumType } from "type-graphql"
 

@@ -1,4 +1,4 @@
-import { User } from "@/backend/users/models/user.model"
+import { User } from "../../users/models/user.model"
 import { Field, ID, ObjectType } from "type-graphql"
 
 @ObjectType()

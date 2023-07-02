@@ -6,15 +6,24 @@ on:
       - "main"
 
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        runner:
+          - { on: self-hosted, for: linux/arm64 }
+          - { on: ubuntu-latest, for: linux/amd64 }
+        app:
+          - { name: vem-questoes-frontend, dockerfile: ./frontend/Dockerfile }
+          - { name: vem-questoes-backend, dockefile: ./backend/Dockerfile }
+
+    runs-on: ${{ matrix.runner.on }}
 
     steps:
+    - name: Preset Image Name
+      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]'):${{ app }}" >> $GITHUB_ENV
+
     - name: Check out repository
       uses: actions/checkout@v2
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -26,17 +35,29 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GH_TOKEN }}
 
-    - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
     - name: Build and push Docker Image
       uses: docker/build-push-action@v4
       with:
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ matrix.runner.for }}
         context: .
-        file: ./Dockerfile
+        file: ${{ matrix.app.dockerfile }}
         push: true
         tags: ${{ env.IMAGE_URL }}
+
+  deploy:
+    needs: build
+
+    strategy:
+      matrix:
+        app:
+          - vem-questoes-frontend
+          - vem-questoes-backend
+
+    runs-on: self-hosted
+
+    steps:
+    - name: Preset Image Name
+      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]'):${{ app }}" >> $GITHUB_ENV
 
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
