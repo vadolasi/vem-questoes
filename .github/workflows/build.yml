@@ -57,7 +57,7 @@ jobs:
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]'):${{ matrix.app }}" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ matrix.app }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
