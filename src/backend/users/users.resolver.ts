@@ -90,7 +90,7 @@ export class UserResolver {
     const finalTemplate = mjml2html(mjmlTemplate).html
 
     resend.emails.send({
-      from: "vem-questoes@resend.dev",
+      from: "naoresponder@vem-questoes.vadolasi.dev",
       to: email,
       subject: "Entre no Vem Questões!",
       html: finalTemplate
