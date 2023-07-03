@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}/$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Check out repository
       uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}/$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
