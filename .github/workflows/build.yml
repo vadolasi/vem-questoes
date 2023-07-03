@@ -50,8 +50,8 @@ jobs:
     strategy:
       matrix:
         app:
-          - vem_questoes_frontend
-          - vem_questoes_backend
+          - VEM_QUESTOES_FRONTEND
+          - VEM_QUESTOES_BACKEND
 
     runs-on: self-hosted
 
