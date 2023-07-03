@@ -74,7 +74,9 @@ export class UserResolver {
 
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Olá <$= name %>! <%= user %> está te convidando para entrar no Vem Questões!</mj-text>
 
-              <mj-text font-size="20px" color="#F45E43" font-family="helvetica"><a href="https://vem-questoes.vercel.app/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %></mj-text>
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">
+                <a href="https://vem-questoes.vercel.app/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %>
+              </mj-text>
 
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Você pode mudar de senha, clicando em "Esqueci minha senha"</mj-text>
 
@@ -86,12 +88,12 @@ export class UserResolver {
     const user = await this.usersService.getById(userId)
     const password =  await nanoid(12)
     const newUser = await this.usersService.createUser(name, email, password, role)
-    const mjmlTemplate = await ejs.render(template, { name, user: user!.name, password: await nanoid(12) }, { async: true })
+    const mjmlTemplate = await ejs.render(template, { name, user: user!.name, password }, { async: true })
     const finalTemplate = mjml2html(mjmlTemplate).html
 
-    resend.emails.send({
+    await resend.emails.send({
       from: "naoresponder@vem-questoes.vadolasi.dev",
-      to: email,
+      to: email.trim().toLowerCase(),
       subject: "Entre no Vem Questões!",
       html: finalTemplate
     })
