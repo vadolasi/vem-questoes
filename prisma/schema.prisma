@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_URL")
+}
+
+enum Role {
+  DEVELOPER
+  ADMIN
+  USER
+}
+
+enum TicketType {
+  BUG
+  FEATURE
+  QUESTION
+  OTHER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+}
+
+model Notification {
+  id    String @id @default(cuid())
+  title String
+  body  String
+  users NotificationToUser[]
+}
+
+model NotificationToUser {
+  id String      @id          @default(cuid())
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  notificationId String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  photoUrl       String   @default("https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg")
+  name           String
+  password       String
+  role           Role     @default(USER)
+  refreshTokens  RefreshToken[]
+  simulados      Simulado[]
+  responses      Response[]
+  totalQuestions Int
+  totalCorrect   Int
+  createdAt      DateTime @default(now())
+  tickets        Ticket[]
+  comments       Comment[]
+  notebooks      Notebook[]
+  notifications  NotificationToUser[]
+}
+
+model Alternative {
+  id         String   @id @default(cuid())
+  text       String
+  letter     String
+  correct    Boolean
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  responses  Response[]
+}
+
+model Question {
+  id                 String           @id @default(cuid())
+  enunciado          String
+  alternatives       Alternative[]
+  processoSeletivo   ProcessoSeletivo @relation(fields: [processoSeletivoId], references: [id])
+  processoSeletivoId String
+  ano                Ano?             @relation(fields: [anoId], references: [id])
+  anoId              String?
+  local              Local?           @relation(fields: [localId], references: [id])
+  localId            String?
+  perfil             Perfil?          @relation(fields: [perfilId], references: [id])
+  perfilId           String?
+  area               Area?            @relation(fields: [areaId], references: [id])
+  areaId             String?
+  subarea            Subarea?         @relation(fields: [subareaId], references: [id])
+  subareaId          String?
+  estado             Estado?          @relation(fields: [estadoId], references: [id])
+  estadoId           String?
+  banca              Banca?           @relation(fields: [bancaId], references: [id])
+  bancaId            String?
+  responses          Response[]
+  comments           Comment[]
+  notebooks          Notebook[]
+  simulados          Simulado[]
+  tickets            Ticket[]
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  content    String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  date       DateTime @default(now())
+}
+
+model Notebook {
+  id          String @id @default(cuid())
+  name        String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  questions   Question[]
+  description String?
+}
+
+model ProcessoSeletivo {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model Ano {
+  id        String @id @default(cuid())
+  ano       Int @unique
+  questions Question[]
+}
+
+model Local {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model Perfil {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model Area {
+  id   String @id @default(cuid())
+  name String @unique
+  questions Question[]
+}
+
+model Subarea {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model Estado {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model Banca {
+  id        String @id @default(cuid())
+  name      String @unique
+  questions Question[]
+}
+
+model RefreshToken {
+  id        String  @id @default(cuid())
+  createdAt DateTime
+  revoked   Boolean @default(false)
+  expiresAt DateTime
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+}
+
+model Response {
+  id            String      @id @default(cuid())
+  date          DateTime    @default(now())
+  question      Question    @relation(fields: [questionId], references: [id])
+  questionId    String
+  alternative   Alternative @relation(fields: [alternativeId], references: [id])
+  alternativeId String
+  simulado      Simulado?   @relation(fields: [simuladoId], references: [id])
+  simuladoId    String?
+  correct       Boolean
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+}
+
+model Simulado {
+  id             String     @id @default(cuid())
+  name           String
+  questions      Question[]
+  responses      Response[]
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  createdAt      DateTime   @default(now())
+  totalQuestions Int
+  totalMinutes   Int
+}
+
+model Ticket {
+  id         String       @id @default(cuid())
+  title      String
+  content    String
+  type       TicketType
+  status     TicketStatus @default(OPEN)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  createdAt  DateTime     @default(now())
+  question   Question?    @relation(fields: [questionId], references: [id])
+  questionId String?
+}

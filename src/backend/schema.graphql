@@ -1,0 +1,201 @@
+type Query {
+  me: User
+  leaderBoard: [User!]
+  users: [User!]!
+  processosSeletivos: [ProcessoSeletivo!]!
+  anos: [Ano!]!
+  locais: [Local!]!
+  perfis: [Perfil!]!
+  areas: [Area!]!
+  subareas: [Subarea!]!
+  estados: [Estado!]!
+  bancas: [Banca!]!
+  questions(page: Float = 1, itemsPerPage: Float = 10, text: String, processoSeletivoIds: [String!] = [], anoIds: [String!] = [], localIds: [String!] = [], perfilIds: [String!] = [], areaIds: [String!] = [], subareaIds: [String!] = [], estadoIds: [String!] = [], bancaIds: [String!] = [], apenasRespondidas: Boolean, apenasNaoRespondidas: Boolean, apenasRespondidasCertas: Boolean, apenasRespondidasErradas: Boolean): QuestionsResponse!
+  question(id: String!): [Question!]!
+  notebooks: [NotebookModel!]!
+  notebook(notebookId: String!): NotebookModel!
+  simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
+  simulado(id: String!): Simulado!
+  relatorio: [RelatorioResponse!]!
+  notifications: [Notification!]!
+  openedRickets: [Ticket!]
+}
+
+type User {
+  id: ID!
+  photoUrl: String!
+  email: String!
+  name: String!
+  totalQuestions: Float!
+  totalCorrect: Float!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
+}
+
+type ProcessoSeletivo {
+  id: ID!
+  name: String!
+}
+
+type Ano {
+  id: ID!
+  ano: Float!
+}
+
+type Local {
+  id: ID!
+  name: String!
+}
+
+type Perfil {
+  id: ID!
+  name: String!
+}
+
+type Area {
+  id: ID!
+  name: String!
+}
+
+type Subarea {
+  id: ID!
+  name: String!
+}
+
+type Estado {
+  id: ID!
+  name: String!
+}
+
+type Banca {
+  id: ID!
+  name: String!
+}
+
+type QuestionsResponse {
+  questions: [Question!]!
+  quantity: Float!
+  pagesQuantity: Float!
+}
+
+type Question {
+  id: ID!
+  enunciado: String!
+  alternatives: [Alternative!]
+  processoSeletivo: ProcessoSeletivo
+  ano: Ano
+  local: Local
+  perfil: Perfil
+  area: Area
+  subarea: Subarea
+  estado: Estado
+  banca: Banca
+  comments: [Comment!]
+}
+
+type Alternative {
+  id: ID!
+  text: String!
+  letter: String!
+  correct: Boolean!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  user: User!
+}
+
+type NotebookModel {
+  id: ID!
+  name: String!
+  description: String
+  questions: [Question!]!
+}
+
+type SimuladosResponse {
+  simulados: [Simulado!]!
+  pagesQuantity: Float!
+}
+
+type Simulado {
+  id: ID!
+  name: String!
+  totalQuestions: Float!
+  totalMinutes: Float!
+  questions: [Question!]!
+  type: SimuladoType!
+}
+
+enum SimuladoType {
+  Random
+  Custom
+}
+
+type RelatorioResponse {
+  date: String!
+  total: Float!
+  totalCorrect: Float!
+}
+
+type Notification {
+  id: ID!
+  title: String!
+  body: String!
+}
+
+type Ticket {
+  id: ID!
+  title: String!
+  content: String!
+  role: TicketType!
+  name: User!
+  createdAt: DateTime!
+  question: Question!
+}
+
+enum TicketType {
+  BUG
+  FEATURE
+  QUESTION
+  OTHER
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Mutation {
+  createUser(role: Role!, password: String!, name: String!, email: String!): User!
+  deleteUser(id: String!): Boolean!
+  login(email: String!, password: String!): Boolean!
+  refreshToken: Boolean!
+  addAnswer(simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
+  addComment(content: String!, questionId: String!): Boolean!
+  addNotebook(description: String, questions: [String!]!, name: String!): NotebookModel!
+  updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
+  deleteNotebook(id: String!): Boolean!
+  addQuestionToNotebook(questionId: String!, id: String!): NotebookModel!
+  removeQuestionFromNotebook(questionId: String!, id: String!): NotebookModel!
+  createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
+  createNotification(body: String!, title: String!): Notification!
+  readNotifications(notificationIds: [String!]!): Boolean!
+  addTicket(question: String, type: TicketType!, content: String!, title: String!): Ticket!
+  resolveTicket(id: String!): Boolean!
+}
+
+type AddAnswerResponse {
+  correct: Boolean!
+  correctAlternative: String!
+}
+
+input AreaToSimuladoInput {
+  areaId: ID!
+  quantity: Float!
+}

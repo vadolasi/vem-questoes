@@ -13,8 +13,7 @@ jobs:
           - { on: self-hosted, for: linux/arm64 }
           - { on: ubuntu-latest, for: linux/amd64 }
         app:
-          - { name: vem_questoes_frontend, dir: ./frontend }
-          - { name: vem_questoes_backend, dir: ./backend }
+          - { name: vem_questoes, dir: ./ }
 
     runs-on: ${{ matrix.runner.on }}
 
@@ -50,8 +49,7 @@ jobs:
     strategy:
       matrix:
         app:
-          - { name: vem_questoes_frontend, var: APP_TOKEN_VEM_QUESTOES_FRONTEND }
-          - { name: vem_questoes_backend, var: APP_TOKEN_VEM_QUESTOES_BACKEND }
+          - { name: vem_questoes, var: APP_TOKEN_VEM_QUESTOES }
 
     runs-on: self-hosted
 
