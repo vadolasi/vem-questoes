@@ -46,11 +46,6 @@ jobs:
   deploy:
     needs: build
 
-    strategy:
-      matrix:
-        app:
-          - { name: vem_questoes, token: 4d2d6cc1710211ecde91db34e485e9f8261d5585690b21951537fb66782b9b70 }
-
     runs-on: self-hosted
 
     steps:
@@ -60,7 +55,7 @@ jobs:
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
       with:
-        server: "${{ secrets.CAPROVER_SERVER }}"
-        app: "${{ matrix.app.name }}"
-        token: "${{ matrix.app.token }}"
+        server: https://captain.apps.vadolasi.dev
+        app: vem-questoes
+        token: "4d2d6cc1710211ecde91db34e485e9f8261d5585690b21951537fb66782b9b70"
         image: ${{ env.IMAGE_URL }}
