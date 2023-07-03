@@ -18,8 +18,7 @@ export class AuthResolver {
   ) {
     const { accessToken, refreshToken } = await this.authService.login(email, password)
 
-    ctx.setToken(accessToken)
-    ctx.setRefreshToken(refreshToken)
+    ctx.setTokens(accessToken, refreshToken)
 
     return true
   }
