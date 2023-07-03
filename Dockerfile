@@ -1,11 +1,11 @@
-FROM node:18-alpine as builder
+FROM node:18 as builder
 
 WORKDIR /usr/src/app
 
 COPY package.json pnpm-lock.yaml ./
 RUN npm i -g pnpm && pnpm i --ignore-scripts
 COPY . .
-RUN NEXT_SHARP_PATH=/usr/src/app/node_modules/sharp pnpm build
+RUN pnpm exec prisma generate && NEXT_SHARP_PATH=/usr/src/app/node_modules/sharp pnpm build
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
