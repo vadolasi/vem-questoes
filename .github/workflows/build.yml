@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Check out repository
       uses: actions/checkout@v2
@@ -30,9 +30,9 @@ jobs:
     - name: Login to Container Registry
       uses: docker/login-action@v2
       with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GH_TOKEN }}
+        registry: registry.apps.vadolasi.dev:996
+        username: captain
+        password: 7b7a4f9b-0031-40bc-8744-1d4fb1f19e38
 
     - name: Build and push Docker Image
       uses: docker/build-push-action@v4
@@ -50,7 +50,7 @@ jobs:
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo registry.apps.vadolasi.dev:996/captain_${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
