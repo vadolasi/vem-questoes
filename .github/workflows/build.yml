@@ -50,22 +50,19 @@ jobs:
     strategy:
       matrix:
         app:
-          - VEM_QUESTOES_FRONTEND
-          - VEM_QUESTOES_BACKEND
+          - { name: vem_questoes_frontend, var: APP_TOKEN_VEM_QUESTOES_FRONTEND }
+          - { name: vem_questoes_backend, var: APP_TOKEN_VEM_QUESTOES_BACKEND }
 
     runs-on: self-hosted
 
     steps:
     - name: Preset Image Name
-      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ matrix.app }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
-    - name: Preset app token
-      run: echo "APP_TOKEN=$(echo APP_TOKEN_${{ matrix.app }})" >> $GITHUB_ENV
+      run: echo "IMAGE_URL=$(echo ghcr.io/${{ github.repository_owner }}/${{ matrix.app.name }}:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Deploy Image to CapRrover
       uses: caprover/deploy-from-github@v1.1.2
       with:
         server: "${{ secrets.CAPROVER_SERVER }}"
-        app: "${{ matrix.app }}"
-        token: "${{ secrets[env.APP_TOKEN] }}"
+        app: "${{ matrix.app.name }}"
+        token: "${{ secrets[matrix.app.var] }}"
         image: ${{ env.IMAGE_URL }}
