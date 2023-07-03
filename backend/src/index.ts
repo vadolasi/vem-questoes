@@ -3,21 +3,21 @@ import "reflect-metadata"
 import { createYoga } from "graphql-yoga"
 import { buildSchema } from "type-graphql"
 import { Container } from "typedi"
-import { UserResolver } from "./src/users/users.resolver"
+import { UserResolver } from "./users/users.resolver"
 import { renderGraphiQL } from "@graphql-yoga/render-graphiql"
 import { useGraphQlJit } from "@envelop/graphql-jit"
 import * as jwt from "jsonwebtoken"
-import { authChecker } from "./src/auth"
-import { AuthResolver } from "./src/auth/auth.resolver"
-import { printSchema, ExecutionArgs, execute, subscribe } from "graphql"
-import { writeFile } from "fs/promises"
-import { GqlContext } from "./src/gqlContext"
-import { QuestionsResolver } from "./src/questions/questions.resolver"
-import { NotificationsResolver } from "./src/notifications/notifications.resolver"
-import { TicketsResolver } from "./src/tickets/tickets.resolver"
+import { authChecker } from "./auth"
+import { AuthResolver } from "./auth/auth.resolver"
+import { ExecutionArgs, execute, subscribe } from "graphql"
+import { GqlContext } from "./gqlContext"
+import { QuestionsResolver } from "./questions/questions.resolver"
+import { NotificationsResolver } from "./notifications/notifications.resolver"
+import { TicketsResolver } from "./tickets/tickets.resolver"
 import { useResponseCache } from "@graphql-yoga/plugin-response-cache"
 import { App } from "uWebSockets.js"
 import { makeBehavior } from "graphql-ws/lib/use/uWebSockets"
+import cookie from "cookie"
 
 const schema = await buildSchema({
   resolvers: [UserResolver, AuthResolver, QuestionsResolver, NotificationsResolver, TicketsResolver],
@@ -26,13 +26,9 @@ const schema = await buildSchema({
   validate: { forbidUnknownValues: false }
 })
 
-if (process.env.NODE_ENV !== "production") {
-  await writeFile("./src/backend/schema.graphql", printSchema(schema))
-}
-
 const yoga = createYoga<GqlContext>({
   schema,
-  graphqlEndpoint: "/api/graphql",
+  graphqlEndpoint: "/graphql",
   renderGraphiQL,
   plugins: [
     useGraphQlJit(),
@@ -42,7 +38,7 @@ const yoga = createYoga<GqlContext>({
   ],
   context: ({ req, res }) => ({
     getUserId: () => {
-      const token = req.cookies.token
+      const token = cookie.parse(req.getHeader("Cookie"))["token"] || null
 
       if (!token) {
         return null
@@ -57,16 +53,20 @@ const yoga = createYoga<GqlContext>({
       return verifiedToken.userId
     },
     setToken: (token: string) => {
-      res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly; SameSite=Strict`)
+      res.setHeader("Set-Cookie", cookie.serialize("token", token, { path: "/", httpOnly: true, sameSite: "strict" }))
     },
     setRefreshToken: (token: string) => {
-      res.setHeader("Set-Cookie", `refreshToken=${token}; Path=/; HttpOnly; SameSite=Strict`)
+      res.setHeader("Set-Cookie", cookie.serialize("refreshToken", token, { path: "/", httpOnly: true, sameSite: "strict" }))
     },
     setTokens(token: string, refreshToken: string) {
-      res.setHeader("Set-Cookie", [`token=${token}; Path=/; HttpOnly; SameSite=Strict`, `refreshToken=${token}; Path=/; HttpOnly; SameSite=Strict`])
+      res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("token", token, { path: "/", httpOnly: true, sameSite: "strict" }),
+        cookie.serialize("refreshToken", token, { path: "/", httpOnly: true, sameSite: "strict" })
+      )
     },
     getRefreshToken: () => {
-      return req.cookies.refreshToken
+      return cookie.parse(req.getHeader("Cookie"))["refreshToken"] || null
     }
   }),
   graphiql: {

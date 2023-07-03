@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { join } from "path"
-import xlsx from "xlsx"
+import * as xlsx from "xlsx"
 
 const prisma = new PrismaClient()
 

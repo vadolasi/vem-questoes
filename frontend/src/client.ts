@@ -15,7 +15,7 @@ function checkError(error: CombinedError, message: string) {
 }
 
 export const client = new Client({
-  url: "/api/graphql",
+  url: (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000") + "/graphql",
   exchanges: [
     cacheExchange,
     authExchange(async utils => {

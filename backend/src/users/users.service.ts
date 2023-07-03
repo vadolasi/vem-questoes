@@ -1,7 +1,7 @@
 import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 import { Role } from "./models/user.model"
-import { hash } from "bcryptjs"
+import bcryptjs from "bcryptjs"
 
 @Service()
 export class UsersService {
@@ -34,7 +34,7 @@ export class UsersService {
       data: {
         email,
         name,
-        password: await hash(password, 12),
+        password: await bcryptjs.hash(password, 12),
         role: Role[role] as keyof typeof Role,
         totalCorrect: 0,
         totalQuestions: 0
