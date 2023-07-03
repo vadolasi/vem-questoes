@@ -1,6 +1,5 @@
 import { Client, CombinedError, cacheExchange, fetchExchange } from "urql"
 import { authExchange } from "@urql/exchange-auth"
-
 import { graphql } from "./gql"
 import Router from "next/router"
 
