@@ -21,6 +21,7 @@ const documents = {
     "\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
     "\n  mutation UpdateNotebook($id: String!, $name: String, $description: String, $questions: [String!]) {\n    updateNotebook(\n      notebookId: $id\n      name: $name\n      description: $description\n      questions: $questions\n    )\n  }\n": types.UpdateNotebookDocument,
     "\n  mutation CreateReport($title: String!, $content: String!, $type: TicketType!) {\n    addTicket(\n      title: $title\n      content: $content\n      type: $type\n    ) {\n      id\n    }\n  }\n": types.CreateReportDocument,
+    "\n  mutation InviteUser(\n    $name: String!\n    $email: String!\n    $role: Role!\n  ) {\n    inviteUser(\n      name: $name\n      email: $email\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.InviteUserDocument,
     "\n  mutation CreateUser(\n    $name: String!\n    $email: String!\n    $password: String!\n    $role: Role!\n  ) {\n    createUser(\n      name: $name\n      email: $email\n      password: $password\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.CreateUserDocument,
     "\n  query Users {\n    users {\n      id\n      photoUrl\n      name\n      email\n      role\n    }\n  }\n": types.UsersDocument,
     "\n  mutation CreateNotification($title: String!, $body: String!) {\n    createNotification(\n      title: $title\n      body: $body\n    ) {\n      id\n    }\n  }\n": types.CreateNotificationDocument,
@@ -89,6 +90,10 @@ export function graphql(source: "\n  mutation UpdateNotebook($id: String!, $name
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateReport($title: String!, $content: String!, $type: TicketType!) {\n    addTicket(\n      title: $title\n      content: $content\n      type: $type\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateReport($title: String!, $content: String!, $type: TicketType!) {\n    addTicket(\n      title: $title\n      content: $content\n      type: $type\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation InviteUser(\n    $name: String!\n    $email: String!\n    $role: Role!\n  ) {\n    inviteUser(\n      name: $name\n      email: $email\n      role: $role\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation InviteUser(\n    $name: String!\n    $email: String!\n    $role: Role!\n  ) {\n    inviteUser(\n      name: $name\n      email: $email\n      role: $role\n    ) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,7 +1,4 @@
 type Query {
-  me: User
-  leaderBoard: [User!]
-  users: [User!]!
   processosSeletivos: [ProcessoSeletivo!]!
   anos: [Ano!]!
   locais: [Local!]!
@@ -19,22 +16,9 @@ type Query {
   relatorio: [RelatorioResponse!]!
   notifications: [Notification!]!
   openedRickets: [Ticket!]
-}
-
-type User {
-  id: ID!
-  photoUrl: String!
-  email: String!
-  name: String!
-  totalQuestions: Float!
-  totalCorrect: Float!
-  role: Role!
-}
-
-enum Role {
-  USER
-  ADMIN
-  DEVELOPER
+  me: User
+  leaderBoard: [User!]
+  users: [User!]!
 }
 
 type ProcessoSeletivo {
@@ -111,6 +95,22 @@ type Comment {
   user: User!
 }
 
+type User {
+  id: ID!
+  photoUrl: String!
+  email: String!
+  name: String!
+  totalQuestions: Float!
+  totalCorrect: Float!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
+}
+
 type NotebookModel {
   id: ID!
   name: String!
@@ -172,8 +172,6 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  createUser(role: Role!, password: String!, name: String!, email: String!): User!
-  deleteUser(id: String!): Boolean!
   login(email: String!, password: String!): Boolean!
   refreshToken: Boolean!
   addAnswer(simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
@@ -188,6 +186,9 @@ type Mutation {
   readNotifications(notificationIds: [String!]!): Boolean!
   addTicket(question: String, type: TicketType!, content: String!, title: String!): Ticket!
   resolveTicket(id: String!): Boolean!
+  createUser(role: Role!, password: String!, name: String!, email: String!): User!
+  deleteUser(id: String!): Boolean!
+  inviteUser(role: Role!, name: String!, email: String!): User!
 }
 
 type AddAnswerResponse {

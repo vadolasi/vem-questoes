@@ -1,8 +1,14 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql"
+import { Resend } from "resend"
 import { Service } from "typedi"
 import { UsersService } from "./users.service"
 import { Role, User } from "./models/user.model"
 import { CurrentUserID } from "../auth"
+import { nanoid } from "nanoid/async"
+import mjml2html from "mjml"
+import ejs from "ejs"
+
+const resend = new Resend("re_jZkCq85i_419wLdJGHpdk5njyHCYbJm7K")
 
 @Service()
 @Resolver()
@@ -46,5 +52,50 @@ export class UserResolver {
     @Arg("id") userId: string
   ) {
     return await this.usersService.deleteUser(userId)
+  }
+
+  @Mutation(returns => User)
+  @Authorized()
+  async inviteUser(
+    @Arg("email") email: string,
+    @Arg("name") name: string,
+    @Arg("role") role: Role,
+    @CurrentUserID() userId: string
+  ) {
+    const template = `
+      <mjml>
+        <mj-body>
+          <mj-section>
+            <mj-column>
+
+              <mj-text font-size="40px" color="#F45E43" font-family="helvetica">Vem Questões</mj-text>
+
+              <mj-divider border-color="#F45E43"></mj-divider>
+
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Olá <$= name %>! <%= user %> está te convidando para entrar no Vem Questões!</mj-text>
+
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica"><a href="https://vem-questoes.vercel.app/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %></mj-text>
+
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Você pode mudar de senha, clicando em "Esqueci minha senha"</mj-text>
+
+            </mj-column>
+          </mj-section>
+        </mj-body>
+      </mjml>
+    `
+    const user = await this.usersService.getById(userId)
+    const password =  await nanoid(12)
+    const newUser = await this.usersService.createUser(name, email, password, role)
+    const mjmlTemplate = await ejs.render(template, { name, user: user!.name, password: await nanoid(12) }, { async: true })
+    const finalTemplate = mjml2html(mjmlTemplate).html
+
+    resend.emails.send({
+      from: "vem-questoes@resend.dev",
+      to: email,
+      subject: "Entre no Vem Questões!",
+      html: finalTemplate
+    })
+
+    return newUser
   }
 }
