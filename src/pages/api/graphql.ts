@@ -42,7 +42,7 @@ export default createYoga<GqlContext>({
   plugins: [
     useGraphQlJit(),
     useResponseCache({
-      session: (request) => request.headers.get("Cookie") ? cookie.parse(request.headers.get("Cookie")!)["refreshToken"] : null
+      session: (request) => request.headers.get("Cookie")
     })
   ],
   context: ({ req, res }) => ({
