@@ -8,7 +8,7 @@ export default function Table() {
       <Header/>
       <Menu page="" />
       <Content>
-        <h1>Em breve ótimas ofertas!</h1>
+        <h1>Em breve novas ofertas!</h1>
       </Content>
     </Container>
   )

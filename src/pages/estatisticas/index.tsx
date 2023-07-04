@@ -29,7 +29,7 @@ const chartQuery = graphql(/* GraphQL */ `
 `);
 
 export default function Table() {
-const [result] = useQuery({ query: chartQuery })
+const [result] = useQuery({ query: chartQuery, requestPolicy: "cache-and-network" })
 const [optionsBar, setOptionsBar] = useState({
     title: 'Questões',
     hAxis: { title: "Data", titleTextStyle: { color: "#333" } },

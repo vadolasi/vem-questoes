@@ -43,7 +43,7 @@ const initialPagerQuery = graphql(/* GraphQL */ `
 `);
 
 export default function Home() {
-  const [result] = useQuery({ query: initialPagerQuery })
+  const [result] = useQuery({ query: initialPagerQuery, requestPolicy: "cache-and-network" })
 
   const { data, fetching } = result
 
@@ -56,14 +56,14 @@ export default function Home() {
 
      <Content>
           <ContentCard title='Leaderboard'>
-          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> : 
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
           {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
               <UserCard key={id} position={index + 1} name={name} goals={totalCorrect} questions={totalQuestions} />
             ))}
           </>
            }
-            
+
           </ContentCard>
           <OfferCard>
             <div className='Header'>
@@ -75,30 +75,30 @@ export default function Home() {
                 <Image src={mulherComNotebook} alt="Mulher segurando um notebook"/>
             </div>
 
-            {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> : 
+            {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <div className='Content'>
           <ImageSlider slides={SliderData} />
           </div>
            }
-            
+
           </OfferCard>
           <ContentCard title='Estatísticas'>
-          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> : 
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <div className='box'>
            <CircularProgressbar value={percentage} text={`${percentage.toFixed(2)}%`} className='circle'/>
            <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
            </div>
            }
-            
+
           </ContentCard>
           <ContentCard title='Simulados'>
-          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> : 
+          {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
           {data?.simulados.simulados.map(simulado => (
               <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
           </>}
-            
+
           </ContentCard>
      </Content>
     </Container>

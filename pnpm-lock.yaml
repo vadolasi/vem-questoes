@@ -26,6 +26,9 @@ dependencies:
   '@graphql-typed-document-node/core':
     specifier: ^3.2.0
     version: 3.2.0(graphql@15.8.0)
+  '@graphql-yoga/plugin-apq':
+    specifier: ^2.0.3
+    version: 2.0.3(@graphql-tools/utils@10.0.3)(graphql-yoga@3.9.1)
   '@graphql-yoga/plugin-response-cache':
     specifier: ^1.9.1
     version: 1.9.1(@envelop/core@3.0.6)(graphql-yoga@3.9.1)(graphql@15.8.0)
@@ -62,6 +65,9 @@ dependencies:
   '@urql/exchange-graphcache':
     specifier: ^6.1.4
     version: 6.1.4(graphql@15.8.0)
+  '@urql/exchange-persisted':
+    specifier: ^4.0.0
+    version: 4.0.0(graphql@15.8.0)
   babel-plugin-parameter-decorator:
     specifier: ^1.0.16
     version: 1.0.16
@@ -77,6 +83,9 @@ dependencies:
   concurrently:
     specifier: ^8.2.0
     version: 8.2.0
+  cookie:
+    specifier: ^0.5.0
+    version: 0.5.0
   ejs:
     specifier: ^3.1.9
     version: 3.1.9
@@ -193,6 +202,9 @@ devDependencies:
   '@graphql-codegen/client-preset':
     specifier: ^3.0.1
     version: 3.0.1(graphql@15.8.0)
+  '@types/cookie':
+    specifier: ^0.5.1
+    version: 0.5.1
   '@types/ejs':
     specifier: ^3.1.2
     version: 3.1.2
@@ -2346,6 +2358,18 @@ packages:
       - utf-8-validate
     dev: true
 
+  /@graphql-tools/utils@10.0.3(graphql@15.8.0):
+    resolution: {integrity: sha512-6uO41urAEIs4sXQT2+CYGsUTkHkVo/2MpM/QjoHj6D6xoEF2woXHBpdAVi0HKIInDwZqWgEYOwIFez0pERxa1Q==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@15.8.0)
+      dset: 3.1.2
+      graphql: 15.8.0
+      tslib: 2.6.0
+    dev: false
+
   /@graphql-tools/utils@8.13.1(graphql@15.8.0):
     resolution: {integrity: sha512-qIh9yYpdUFmctVqovwMdheVNJqFh+DQNWIhX87FJStfXYnmweBUDATok9fWPleKeFwxnW8IapKmY8m8toJEkAw==}
     peerDependencies:
@@ -2388,6 +2412,17 @@ packages:
     resolution: {integrity: sha512-6npFz7eZz33mXgSm1waBLMjUNG0D5hTc/p5Hcs1mojkT3KsLpCOFokzTEKboNsBhKevYcaVa/xeA7WBj4UYMLg==}
     dependencies:
       tslib: 2.6.0
+    dev: false
+
+  /@graphql-yoga/plugin-apq@2.0.3(@graphql-tools/utils@10.0.3)(graphql-yoga@3.9.1):
+    resolution: {integrity: sha512-QdlY34nP6fUef36151XvPqBmcOANPnnxeSXn/1T6sLib9yedanSc6sCta0rFk2kmMQlSnWcpEZPoN5hxUf7D7g==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@graphql-tools/utils': ^10.0.0
+      graphql-yoga: ^4.0.3
+    dependencies:
+      '@graphql-tools/utils': 10.0.3(graphql@15.8.0)
+      graphql-yoga: 3.9.1(graphql@15.8.0)
     dev: false
 
   /@graphql-yoga/plugin-response-cache@1.9.1(@envelop/core@3.0.6)(graphql-yoga@3.9.1)(graphql@15.8.0):
@@ -3057,6 +3092,10 @@ packages:
     resolution: {integrity: sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==}
     dev: false
 
+  /@types/cookie@0.5.1:
+    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
+    dev: true
+
   /@types/cross-spawn@6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
@@ -3343,6 +3382,15 @@ packages:
     resolution: {integrity: sha512-GQ1scnYjMVoUHrPoYOlw3ZfU2nXuLTEhWhKzPquhZz87GliVpZPuFMf+o64cI1dKy9xDlbU7aQnKiSaGeT248w==}
     dependencies:
       '@0no-co/graphql.web': 1.0.4(graphql@15.8.0)
+      '@urql/core': 4.0.10(graphql@15.8.0)
+      wonka: 6.3.2
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
+  /@urql/exchange-persisted@4.0.0(graphql@15.8.0):
+    resolution: {integrity: sha512-6+HExpfyH2VYZbaTp1BOkshyGfKr2zkYWsgEy25kx/flgNC0DdzqykAF1j5nubZ+skb8WCco0LQfwWTP1MtTsA==}
+    dependencies:
       '@urql/core': 4.0.10(graphql@15.8.0)
       wonka: 6.3.2
     transitivePeerDependencies:
@@ -4521,6 +4569,11 @@ packages:
 
   /convert-source-map@1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
+
+  /cookie@0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
+    engines: {node: '>= 0.6'}
+    dev: false
 
   /core-js-compat@3.31.0:
     resolution: {integrity: sha512-hM7YCu1cU6Opx7MXNu0NuumM0ezNeAeRKadixyiQELWY3vT3De9S4J5ZBMraWV2vZnrE1Cirl0GtFtDtMUXzPw==}

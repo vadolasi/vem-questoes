@@ -16,6 +16,7 @@ import { QuestionsResolver } from "@/backend/questions/questions.resolver"
 import { NotificationsResolver } from "@/backend/notifications/notifications.resolver"
 import { TicketsResolver } from "@/backend/tickets/tickets.resolver"
 import { useResponseCache } from "@graphql-yoga/plugin-response-cache"
+import cookie from "cookie"
 
 export const config = {
   api: {
@@ -41,7 +42,7 @@ export default createYoga<GqlContext>({
   plugins: [
     useGraphQlJit(),
     useResponseCache({
-      session: (request) => request.headers.get("Cookie")
+      session: (request) => request.headers.get("Cookie") ? cookie.parse(request.headers.get("Cookie")!)["refreshToken"] : null
     })
   ],
   context: ({ req, res }) => ({
@@ -55,7 +56,7 @@ export default createYoga<GqlContext>({
       let verifiedToken: { userId: string } | null = null
 
       try {
-        verifiedToken = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string }
+        verifiedToken = (jwt.verify(token, process.env.JWT_SECRET!) as { userId: string })
       } catch (TokenExpiredError) {
         throw new GraphQLError("jwt expired")
       }
