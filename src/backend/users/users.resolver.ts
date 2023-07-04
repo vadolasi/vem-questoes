@@ -75,7 +75,7 @@ export class UserResolver {
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Olá <$= name %>! <%= user %> está te convidando para entrar no Vem Questões!</mj-text>
 
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">
-                <a href="https://vem-questoes.vercel.app/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %>
+                <a href="https://vem-questoes.apps.vadolasi.dev/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %>
               </mj-text>
 
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Você pode mudar de senha, clicando em "Esqueci minha senha"</mj-text>
