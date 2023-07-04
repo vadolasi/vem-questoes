@@ -10,7 +10,7 @@ const refreshTokenMutation = graphql(/* GraphQL */ `
 `)
 
 function checkError(error: CombinedError, message: string) {
-  return error && error.graphQLErrors.some(error => (error.extensions.originalError as unknown as Error).message === message)
+  return error && error.graphQLErrors.some(error => (error as unknown as Error).message === message)
 }
 
 export const client = new Client({

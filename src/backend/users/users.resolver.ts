@@ -8,7 +8,7 @@ import { nanoid } from "nanoid/async"
 import mjml2html from "mjml"
 import ejs from "ejs"
 
-const resend = new Resend("re_jZkCq85i_419wLdJGHpdk5njyHCYbJm7K")
+const resend = new Resend(process.env.RESEND_TOKEN)
 
 @Service()
 @Resolver()
@@ -72,7 +72,7 @@ export class UserResolver {
 
               <mj-divider border-color="#F45E43"></mj-divider>
 
-              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Olá <$= name %>! <%= user %> está te convidando para entrar no Vem Questões!</mj-text>
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Olá <%= name %>! <%= user %> está te convidando para entrar no Vem Questões!</mj-text>
 
               <mj-text font-size="20px" color="#F45E43" font-family="helvetica">
                 <a href="https://vem-questoes.apps.vadolasi.dev/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %>
