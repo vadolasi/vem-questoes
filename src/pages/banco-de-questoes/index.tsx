@@ -405,14 +405,50 @@ export default function Questoes() {
     }
   }
 
-  const addNotebook = async () => {
-    await executeCreateNotebook({ name: "Título", questions: [] })
+  const _addNotebook = async () => {
+    await executeCreateNotebook({ name: "Título", description: "Descrição", questions: [] })
     executeQuery({ requestPolicy: "network-only" })
   }
 
-  const deleteNotebook = async (id: string) => {
-    await executeDeleteNotebook({ id })
-    executeQuery({ requestPolicy: "network-only" })
+  const addNotebook = () => {
+    toast.promise(
+      _addNotebook(),
+      {
+        pending: "Criando caderno",
+        success: "Caderno criado com sucesso!",
+        error: "Ocorreu um erro ao criar o caderno!"
+      }
+    )
+  }
+
+  const _addQuestionToNotebook = async (id: string) => {
+    await executeAddQuestionToNotebook({ id, questionId: currentQuestion?.id! })
+  }
+
+  const addQuestionToNotebook = async (id: string) => {
+    toast.promise(
+      _addQuestionToNotebook(id),
+      {
+        pending: "Adicionando questão ao caderno",
+        success: "Questão adicionada com sucesso!",
+        error: "Ocorreu um erro ao adicionar a questão!"
+      }
+    )
+  }
+
+  const _removeQuestionFromNotebook = async (id: string) => {
+    await executeRemoveQuestionFromNotebook({ id, questionId: currentQuestion?.id! })
+  }
+
+  const removeQuestionFromNotebook = (id: string) => {
+    toast.promise(
+      _removeQuestionFromNotebook(id),
+      {
+        pending: "Removendo questão do caderno",
+        success: "Questão removida com sucesso!",
+        error: "Ocorreu um erro ao remover a questão!"
+      }
+    )
   }
 
   useEffect(() => {
@@ -647,8 +683,8 @@ export default function Questoes() {
                       description={description || ""}
                       questions={questions}
                       currentQuestion={currentQuestion?.id}
-                      addFunction={() => executeAddQuestionToNotebook({ id, questionId: currentQuestion?.id! })}
-                      removeFunction={() => executeRemoveQuestionFromNotebook({ id, questionId: currentQuestion?.id! })}
+                      addFunction={() => addQuestionToNotebook(id)}
+                      removeFunction={() => removeQuestionFromNotebook(id)}
                       add
                     />
                   ))}

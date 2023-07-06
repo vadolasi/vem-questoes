@@ -47,14 +47,14 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
 `)
 
 export default function Home() {
-  const [result, executeQuery] = useQuery({ query: notebooksQuery })
+  const [result, executeQuery] = useQuery({ query: notebooksQuery, requestPolicy: "cache-and-network" })
   const [, executeCreateNotebook] = useMutation(createNotebookMutation)
   const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
 
   const { data } = result
 
   const _addNotebook = async () => {
-    await executeCreateNotebook({ name: "Título", questions: [] })
+    await executeCreateNotebook({ name: "Título", description: "Descrição", questions: [] })
     executeQuery({ requestPolicy: "network-only" })
   }
 
@@ -94,9 +94,21 @@ export default function Home() {
           <SearchInput/>
           <Button onClick={() => addNotebook()}>+ Criar Caderno</Button>
         </Search>
-        <DefaultSearchPage text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'} picture={notebook} alt='Mulher escrevendo informações em um carderno' content={(data?.notebooks!.length || 0) > 0}>
-          {data?.notebooks && data.notebooks.map((notebook, index) => (
-            <NotebookCard edit id={notebook.id} key={notebook.id} title={notebook.name} description={notebook.description!} questions={notebook.questions} deleteClick={() => deleteNotebook(notebook.id)}/>
+        <DefaultSearchPage
+          text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'}
+          picture={notebook} alt='Mulher escrevendo informações em um carderno'
+          content={(data?.notebooks!.length || 0) > 0}
+        >
+          {data?.notebooks && data.notebooks.map(notebook => (
+            <NotebookCard
+              edit
+              id={notebook.id}
+              key={notebook.id}
+              title={notebook.name}
+              description={notebook.description!}
+              questions={notebook.questions}
+              deleteClick={() => deleteNotebook(notebook.id)}
+            />
           ))}
         </DefaultSearchPage>
       </Content>

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 
-import { GoTo, Navigation, QuestionContainer, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
+import { GoTo, Navigation, QuestionContainer, ButtonReport, QuestionButtons, } from '../../components/styles/nuttela';
 
-import { ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
+import { ContainerPagination, ButtonPagination, MenuPagination } from '../../components/styles';
 import { AiOutlineHourglass, AiOutlinePlayCircle, AiOutlinePauseCircle } from 'react-icons/ai';
 
-import { QuestionStatement } from "../../../../components/styles/banco-de-questoes"
+import { QuestionStatement } from "../../components/styles/banco-de-questoes"
 
 import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete } from 'react-icons/ai'
 
-import { Container, Content } from '../../../../components/styles/simulados';
+import { Container, Content } from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -25,10 +25,8 @@ import { toast } from 'react-toastify';
 import { useSearchParams } from 'next/navigation';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
-  query GetSimulado($id: String!) {
-    simulado(id: $id) {
-      totalMinutes
-      totalQuestions
+  query GetNotebook($id: String!) {
+    notebook(notebookId: $id) {
       questions {
         id
         enunciado
@@ -52,7 +50,7 @@ const getQuestionQuery = graphql(/* GraphQL */ `
 `)
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
-  mutation ResolveQuestionOdSimulado($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
+  mutation ResolveQuestionOnNotebook($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
     addAnswer(
       questionId: $questionId
       alternativeId: $alternativeId
@@ -89,8 +87,8 @@ export default function Questoes() {
 
   const { data, fetching } = resultQuestion
 
-  const currentQuestion = data?.simulado.questions[questionNumber];
-  const pages = data?.simulado.questions?.map((_, index) => index + 1) || [];
+  const currentQuestion = data?.notebook.questions[questionNumber];
+  const pages = data?.notebook.questions?.map((_, index) => index + 1) || [];
 
   function handleAlternativeDeleted(alternativeID: string){
     const alredyDeleted = alternativeDeleted.includes(alternativeID)
@@ -121,8 +119,8 @@ export default function Questoes() {
   }
 
   function handleChangeQuestionByInput() {
-    if (data?.simulado.totalQuestions) {
-      if (questionInput >= 1 && questionInput <= data?.simulado.totalQuestions) {
+    if (data?.notebook.questions.length) {
+      if (questionInput >= 1 && questionInput <= data?.notebook.questions.length) {
         setQuestionNumber(questionInput)
       } else {
         setQuestionNumber(1)
@@ -184,7 +182,7 @@ export default function Questoes() {
      <Menu page=''/>
      <Content>
         <Timer>
-          <h1>Simulado</h1>
+          <h1>Caderno de erros</h1>
             <div className='TimerContainer'>
                 <AiOutlineHourglass/>
             <div className='Timer'>
@@ -198,7 +196,7 @@ export default function Questoes() {
         <QuestionContainer>
 
         <Navigation>
-              <span>{data?.simulado.totalQuestions || 0} questões</span>
+              <span>{data?.notebook.questions.length || 0} questões</span>
 
               {pages && questionNumber && (
                 <ContainerPagination>
@@ -218,22 +216,22 @@ export default function Questoes() {
                         3
                       </button>
                       <button className={questionNumber == 4 ? 'current' : ''} onClick={() => setQuestionNumber(4)}>
-                         4
+                        4
                       </button>
                       <button className={questionNumber == 5 ? 'current' : ''} onClick={() => setQuestionNumber(5)}>
-                         5
+                        5
                       </button>
                       <button className={questionNumber == 6 ? 'current' : ''} onClick={() => setQuestionNumber(6)}>
-                         6
+                        6
                       </button>
                       <button className={questionNumber == 7 ? 'current' : ''} onClick={() => setQuestionNumber(7)}>
-                         7
+                        7
                       </button>
                       <button className={questionNumber == 8 ? 'current' : ''} onClick={() => setQuestionNumber(8)}>
-                         8
+                        8
                       </button>
                       <button className={questionNumber == 9 ? 'current' : ''} onClick={() => setQuestionNumber(9)}>
-                         9
+                        9
                       </button>
                     </> : <>
                     <button

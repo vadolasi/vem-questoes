@@ -41,9 +41,11 @@ export default createYoga<GqlContext>({
   renderGraphiQL,
   plugins: [
     useGraphQlJit(),
+    /*
     useResponseCache({
       session: (request) => request.headers.get("Cookie")
     })
+    */
   ],
   context: ({ req, res }) => ({
     getUserId: () => {
