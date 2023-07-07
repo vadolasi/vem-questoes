@@ -9,6 +9,8 @@ export const Container = styled("div", {
         height: '52px',
         color: "$text",
         textDecoration: "none",
+        display: "flex",
+        alignItems: 'center',
     }
 
 })
