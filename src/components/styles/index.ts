@@ -164,5 +164,19 @@ export const OfferCard = styled('div', {
                         marginLeft: '35%',
                         marginTop: '40%',
                 },
-              }
+              },
+
+        '@media (max-width: 365px)':{
+                width: '230px',
+                ".Header":{
+                        height: "165px",
+                        "div":{
+                                "button": {
+                                        width: "200px",
+                                },
+                        }
+                }
+        }
+
+        
 })

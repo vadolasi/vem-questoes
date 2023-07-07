@@ -33,7 +33,10 @@ export const Container = styled('div', {
     
     '@media (max-width: 1200px)': {
         width: '350px',
-      }
+      },
+    '@media (max-width: 365px)':{
+        width: '230px',
+    }
 })
 
 
