@@ -97,6 +97,7 @@ export type Mutation = {
 
 export type MutationAddAnswerArgs = {
   alternativeId: Scalars['String'];
+  notebookId?: InputMaybe<Scalars['String']>;
   questionId: Scalars['String'];
   simuladoId?: InputMaybe<Scalars['String']>;
 };

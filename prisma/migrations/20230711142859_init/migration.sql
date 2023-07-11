@@ -8,187 +8,211 @@ CREATE TYPE "TicketType" AS ENUM ('BUG', 'FEATURE', 'QUESTION', 'OTHER');
 CREATE TYPE "TicketStatus" AS ENUM ('OPEN', 'IN_PROGRESS', 'DONE');
 
 -- CreateTable
+CREATE TABLE "Notification" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NotificationToUser" (
+    "id" TEXT NOT NULL,
+    "notificationId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "NotificationToUser_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
-    "id" STRING NOT NULL,
-    "email" STRING NOT NULL,
-    "name" STRING NOT NULL,
-    "password" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "photoUrl" TEXT NOT NULL DEFAULT 'https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg',
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
-    "totalQuestions" INT4 NOT NULL,
-    "totalCorrect" INT4 NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "totalQuestions" INTEGER NOT NULL,
+    "totalCorrect" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Alternative" (
-    "id" STRING NOT NULL,
-    "text" STRING NOT NULL,
-    "letter" STRING NOT NULL,
-    "correct" BOOL NOT NULL,
-    "questionId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "letter" TEXT NOT NULL,
+    "correct" BOOLEAN NOT NULL,
+    "questionId" TEXT NOT NULL,
 
     CONSTRAINT "Alternative_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Question" (
-    "id" STRING NOT NULL,
-    "enunciado" STRING NOT NULL,
-    "processoSeletivoId" STRING NOT NULL,
-    "anoId" STRING,
-    "localId" STRING,
-    "perfilId" STRING,
-    "areaId" STRING,
-    "subareaId" STRING,
-    "estadoId" STRING,
-    "bancaId" STRING,
+    "id" TEXT NOT NULL,
+    "enunciado" TEXT NOT NULL,
+    "processoSeletivoId" TEXT NOT NULL,
+    "anoId" TEXT,
+    "localId" TEXT,
+    "perfilId" TEXT,
+    "areaId" TEXT,
+    "subareaId" TEXT,
+    "estadoId" TEXT,
+    "bancaId" TEXT,
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" STRING NOT NULL,
-    "content" STRING NOT NULL,
-    "questionId" STRING NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "questionId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Notebook" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "description" TEXT,
 
     CONSTRAINT "Notebook_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ProcessoSeletivo" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "ProcessoSeletivo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Ano" (
-    "id" STRING NOT NULL,
-    "ano" INT4 NOT NULL,
+    "id" TEXT NOT NULL,
+    "ano" INTEGER NOT NULL,
 
     CONSTRAINT "Ano_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Local" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Local_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Perfil" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Perfil_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Area" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Area_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Subarea" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Subarea_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Estado" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Estado_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Banca" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "Banca_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RefreshToken" (
-    "id" STRING NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL,
-    "revoked" BOOL NOT NULL DEFAULT false,
+    "revoked" BOOLEAN NOT NULL DEFAULT false,
     "expiresAt" TIMESTAMP(3) NOT NULL,
-    "userId" STRING NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "RefreshToken_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Response" (
-    "id" STRING NOT NULL,
-    "questionId" STRING NOT NULL,
-    "alternativeId" STRING NOT NULL,
-    "simuladoId" STRING,
-    "correct" BOOL NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "questionId" TEXT NOT NULL,
+    "alternativeId" TEXT NOT NULL,
+    "simuladoId" TEXT,
+    "notebookId" TEXT,
+    "correct" BOOLEAN NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Response_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Simulado" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "totalQuestions" INT4 NOT NULL,
-    "totalMinutes" INT4 NOT NULL,
+    "totalQuestions" INTEGER NOT NULL,
+    "totalMinutes" INTEGER NOT NULL,
 
     CONSTRAINT "Simulado_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Ticket" (
-    "id" STRING NOT NULL,
-    "title" STRING NOT NULL,
-    "content" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "type" "TicketType" NOT NULL,
     "status" "TicketStatus" NOT NULL DEFAULT 'OPEN',
-    "userId" STRING NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "questionId" TEXT,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "_QuestionToSimulado" (
-    "A" STRING NOT NULL,
-    "B" STRING NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "_NotebookToQuestion" (
-    "A" STRING NOT NULL,
-    "B" STRING NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -231,6 +255,12 @@ CREATE UNIQUE INDEX "_NotebookToQuestion_AB_unique" ON "_NotebookToQuestion"("A"
 CREATE INDEX "_NotebookToQuestion_B_index" ON "_NotebookToQuestion"("B");
 
 -- AddForeignKey
+ALTER TABLE "NotificationToUser" ADD CONSTRAINT "NotificationToUser_notificationId_fkey" FOREIGN KEY ("notificationId") REFERENCES "Notification"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "NotificationToUser" ADD CONSTRAINT "NotificationToUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Alternative" ADD CONSTRAINT "Alternative_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -261,13 +291,13 @@ ALTER TABLE "Question" ADD CONSTRAINT "Question_bancaId_fkey" FOREIGN KEY ("banc
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Notebook" ADD CONSTRAINT "Notebook_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Notebook" ADD CONSTRAINT "Notebook_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Response" ADD CONSTRAINT "Response_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -279,13 +309,19 @@ ALTER TABLE "Response" ADD CONSTRAINT "Response_alternativeId_fkey" FOREIGN KEY 
 ALTER TABLE "Response" ADD CONSTRAINT "Response_simuladoId_fkey" FOREIGN KEY ("simuladoId") REFERENCES "Simulado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_notebookId_fkey" FOREIGN KEY ("notebookId") REFERENCES "Notebook"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Simulado" ADD CONSTRAINT "Simulado_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Simulado" ADD CONSTRAINT "Simulado_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_QuestionToSimulado" ADD CONSTRAINT "_QuestionToSimulado_A_fkey" FOREIGN KEY ("A") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;

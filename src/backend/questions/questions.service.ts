@@ -230,7 +230,7 @@ export class QuestionsService {
     })
   }
 
-  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string) {
+  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string, notebookId?: string) {
     const alternative = await this.prisma.alternative.findUnique({
       where: {
         id: alternativeId
@@ -255,7 +255,8 @@ export class QuestionsService {
         questionId,
         alternativeId,
         correct: alternative.correct,
-        simuladoId
+        simuladoId,
+        notebookId
       }
     })
 
@@ -336,7 +337,19 @@ export class QuestionsService {
   }
 
   async getNotebook(userId: string, notebookId: string) {
-    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+    const notebook = await this.prisma.notebook.findFirst({
+      where: { id: notebookId, userId },
+      include: {
+        questions: {
+          include: {
+            alternatives: true,
+            ano: true,
+            banca: true,
+            processoSeletivo: true
+          }
+        }
+      }
+    })
 
     if (!notebook) {
       throw new GraphQLError("Notebook not found")

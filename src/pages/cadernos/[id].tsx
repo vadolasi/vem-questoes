@@ -65,7 +65,7 @@ const resolverQuestionMutation = graphql(/* GraphQL */ `
 export default function Questoes() {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
-  const [isConfettiActive, setIsConfettiActive] = useState(false);
+  const [, setIsConfettiActive] = useState(false);
   const [, resolveQuestion] = useMutation(resolverQuestionMutation)
 
   const [alternativeDeleted, setAlternativeDeleted] = useState<string[]>([]);
@@ -87,7 +87,7 @@ export default function Questoes() {
 
   const { data, fetching } = resultQuestion
 
-  const currentQuestion = data?.notebook.questions[questionNumber];
+  const currentQuestion = data?.notebook.questions[questionNumber - 1];
   const pages = data?.notebook.questions?.map((_, index) => index + 1) || [];
 
   function handleAlternativeDeleted(alternativeID: string){
@@ -267,8 +267,10 @@ export default function Questoes() {
                               {questionNumber + 3}
                       </button>
                       <button
-                              className='' onClick={() => setQuestionNumber(questionNumber => questionNumber+4)}>
-                              {questionNumber + 4}
+                        className=''
+                        onClick={() => setQuestionNumber(questionNumber => questionNumber+4)}
+                      >
+                        {questionNumber + 4}
                       </button>
 
                     </>}
@@ -279,7 +281,6 @@ export default function Questoes() {
 
                 </ContainerPagination>
               )}
-
 
               <GoTo>
                 <input type='number' min={1} value={questionInput} onChange={(e: any) => setQuestionInput(Number(e.target.value))} />

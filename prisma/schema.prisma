@@ -115,6 +115,7 @@ model Notebook {
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   questions   Question[]
+  responses   Response[]
   description String?
 }
 
@@ -184,6 +185,8 @@ model Response {
   alternativeId String
   simulado      Simulado?   @relation(fields: [simuladoId], references: [id])
   simuladoId    String?
+  notebook      Notebook?   @relation(fields: [notebookId], references: [id])
+  notebookId    String?
   correct       Boolean
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String

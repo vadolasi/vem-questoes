@@ -67,7 +67,7 @@ export class UserResolver {
                 <a href="https://vem-questoes.apps.vadolasi.dev/login" target="_blank">Clique aqui para acessar</a>, faça login com esse email, e com a seguinte senha: <%= password %>
               </mj-text>
 
-              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Você pode mudar de senha, atarvés da aba "Perfil"</mj-text>
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Você pode mudar de senha, através da aba "Perfil", ou clicando em "Esqueci minha senha"</mj-text>
 
             </mj-column>
           </mj-section>

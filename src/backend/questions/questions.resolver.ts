@@ -144,9 +144,10 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string,
     @Arg("questionId") questionId: string,
     @Arg("alternativeId") alternativeId: string,
-    @Arg("simuladoId", { nullable: true }) simuladoId?: string
+    @Arg("simuladoId", { nullable: true }) simuladoId?: string,
+    @Arg("notebookId", { nullable: true }) notebookId?: string
   ) {
-    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId)
+    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId, notebookId)
   }
 
   @Authorized()
