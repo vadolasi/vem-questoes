@@ -29,17 +29,6 @@ export class UserResolver {
     return this.usersService.leaderBoard()
   }
 
-  @Mutation(returns => User)
-  @Authorized()
-  async createUser(
-    @Arg("email") email: string,
-    @Arg("name") name: string,
-    @Arg("password") password: string,
-    @Arg("role") role: Role
-  ) {
-    return await this.usersService.createUser(name, email, password, role)
-  }
-
   @Query(returns => [User])
   @Authorized()
   async users() {
@@ -86,7 +75,7 @@ export class UserResolver {
       </mjml>
     `
     const user = await this.usersService.getById(userId)
-    const password =  await nanoid(12)
+    const password = await nanoid(12)
     const newUser = await this.usersService.createUser(name, email, password, role)
     const mjmlTemplate = await ejs.render(template, { name, user: user!.name, password }, { async: true })
     const finalTemplate = mjml2html(mjmlTemplate).html
@@ -99,5 +88,25 @@ export class UserResolver {
     })
 
     return newUser
+  }
+
+  @Mutation(returns => Boolean)
+  @Authorized()
+  async updateProfile(
+    @CurrentUserID() userId: string,
+    @Arg("name", { nullable: true }) name?: string,
+    @Arg("photoUrl", { nullable: true }) photoUrl?: string
+  ) {
+    return await this.usersService.updateUser(userId, name, photoUrl)
+  }
+
+  @Mutation(returns => Boolean)
+  @Authorized()
+  async updatePassword(
+    @CurrentUserID() userId: string,
+    @Arg("oldPassword") oldPassword: string,
+    @Arg("newPassword") newPassword: string,
+  ) {
+    return await this.usersService.updatePassword(userId, oldPassword, newPassword)
   }
 }

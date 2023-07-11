@@ -8,7 +8,7 @@ interface InputInterface extends InputHTMLAttributes<HTMLInputElement> {
 export const Input = ({ text, ...rest }: InputInterface) => {
   return (
     <Container>
-      <input  {...rest} />
+      <input {...rest} />
       <span>{text}</span>
     </Container>
   );

@@ -186,9 +186,10 @@ type Mutation {
   readNotifications(notificationIds: [String!]!): Boolean!
   addTicket(question: String, type: TicketType!, content: String!, title: String!): Ticket!
   resolveTicket(id: String!): Boolean!
-  createUser(role: Role!, password: String!, name: String!, email: String!): User!
   deleteUser(id: String!): Boolean!
   inviteUser(role: Role!, name: String!, email: String!): User!
+  updateProfile(photoUrl: String, name: String): Boolean!
+  updatePassword(newPassword: String!, oldPassword: String!): Boolean!
 }
 
 type AddAnswerResponse {
