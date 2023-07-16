@@ -480,14 +480,142 @@ export default function Questoes() {
               <SearchInput placeholder='Pesquisar' onChange={text => setText(text)} />
               <div className='inputs'>
                 <div className='Selects'>
-                  <RSelect placeholder="Processos seletivos" value={filterProcessoSeletivo} isMulti options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterProcessoSeletivo([...options])} />
-                  <RSelect placeholder="Anos" isMulti options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []} onChange={options => setFilterAno([...options])} />
-                  <RSelect placeholder="Locais" isMulti options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterLocal([...options])} />
-                  <RSelect placeholder="Perfis" isMulti options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterPerfil([...options])} />
-                  <RSelect placeholder="Areas" isMulti options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterArea([...options])} />
-                  <RSelect placeholder="Subareas" isMulti options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterSubarea([...options])} />
-                  <RSelect placeholder="Estados" isMulti options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterEstado([...options])} />
-                  <RSelect placeholder="Bancas" isMulti options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []} onChange={options => setFilterBanca([...options])} />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Processos seletivos"
+                    value={filterProcessoSeletivo}
+                    isMulti
+                    options={filterData?.processosSeletivos.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterProcessoSeletivo([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Anos"
+                    value={filterAno}
+                    isMulti
+                    options={filterData?.anos.map(({ id, ano }) => ({ value: id, label: ano.toString() })) || []}
+                    onChange={options => setFilterAno([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Locais"
+                    value={filterLocal}
+                    isMulti
+                    options={filterData?.locais.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterLocal([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Perfis"
+                    value={filterPerfil}
+                    isMulti
+                    options={filterData?.perfis.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterPerfil([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Areas"
+                    value={filterArea}
+                    isMulti
+                    options={filterData?.areas.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterArea([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Subareas"
+                    value={filterSubarea}
+                    isMulti
+                    options={filterData?.subareas.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterSubarea([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Estados"
+                    value={filterEstado}
+                    isMulti
+                    options={filterData?.estados.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterEstado([...options])}
+                  />
+                  <RSelect
+                    styles={{
+                      control: baseStyles => ({
+                        ...baseStyles,
+                        width: "200px"
+                      }),
+                      menu: baseStyles => ({
+                        ...baseStyles,
+                        marginTop: "-30px"
+                      })
+                    }}
+                    placeholder="Bancas"
+                    value={filterBanca}
+                    isMulti
+                    options={filterData?.bancas.map(({ id, name }) => ({ value: id, label: name })) || []}
+                    onChange={options => setFilterBanca([...options])}
+                  />
                 </div>
 
                 <Fieldset>
