@@ -16,6 +16,7 @@ const documents = {
     "\n  mutation RefreshToken {\n    refreshToken\n  }\n": types.RefreshTokenDocument,
     "\n  query QuestionsFilters {\n    processosSeletivos {\n      id\n      name\n    }\n    anos {\n      id\n      ano\n    }\n    locais {\n      id\n      name\n    }\n    perfis {\n      id\n      name\n    }\n    areas {\n      id\n      name\n    }\n    subareas {\n      id\n      name\n    }\n    estados {\n      id\n      name\n    }\n    bancas {\n      id\n      name\n    }\n  }\n": types.QuestionsFiltersDocument,
     "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n": types.MeDocument,
+    "\n  mutation Logout {\n    logout\n  }\n": types.LogoutDocument,
     "\n  mutation DeleteUser($id: String!) {\n    deleteUser(id: $id)\n  }\n": types.DeleteUserDocument,
     "\n  query GetAreas {\n    areas {\n      id\n      name\n    }\n  }\n": types.GetAreasDocument,
     "\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
@@ -35,7 +36,7 @@ const documents = {
     "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetNotebookDocument,
     "\n  mutation ResolveQuestionOnNotebook($questionId: String!, $alternativeId: String!, $simuladoId: String!) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      simuladoId: $simuladoId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOnNotebookDocument,
     "\n  query Chart {\n    relatorio {\n      date\n      total\n      totalCorrect\n    }\n    me {\n      totalQuestions\n      totalCorrect\n    }\n  }\n": types.ChartDocument,
-    "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        name\n        totalQuestions\n      }\n    }\n  }\n": types.InitialPageDocument,
+    "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n": types.InitialPageDocument,
     "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password)\n  }\n": types.LoginDocument,
     "\n  query Me3 {\n    me {\n      name\n      email\n      photoUrl\n    }\n  }\n": types.Me3Document,
     "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(\n      name: $name\n      photoUrl: $photoUrl\n    )\n  }\n": types.UpdateProfileDocument,
@@ -74,6 +75,10 @@ export function graphql(source: "\n  query QuestionsFilters {\n    processosSele
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation Logout {\n    logout\n  }\n"): (typeof documents)["\n  mutation Logout {\n    logout\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -153,7 +158,7 @@ export function graphql(source: "\n  query Chart {\n    relatorio {\n      date\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        name\n        totalQuestions\n      }\n    }\n  }\n"): (typeof documents)["\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        name\n        totalQuestions\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n"): (typeof documents)["\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

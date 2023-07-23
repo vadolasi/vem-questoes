@@ -33,4 +33,13 @@ export class AuthResolver {
 
     return true
   }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() ctx: ContextType) {
+    await this.authService.logout(ctx.getRefreshToken())
+
+    ctx.clearTokens()
+
+    return true
+  }
 }

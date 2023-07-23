@@ -16,6 +16,7 @@ import simulado from '@/assets/Test.png'
 
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
+import { toast } from 'react-toastify';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -42,9 +43,9 @@ const createSimuladoMutation = graphql(/* GraphQL */`
 `)
 
 export default function Home() {
-  const [result] = useQuery({ query: simuladosQuery })
+  const [result, executeQuery] = useQuery({ query: simuladosQuery })
 
-  const { data } = result
+  const { data, fetching } = result
 
   const [showExamModal, setShowExamModal] = useState(false);
   const [showSimuladoModal, setShowSimuladoModal] = useState(false);
@@ -66,7 +67,17 @@ export default function Home() {
     if (value == 'Personalizado') {
       setShowExamModal(!showExamModal)
     } else {
-      await execute({ name: "Simulado aleatório" })
+      toast.promise(
+        async () => {
+          await execute({ name: "Simulado aleatório" })
+          executeQuery()
+        },
+        {
+          error: "Erro ao criar simulado",
+          pending: "Criando simulado",
+          success: "Simulado criado com sucesso"
+        }
+      )
     }
   }
 
@@ -82,7 +93,7 @@ export default function Home() {
           <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
           <Button onClick={createSimulado}>Criar</Button>
         </Search>
-        <DefaultSearchPage text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
+        <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
           {data?.simulados && data.simulados.simulados.map((exam) => (
             <>
               <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>

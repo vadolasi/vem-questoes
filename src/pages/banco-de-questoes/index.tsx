@@ -316,7 +316,7 @@ export default function Questoes() {
   const { data, fetching } = resultQuestion
 
   const [resultNotebook, executeQuery] = useQuery({ query: notebooksQuery })
-  const { data: notebookData } = resultNotebook
+  const { data: notebookData, fetching: fetchingNotebook } = resultNotebook
   const [, executeCreateNotebook] = useMutation(createNotebookMutation)
   const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
 
@@ -802,7 +802,7 @@ export default function Questoes() {
                     <SearchInput onChange={() => {}} />
                     <Button onClick={addNotebook}>+ Criar Caderno</Button>
                   </Search>
-                  <DefaultSearchPage text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
+                  <DefaultSearchPage loading={fetchingNotebook} text='Crie um caderno para você!' picture={notebook} alt='Mulher escreven informações em um carderno' content={notebookData?.notebooks && notebookData?.notebooks.length > 0}>
                   {notebookData?.notebooks && notebookData.notebooks.map(({ id, name, questions, description }) => (
                     <NotebookCard
                       id={id}

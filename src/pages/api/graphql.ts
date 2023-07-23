@@ -38,12 +38,7 @@ export default createYoga<GqlContext>({
   graphqlEndpoint: "/api/graphql",
   renderGraphiQL,
   plugins: [
-    useGraphQlJit(),
-    /*
-    useResponseCache({
-      session: (request) => request.headers.get("Cookie")
-    })
-    */
+    useGraphQlJit()
   ],
   context: ({ req, res }) => ({
     getUserId: () => {
@@ -78,6 +73,9 @@ export default createYoga<GqlContext>({
     },
     getRefreshToken: () => {
       return req.cookies.refreshToken
+    },
+    clearTokens: () => {
+      res.setHeader("Set-Cookie", ["token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0", "refreshToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0"])
     }
   })
 })

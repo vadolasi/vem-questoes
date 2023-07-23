@@ -35,6 +35,7 @@ const initialPagerQuery = graphql(/* GraphQL */ `
     }
     simulados {
       simulados {
+        id
         name
         totalQuestions
       }
@@ -95,7 +96,7 @@ export default function Home() {
           {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
           {data?.simulados.simulados.map(simulado => (
-              <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
+              <ExamCard key={simulado.id} id={simulado.id} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
           </>}
 
