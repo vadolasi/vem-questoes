@@ -139,8 +139,13 @@ export default function Questoes() {
 
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [hours, setHours] = useState(Math.floor(3*(data?.simulado!.questions!.length) / 60));
-  const [minutes, setMinutes] = useState(3*(data?.simulado!.questions!.length) % 60);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+
+  useEffect(() => {
+    setHours(Math.floor(3*(data?.simulado?.questions?.length || 0) / 60))
+    setMinutes(3*(data?.simulado?.questions?.length || 0) % 60)
+  }, [data])
 
   const toggle = () => {
     setIsActive(!isActive);
