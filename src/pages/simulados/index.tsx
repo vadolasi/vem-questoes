@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { Container, Content, Search } from '../../components/styles/simulados';
+import { Search } from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -17,6 +17,7 @@ import simulado from '@/assets/Test.png'
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 import { toast } from 'react-toastify';
+import Layout from '@/components/layout';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -82,26 +83,22 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <Header/>
-      <Menu page=''/>
-      <Content>
-        <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
+    <Layout page="mesa-de-estudos">
+      {showExamModal && <Modal onClick={() => setShowExamModal(!showExamModal)} create={true}/>}
 
-        <Search>
-          <SearchInput onChange={() => {}} />
-          <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
-          <Button onClick={createSimulado}>Criar</Button>
-        </Search>
-        <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
-          {data?.simulados && data.simulados.simulados.map((exam) => (
-            <>
-              <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-              <Modal  href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
-            </>
-          ))}
-        </DefaultSearchPage>
-      </Content>
-    </Container>
+      <Search>
+        <SearchInput onChange={() => {}} />
+        <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
+        <Button onClick={createSimulado}>Criar</Button>
+      </Search>
+      <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
+        {data?.simulados && data.simulados.simulados.map((exam) => (
+          <>
+            <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+            <Modal  href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+          </>
+        ))}
+      </DefaultSearchPage>
+    </Layout>
   )
 }

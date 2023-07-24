@@ -45,7 +45,7 @@ export const Header = () => {
   }
 
   return (
-    <>
+    <div style={{ backgroundColor: "white", position: "sticky", top: "0", zIndex: 40, width: "100vw" }}>
       <Container>
         <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo' />
         <Profile>
@@ -121,6 +121,6 @@ export const Header = () => {
           </DropMenu>
         </Profile>
       </Container>
-    </>
+    </div>
   );
 }

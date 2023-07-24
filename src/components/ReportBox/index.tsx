@@ -36,7 +36,7 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
         await executeCreateReport({ title: title, content: motivo, type: "BUG" as TicketType })
       }
 
-    return (
+    return show ? (
         <Container className={show ? 'show' : 'hidden'}>
             <Select label='Tipo do erro' options={[{option: 'bug', value: 'BUG'}, {option: 'Feature', value: 'FEATURE'}, {option: 'Questão', value: 'QUESTION'}, {option: 'Outro', value: 'OTHER'}]}  value={selectValue} onChange={(e: any) => {setSelectValue(e.target.value)}}/>
             <div className="input-wrapper">
@@ -57,5 +57,5 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
               </div>
               <Button onClick={() => addReport()}>Enviar</Button>
         </Container>
-    );
+    ) : null;
 };

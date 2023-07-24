@@ -92,6 +92,11 @@ export class QuestionsService {
   ) {
      const quantity = await this.prisma.question.count({
       where: {
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        },
         OR: [
           {
             enunciado: {
@@ -137,6 +142,11 @@ export class QuestionsService {
 
     const questions = await this.prisma.question.findMany({
       where: {
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        },
         OR: text ? [
           {
             enunciado: {
@@ -209,7 +219,12 @@ export class QuestionsService {
   async getQuestion(questionId: string, requestedFields: string[]) {
     return await this.prisma.question.findFirst({
       where: {
-        id: questionId
+        id: questionId,
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        }
       },
       include: {
         processoSeletivo: requestedFields.includes("processoSeletivo"),
@@ -441,7 +456,12 @@ export class QuestionsService {
             connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
               const questions = await this.prisma.question.findMany({
                 where: {
-                  areaId
+                  areaId,
+                  enunciado: {
+                    not: {
+                      search: "^\\s*$"
+                    }
+                  }
                 },
                 select: { id: true }
               })
@@ -453,7 +473,16 @@ export class QuestionsService {
         include: { questions: { include: { alternatives: true } } }
       })
     } else {
-      const questions = await this.prisma.question.findMany({ select: { id: true } })
+      const questions = await this.prisma.question.findMany({
+        where: {
+          enunciado: {
+            not: {
+              search: "^\\s*$"
+            }
+          }
+        },
+        select: { id: true }
+      })
 
       const quantites = [10, 15, 20, 25, 30]
       const quantity = getRandomItem(quantites)

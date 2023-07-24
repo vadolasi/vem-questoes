@@ -31,6 +31,7 @@ import { SpinnerCircular } from 'spinners-react';
 import { CommentCard } from '@/components/commentCard';
 
 import RSelect from 'react-select'
+import Layout from '@/components/layout';
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
   mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
@@ -470,10 +471,7 @@ export default function Questoes() {
           />
         )}
       </CorrectAnswerContainer>
-      <Container>
-
-        <Header />
-        <Menu page='banco-de-questoes' />
+      <Layout page="banco-de-questoes">
         <Content>
           <QuestionContainer>
             <ContainerFilter>
@@ -867,7 +865,7 @@ export default function Questoes() {
             </QuestionButtons>
           </QuestionContainer>
         </Content>
-      </Container >
+      </Layout>
     </>
   )
 }

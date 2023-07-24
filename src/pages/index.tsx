@@ -20,6 +20,7 @@ import { ImageSlider } from '@/components/ImageSlider';
 import { SliderData } from '@/components/ImageSlider/SliderData';
 
 import { SpinnerCircular } from 'spinners-react';
+import Layout from '@/components/layout';
 
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
@@ -51,11 +52,8 @@ export default function Home() {
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
   return (
-    <Container>
-     <Header/>
-     <Menu page='home'/>
-
-     <Content>
+      <Layout page="home">
+        <Content>
           <ContentCard title='Leaderboard'>
           {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
@@ -101,7 +99,7 @@ export default function Home() {
           </>}
 
           </ContentCard>
-     </Content>
-    </Container>
+        </Content>
+    </Layout>
   )
 }

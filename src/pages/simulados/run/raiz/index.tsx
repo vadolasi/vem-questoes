@@ -5,7 +5,7 @@ import { AiOutlineHourglass, AiOutlinePlayCircle, AiOutlinePauseCircle } from 'r
 
 import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons  } from '../../../../components/styles/raiz';
 import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
-import { ContainerFilter, Fieldset, ButtonFilter, CorrectAnswerContainer, ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
+import { ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
 
 import { Container, Content} from '../../../../components/styles/simulados';
 
@@ -15,12 +15,10 @@ import { TimerInverse } from '@/components/TimerInverse';
 
 import { graphql } from '@/gql';
 import { useQuery, useMutation } from 'urql';
-import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 import { SpinnerCircular } from 'spinners-react';
 
 import { toast } from 'react-toastify';
-import Confetti from 'react-confetti';
 import { useSearchParams } from 'next/navigation';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
@@ -185,7 +183,7 @@ export default function Questoes() {
      <Menu page=''/>
      <Content>
         <TimerInverse>
-              <h1>Simulado</h1>
+              <h1>Simulado modo raiz</h1>
             <div className='TimerContainer'>
                 <AiOutlineHourglass/>
             <div className='Timer'>
@@ -342,4 +340,3 @@ export default function Questoes() {
     </Container>
   )
 }
-
