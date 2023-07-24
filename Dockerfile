@@ -2,8 +2,6 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-RUN apt update && apt install -y libvips-dev build-essential make python3 python3-pip
-
 COPY package.json pnpm-lock.yaml ./
 RUN npm i -g pnpm node-gyp && pnpm i --ignore-scripts
 COPY . .
