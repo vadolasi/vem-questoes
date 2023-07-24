@@ -503,6 +503,12 @@ export class QuestionsService {
     }
   }
 
+  async deleteSimulado(userId: string, id: string) {
+    await this.prisma.simulado.deleteMany({ where: { id, userId } })
+
+    return true
+  }
+
   async relatorioDeDesempenho(userId: string) {
     const responses = await this.prisma.response.findMany({
       where: { userId }

@@ -264,6 +264,15 @@ export class QuestionsResolver {
   }
 
   @Authorized()
+  @Mutation(() => Boolean)
+  async deleteSimulado(
+    @CurrentUserID() userId: string,
+    @Arg("id") id: string
+  ) {
+    return await this.questionsService.deleteSimulado(userId, id)
+  }
+
+  @Authorized()
   @Query(returns => [RelatorioResponse])
   async relatorio(
     @CurrentUserID() userId: string

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { Search } from '../../components/styles/simulados';
+import { Content, Search } from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -43,6 +43,14 @@ const createSimuladoMutation = graphql(/* GraphQL */`
   }
 `)
 
+const deleteSimuladoMutation = graphql(/* GraphQL */`
+  mutation DeleteSimulado($id: String!) {
+    deleteSimulado(
+      id: $id
+    )
+  }
+`)
+
 export default function Home() {
   const [result, executeQuery] = useQuery({ query: simuladosQuery })
 
@@ -52,11 +60,22 @@ export default function Home() {
   const [showSimuladoModal, setShowSimuladoModal] = useState(false);
   const [value, setValue] = useState('')
   const [, execute] = useMutation(createSimuladoMutation)
+  const [, executeDelete] = useMutation(deleteSimuladoMutation)
 
   function handleRemoveExam(deleted: any){
-    const confirmDelete = confirm(`deseja excluir o caderno ${deleted.title}`);
-    if(!confirmDelete){
-      return
+    const confirmDelete = confirm(`deseja excluir o caderno ${deleted.name}?`);
+    if (confirmDelete) {
+      toast.promise(
+        async () => {
+          await executeDelete({ id: deleted.id })
+          executeQuery()
+        },
+        {
+          error: "Erro ao excluir simulado",
+          pending: "Excluindo simulado",
+          success: "Simulado excluido com sucesso"
+        }
+      )
     }
   }
 
@@ -84,7 +103,8 @@ export default function Home() {
 
   return (
     <Layout page="mesa-de-estudos">
-      {showExamModal && <Modal onClick={() => setShowExamModal(!showExamModal)} create={true}/>}
+      <Content>
+      {showExamModal && <Modal onClick={() => setShowExamModal(false)} create={true}/>}
 
       <Search>
         <SearchInput onChange={() => {}} />
@@ -95,10 +115,11 @@ export default function Home() {
         {data?.simulados && data.simulados.simulados.map((exam) => (
           <>
             <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-            <Modal  href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
+            {showSimuladoModal && <Modal href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>}
           </>
         ))}
       </DefaultSearchPage>
+      </Content>
     </Layout>
   )
 }

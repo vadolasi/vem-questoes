@@ -20,6 +20,7 @@ import { SpinnerCircular } from 'spinners-react';
 
 import { toast } from 'react-toastify';
 import { useSearchParams } from 'next/navigation';
+import Layout from '@/components/layout';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetSimulado2($id: String!) {
@@ -178,9 +179,7 @@ export default function Questoes() {
     }, [isActive, hours, minutes, seconds]);
 
   return (
-    <Container>
-     <Header/>
-     <Menu page=''/>
+    <Layout page="simulados">
      <Content>
         <TimerInverse>
               <h1>Simulado modo raiz</h1>
@@ -337,6 +336,6 @@ export default function Questoes() {
 
         </QuestionContainer>
      </Content>
-    </Container>
+    </Layout>
   )
 }

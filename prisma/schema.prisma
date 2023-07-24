@@ -206,7 +206,6 @@ model Simulado {
 
 model Ticket {
   id         String       @id @default(cuid())
-  title      String
   content    String
   type       TicketType
   status     TicketStatus @default(OPEN)

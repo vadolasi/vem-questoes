@@ -183,9 +183,10 @@ type Mutation {
   addQuestionToNotebook(questionId: String!, id: String!): NotebookModel!
   removeQuestionFromNotebook(questionId: String!, id: String!): NotebookModel!
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
+  deleteSimulado(id: String!): Boolean!
   createNotification(body: String!, title: String!): Notification!
   readNotifications(notificationIds: [String!]!): Boolean!
-  addTicket(question: String, type: TicketType!, content: String!, title: String!): Ticket!
+  addTicket(question: String, type: TicketType!, content: String!): Ticket!
   resolveTicket(id: String!): Boolean!
   deleteUser(id: String!): Boolean!
   inviteUser(role: Role!, name: String!, email: String!): User!
