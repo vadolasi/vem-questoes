@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
-import { GoTo, Navigation, QuestionContainer, ButtonReport, QuestionButtons, } from '../../../../components/styles/nuttela';
-
-import { ContainerPagination, ButtonPagination, MenuPagination } from '../../../../components/styles';
 import { AiOutlineHourglass, AiOutlinePlayCircle, AiOutlinePauseCircle } from 'react-icons/ai';
 
-import { QuestionStatement } from "../../../../components/styles/banco-de-questoes"
+import { GoTo, Navigation, QuestionContainer, QuestionStatement, ButtonReport, QuestionButtons  } from '../../components/styles/raiz';
+import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete} from 'react-icons/ai'
+import { ContainerPagination, ButtonPagination, MenuPagination } from '../../components/styles';
 
-import { AiOutlineRight, AiOutlineLeft, AiOutlineDelete } from 'react-icons/ai'
-
-import { Container, Content } from '../../../../components/styles/simulados';
+import { Container, Content} from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
-import { Timer } from '@/components/Timer';
+import { TimerInverse } from '@/components/TimerInverse';
 
 import { graphql } from '@/gql';
 import { useQuery, useMutation } from 'urql';
@@ -21,11 +19,13 @@ import { useQuery, useMutation } from 'urql';
 import { SpinnerCircular } from 'spinners-react';
 
 import { toast } from 'react-toastify';
-
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router'
+import Layout from '@/components/layout';
+import { useTimer, useStopwatch, TimerResult, StopwatchResult } from 'react-timer-hook';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
-  query GetSimulado($id: String!) {
+  query GetSimulado2($id: String!) {
     simulado(id: $id) {
       totalMinutes
       totalQuestions
@@ -52,7 +52,7 @@ const getQuestionQuery = graphql(/* GraphQL */ `
 `)
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
-  mutation ResolveQuestionOdSimulado($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
+  mutation ResolveQuestionOdSimulado2($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
     addAnswer(
       questionId: $questionId
       alternativeId: $alternativeId
@@ -65,6 +65,10 @@ const resolverQuestionMutation = graphql(/* GraphQL */ `
 `)
 
 export default function Questoes() {
+  const params = useSearchParams()
+  const router = useRouter()
+  const id = router.query.id as string
+
   const [questionNumber, setQuestionNumber] = useState(1)
   const [questionInput, setQuestionInput] = useState(1)
   const [isConfettiActive, setIsConfettiActive] = useState(false);
@@ -76,11 +80,20 @@ export default function Questoes() {
 
   const [isCorrect, setIsCorrect] = useState<string | null>(null);
 
-  const params = useSearchParams()
+  const mode = params.get("mode")
 
-  const id = params.get("id")
+  const timer = useTimer({ expiryTimestamp: new Date() })
+  const stopwatch = useStopwatch()
 
-  const [resultQuestion] = useQuery({
+  let counter: TimerResult | StopwatchResult
+
+  if (mode === "raiz") {
+    counter = timer
+  } else {
+    counter = stopwatch
+  }
+
+  const [resultQuestion, getQuestions] = useQuery({
     query: getQuestionQuery,
     variables: {
       id: id!
@@ -88,6 +101,12 @@ export default function Questoes() {
   })
 
   const { data, fetching } = resultQuestion
+
+  useEffect(() => {
+    if (mode === "raiz") {
+      timer.restart(new Date(Date.now() + (data?.simulado.totalMinutes || 0) * 60000), false)
+    }
+  }, [data, mode])
 
   const currentQuestion = data?.simulado.questions[questionNumber];
   const pages = data?.simulado.questions?.map((_, index) => index + 1) || [];
@@ -102,6 +121,7 @@ export default function Questoes() {
       setAlternativeDeleted(prevState => [...prevState, alternativeID]);
     }
   }
+
 
   async function answerQuestion() {
     if (!isSelected) {
@@ -121,8 +141,8 @@ export default function Questoes() {
   }
 
   function handleChangeQuestionByInput() {
-    if (data?.simulado.totalQuestions) {
-      if (questionInput >= 1 && questionInput <= data?.simulado.totalQuestions) {
+    if (data?.simulado.questions.length) {
+      if (questionInput >= 1 && questionInput <= data?.simulado.questions.length) {
         setQuestionNumber(questionInput)
       } else {
         setQuestionNumber(1)
@@ -137,68 +157,33 @@ export default function Questoes() {
     setIsSelected(null)
   }, [questionNumber])
 
-  const [horas, setHoras] = useState<number>(0);
-    const [minutos, setMinutos] = useState<number>(0);
-    const [segundos, setSegundos] = useState<number>(0);
-
-    const [play, setPlay] = useState<boolean>(false);
-
-    useEffect(() => {
-        let intervalId: NodeJS.Timeout;
-
-        if (play) {
-          intervalId = setInterval(() => {
-            setSegundos((segundos) => {
-              let newSegundos = segundos + 1;
-              let newMinutos = minutos;
-              let newHoras = horas;
-
-              if (newSegundos >= 60) {
-                newSegundos = 0;
-                newMinutos += 1;
-              }
-
-              if (newMinutos >= 60) {
-                newMinutos = 0;
-                newHoras += 1;
-              }
-
-              setSegundos(newSegundos);
-              setMinutos(newMinutos);
-              setHoras(newHoras);
-
-              return newSegundos
-            });
-          }, 1000);
-        }
-
-        return () => {
-          clearInterval(intervalId);
-        };
-      }, [play, segundos, minutos, horas]);
-
+  const toggle = () => {
+    if (counter.isRunning) {
+      counter.pause()
+    } else {
+      counter.start()
+    }
+  }
 
   return (
-    <Container>
-     <Header/>
-     <Menu page=''/>
+    <Layout page="simulados">
      <Content>
-        <Timer>
-          <h1>Simulado</h1>
+        <TimerInverse>
+              <h1>Simulado modo {mode === "raiz" ? "raiz" : "nutella"}</h1>
             <div className='TimerContainer'>
                 <AiOutlineHourglass/>
             <div className='Timer'>
-                <span>{horas < 10 ? '0' + horas : horas}:</span>
-                <span>{minutos < 10 ? '0' + minutos : minutos}:</span>
-                <span>{segundos < 10 ? '0' + segundos : segundos}</span>
+                <span>{counter.hours.toString().padStart(2, "0")}:</span>
+                <span>{counter.minutes.toString().padStart(2, "0")}:</span>
+                <span>{counter.seconds.toString().padStart(2, "0")}</span>
             </div>
-                <button onClick={() => {setPlay(!play)}}>{play ? <AiOutlinePauseCircle/> : <AiOutlinePlayCircle/>}</button>
+                <button onClick={toggle}>{counter.isRunning ? <AiOutlinePauseCircle/> : <AiOutlinePlayCircle/>}</button>
             </div>
-        </Timer>
+        </TimerInverse>
         <QuestionContainer>
 
         <Navigation>
-              <span>{data?.simulado.totalQuestions || 0} questões</span>
+              <span>{(data?.simulado.questions.length || 0)} questões</span>
 
               {pages && questionNumber && (
                 <ContainerPagination>
@@ -229,6 +214,7 @@ export default function Questoes() {
                       <button className={questionNumber == 7 ? 'current' : ''} onClick={() => setQuestionNumber(7)}>
                          7
                       </button>
+
                       <button className={questionNumber == 8 ? 'current' : ''} onClick={() => setQuestionNumber(8)}>
                          8
                       </button>
@@ -274,6 +260,10 @@ export default function Questoes() {
                       </button>
 
                     </>}
+
+
+
+
                   </MenuPagination>
                   <ButtonPagination onClick={() => setQuestionNumber(questionNumber + 1)} >
                     <AiOutlineRight />
@@ -315,21 +305,23 @@ export default function Questoes() {
                 {
                   currentQuestion?.alternatives  &&  currentQuestion?.alternatives.map((alternative) => (
                     <li className={alternativeDeleted.includes(alternative.id) ? "deleted" : ""} key={alternative.id}>
-                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect) || !play}>{alternative.letter}</button>
+                      <button onClick={() => setIsSelected(alternative.id)} className={`${isSelected == alternative.id && 'selected' } ${isCorrect == alternative.id ? 'certo' : `${isSelected === alternative.id && isCorrect && 'errado' }`}`} disabled={alternativeDeleted.includes(alternative.id) || Boolean(isCorrect) || !counter.isRunning}>{alternative.letter}</button>
                       <p>{fetching ? 'Carregando...': alternative.text}</p>
                       <button className='delete' onClick={() => handleAlternativeDeleted(alternative.id)}><AiOutlineDelete /></button>
                     </li>
                   )
-                )}
+                  )}
               </ul>
+
             </QuestionStatement>
           <QuestionButtons>
             <div className='resposta'>
-              <button onClick={answerQuestion} disabled={fetching || !play}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
+              <button onClick={answerQuestion} disabled={fetching || !counter.isRunning}>{!isCorrect ? 'Responder' : 'Próximo'}</button>
             </div>
           </QuestionButtons>
+
         </QuestionContainer>
      </Content>
-    </Container>
+    </Layout>
   )
 }

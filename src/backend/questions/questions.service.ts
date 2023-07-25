@@ -100,14 +100,14 @@ export class QuestionsService {
         OR: [
           {
             enunciado: {
-              contains: text
+              search: text
             }
           },
           {
             alternatives: {
               some: {
                 text: {
-                  contains: text
+                  search: text
                 }
               }
             }
@@ -150,14 +150,14 @@ export class QuestionsService {
         OR: text ? [
           {
             enunciado: {
-              contains: text
+              search: text
             }
           },
           {
             alternatives: {
               some: {
                 text: {
-                  contains: text
+                  search: text
                 }
               }
             }

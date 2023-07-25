@@ -63,12 +63,12 @@ export default function Home() {
   const [, executeDelete] = useMutation(deleteSimuladoMutation)
 
   function handleRemoveExam(deleted: any){
-    const confirmDelete = confirm(`deseja excluir o caderno ${deleted.name}?`);
+    const confirmDelete = confirm(`deseja excluir o simulado ${deleted.name}?`);
     if (confirmDelete) {
       toast.promise(
         async () => {
           await executeDelete({ id: deleted.id })
-          executeQuery()
+          executeQuery({ requestPolicy: "network-only" })
         },
         {
           error: "Erro ao excluir simulado",
@@ -115,7 +115,7 @@ export default function Home() {
         {data?.simulados && data.simulados.simulados.map((exam) => (
           <>
             <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-            {showSimuladoModal && <Modal href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>}
+            {showSimuladoModal && <Modal href={exam.id} key={`${exam.id}-m`} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>}
           </>
         ))}
       </DefaultSearchPage>

@@ -21,6 +21,6 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/simulados/run/raiz/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/simulados/run/index.tsx"],
   "exclude": ["node_modules"]
 }

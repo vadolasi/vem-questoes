@@ -7,7 +7,7 @@ export const Container = styled("div", {
     backgroundColor: 'rgba(0,0,0,0.4)',
 
     position: "absolute",
-    zIndex: 2,
+    zIndex: 999,
     top: 0,
     right: 0,
 

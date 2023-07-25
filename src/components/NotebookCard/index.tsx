@@ -18,6 +18,7 @@ interface NotebookCardProps {
   removeFunction?: () => void
   edit?: boolean,
   currentQuestion?: string
+  onEdit?: () => void
 }
 
 const updateNotebookMutation = graphql(/* GraphQL */ `
@@ -31,7 +32,7 @@ const updateNotebookMutation = graphql(/* GraphQL */ `
   }
 `)
 
-export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, description, questions, deleteClick, add, edit, currentQuestion, addFunction, removeFunction }) => {
+export const NotebookCard: React.FC<NotebookCardProps> = ({ onEdit, id, title, description, questions, deleteClick, add, edit, currentQuestion, addFunction, removeFunction }) => {
   const [titleCard, setTitleCard] = useState(title);
   const [descriptionCard, setDescriptionCard] = useState(description);
   const [editing, setEditing] = useState(true);
@@ -41,6 +42,7 @@ export const NotebookCard: React.FC<NotebookCardProps> = ({ id, title, descripti
 
   const _editNotebook = async () => {
     await executeMutation({ id, name: titleCard, description: descriptionCard })
+    onEdit && onEdit()
   }
 
   const editNotebook = async () => {

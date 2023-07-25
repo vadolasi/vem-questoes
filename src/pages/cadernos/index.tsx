@@ -109,6 +109,7 @@ export default function Home() {
               description={notebook.description!}
               questions={notebook.questions}
               deleteClick={() => deleteNotebook(notebook.id)}
+              onEdit={() => executeQuery({ requestPolicy: "network-only" })}
             />
           ))}
         </DefaultSearchPage>
