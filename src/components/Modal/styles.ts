@@ -7,7 +7,7 @@ export const Container = styled("div", {
     backgroundColor: 'rgba(0,0,0,0.4)',
 
     position: "absolute",
-    zIndex: 2,
+    zIndex: 999,
     top: 0,
     right: 0,
 
@@ -22,7 +22,7 @@ export const ModalWindow = styled("div", {
 
     position: 'relative',
 
-    zIndex: 3,
+    zIndex: 50,
 
     display: "flex",
     flexDirection: "column",
@@ -80,7 +80,7 @@ export const ModalWindow = styled("div", {
                     color: '$blue_1'
                 }
             }
-          
+
 
         }
 
@@ -99,7 +99,7 @@ export const ModalWindow = styled("div", {
         background: 'none',
         border: 'none'
     },
-    
+
     ".Close:hover":{
         transform: 'scale(1.3)',
         color: '$red',
@@ -137,5 +137,5 @@ export const ModalWindow = styled("div", {
             textDecoration: 'none',
             }
         }
-    
+
 })

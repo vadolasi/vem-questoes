@@ -13,7 +13,8 @@ interface menuProps {
 
 export const Menu: FC<menuProps> = ({page}) => {
     return(
-        <Container>
+      <div style={{ position: "fixed", height: "100%" }}>
+        <Container style={{ marginTop: "100px" }}>
             <li>
                 <Link href="/" className={page == 'home' ? 'page' : ''}>
                         <AiOutlineHome/>
@@ -50,5 +51,6 @@ export const Menu: FC<menuProps> = ({page}) => {
                 </Link>
             </li>
         </Container>
+      </div>
     );
 }

@@ -9,6 +9,7 @@ export interface ContextType {
   setRefreshToken: (token: string) => void
   setTokens: (token: string, refreshToken: string) => void
   getRefreshToken: () => string | null
+  clearTokens: () => void
 }
 
 export const authChecker: AuthChecker<ContextType> = async (

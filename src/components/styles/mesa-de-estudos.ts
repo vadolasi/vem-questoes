@@ -9,7 +9,7 @@ export const Container = styled('div', {
         gridTemplateRows: '100px auto',
         gridTemplateAreas:
         `
-        "header header" 
+        "header header"
         "menu content"
         `,
 
@@ -30,11 +30,11 @@ export const Content = styled("div", {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
         gap: '37px',
-
+        width: '100%',
 
         padding: "100px 58px",
 
-        
+
         '@media (max-width: 1200px)':{
                 gridTemplateColumns: "auto",
                 gridTemplateRows: "auto auto auto",

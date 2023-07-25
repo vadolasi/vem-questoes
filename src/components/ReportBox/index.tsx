@@ -14,9 +14,8 @@ import { useMutation, useQuery } from 'urql';
 import { TicketType } from '@/gql/graphql';
 
 const createReportMutation = graphql(/* GraphQL */ `
-  mutation CreateReport($title: String!, $content: String!, $type: TicketType!) {
+  mutation CreateReport($content: String!, $type: TicketType!) {
     addTicket(
-      title: $title
       content: $content
       type: $type
     ) {
@@ -36,19 +35,11 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
         await executeCreateReport({ title: title, content: motivo, type: "BUG" as TicketType })
       }
 
-    return (
+    return show ? (
         <Container className={show ? 'show' : 'hidden'}>
-            <Select label='Tipo do erro' options={[{option: 'bug', value: 'BUG'}, {option: 'Feature', value: 'FEATURE'}, {option: 'Questão', value: 'QUESTION'}, {option: 'Outro', value: 'OTHER'}]}  value={selectValue} onChange={(e: any) => {setSelectValue(e.target.value)}}/>
+            <Select label='Tipo do erro' options={[{option: 'Bug do sistema', value: 'BUG'}, {option: 'Sugestão', value: 'FEATURE'}, {option: 'Erro relacionado a questão', value: 'QUESTION'}, {option: 'Outro', value: 'OTHER'}]}  value={selectValue} onChange={(e: any) => {setSelectValue(e.target.value)}}/>
             <div className="input-wrapper">
-                <label htmlFor="input">Titulo</label>
-                <input  id="input"
-                placeholder="Título"
-                value={title}
-                onChange={(e: any) => setTitle(e.target.value)}
-                />
-              </div>
-            <div className="input-wrapper">
-                <label htmlFor="textarea">Motivo</label>
+                <label htmlFor="textarea">Mensagem</label>
                 <textarea  id="textarea"
                 placeholder="Explique o que aconteceu"
                 value={motivo}
@@ -57,5 +48,5 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
               </div>
               <Button onClick={() => addReport()}>Enviar</Button>
         </Container>
-    );
+    ) : null;
 };

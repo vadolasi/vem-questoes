@@ -20,6 +20,7 @@ import { ImageSlider } from '@/components/ImageSlider';
 import { SliderData } from '@/components/ImageSlider/SliderData';
 
 import { SpinnerCircular } from 'spinners-react';
+import Layout from '@/components/layout';
 
 const initialPagerQuery = graphql(/* GraphQL */ `
   query InitialPage {
@@ -35,6 +36,7 @@ const initialPagerQuery = graphql(/* GraphQL */ `
     }
     simulados {
       simulados {
+        id
         name
         totalQuestions
       }
@@ -50,11 +52,8 @@ export default function Home() {
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
   return (
-    <Container>
-     <Header/>
-     <Menu page='home'/>
-
-     <Content>
+      <Layout page="home">
+        <Content>
           <ContentCard title='Leaderboard'>
           {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
@@ -95,12 +94,12 @@ export default function Home() {
           {fetching ? <SpinnerCircular color="#f0f0fc" size="80" className='spin'/> :
           <>
           {data?.simulados.simulados.map(simulado => (
-              <ExamCard key={String(simulado.name)} name={simulado.name} questions={simulado.totalQuestions} />
+              <ExamCard key={simulado.id} id={simulado.id} name={simulado.name} questions={simulado.totalQuestions} />
             ))}
           </>}
 
           </ContentCard>
-     </Content>
-    </Container>
+        </Content>
+    </Layout>
   )
 }

@@ -21,12 +21,11 @@ export class TicketsResolver {
   @Authorized()
   async addTicket(
     @CurrentUserID() userId: string,
-    @Arg("title") title: string,
     @Arg("content") content: string,
     @Arg("type") role: TicketType,
     @Arg("question", { nullable: true }) questionId: string
   ) {
-    return await this.ticketsService.create(userId, title, content, role)
+    return await this.ticketsService.create(userId, content, role)
   }
 
   @Mutation(returns => Boolean)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import {FiX} from 'react-icons/fi'
 import {AiOutlineFire, AiOutlineCoffee} from 'react-icons/ai'
@@ -108,8 +108,8 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href})
         <>
           <h1>Executar simulado no modo</h1>
           <div className="RunSimulado">
-            <Link className='ButtonSimulado' href={`/simulados/run/raiz?id=${href}`}><AiOutlineFire/>Raiz</Link>
-            <Link className='ButtonSimulado' href={`/simulados/run/nutella?id=${href}`}><AiOutlineCoffee/>Nutella</Link>
+            <Link className='ButtonSimulado' href={`/simulados/${href}?mode=raiz`}><AiOutlineFire/>Raiz</Link>
+            <Link className='ButtonSimulado' href={`/simulados/${href}?mode=nuttela`}><AiOutlineCoffee/>Nutella</Link>
           </div>
         </>
         }

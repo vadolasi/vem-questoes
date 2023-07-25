@@ -6,7 +6,7 @@ import { Container } from "typedi"
 import { UserResolver } from "../../backend/users/users.resolver"
 import { renderGraphiQL } from "@graphql-yoga/render-graphiql"
 import { useGraphQlJit } from "@envelop/graphql-jit"
-import jwt, { TokenExpiredError } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { authChecker } from "../../backend/auth"
 import { AuthResolver } from "@/backend/auth/auth.resolver"
 import { GraphQLError, printSchema } from "graphql"
@@ -15,8 +15,6 @@ import { GqlContext } from "@/backend/gqlContext"
 import { QuestionsResolver } from "@/backend/questions/questions.resolver"
 import { NotificationsResolver } from "@/backend/notifications/notifications.resolver"
 import { TicketsResolver } from "@/backend/tickets/tickets.resolver"
-import { useResponseCache } from "@graphql-yoga/plugin-response-cache"
-import cookie from "cookie"
 
 export const config = {
   api: {
@@ -40,12 +38,7 @@ export default createYoga<GqlContext>({
   graphqlEndpoint: "/api/graphql",
   renderGraphiQL,
   plugins: [
-    useGraphQlJit(),
-    /*
-    useResponseCache({
-      session: (request) => request.headers.get("Cookie")
-    })
-    */
+    useGraphQlJit()
   ],
   context: ({ req, res }) => ({
     getUserId: () => {
@@ -80,6 +73,9 @@ export default createYoga<GqlContext>({
     },
     getRefreshToken: () => {
       return req.cookies.refreshToken
+    },
+    clearTokens: () => {
+      res.setHeader("Set-Cookie", ["token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0", "refreshToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0"])
     }
   })
 })

@@ -27,14 +27,12 @@ export class TicketsService {
 
   async create(
     userId: string,
-    title: string,
     content: string,
     type: TicketType,
     questionId?: string
   ) {
     return await this.prisma.ticket.create({
       data: {
-        title,
         content,
         type: TicketType[type] as keyof typeof TicketType,
         userId,

@@ -92,17 +92,22 @@ export class QuestionsService {
   ) {
      const quantity = await this.prisma.question.count({
       where: {
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        },
         OR: [
           {
             enunciado: {
-              contains: text
+              search: text
             }
           },
           {
             alternatives: {
               some: {
                 text: {
-                  contains: text
+                  search: text
                 }
               }
             }
@@ -137,17 +142,22 @@ export class QuestionsService {
 
     const questions = await this.prisma.question.findMany({
       where: {
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        },
         OR: text ? [
           {
             enunciado: {
-              contains: text
+              search: text
             }
           },
           {
             alternatives: {
               some: {
                 text: {
-                  contains: text
+                  search: text
                 }
               }
             }
@@ -209,7 +219,12 @@ export class QuestionsService {
   async getQuestion(questionId: string, requestedFields: string[]) {
     return await this.prisma.question.findFirst({
       where: {
-        id: questionId
+        id: questionId,
+        enunciado: {
+          not: {
+            search: "^\\s*$"
+          }
+        }
       },
       include: {
         processoSeletivo: requestedFields.includes("processoSeletivo"),
@@ -230,7 +245,7 @@ export class QuestionsService {
     })
   }
 
-  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string) {
+  async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string, notebookId?: string) {
     const alternative = await this.prisma.alternative.findUnique({
       where: {
         id: alternativeId
@@ -255,7 +270,8 @@ export class QuestionsService {
         questionId,
         alternativeId,
         correct: alternative.correct,
-        simuladoId
+        simuladoId,
+        notebookId
       }
     })
 
@@ -336,7 +352,19 @@ export class QuestionsService {
   }
 
   async getNotebook(userId: string, notebookId: string) {
-    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+    const notebook = await this.prisma.notebook.findFirst({
+      where: { id: notebookId, userId },
+      include: {
+        questions: {
+          include: {
+            alternatives: true,
+            ano: true,
+            banca: true,
+            processoSeletivo: true
+          }
+        }
+      }
+    })
 
     if (!notebook) {
       throw new GraphQLError("Notebook not found")
@@ -428,7 +456,12 @@ export class QuestionsService {
             connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
               const questions = await this.prisma.question.findMany({
                 where: {
-                  areaId
+                  areaId,
+                  enunciado: {
+                    not: {
+                      search: "^\\s*$"
+                    }
+                  }
                 },
                 select: { id: true }
               })
@@ -440,7 +473,16 @@ export class QuestionsService {
         include: { questions: { include: { alternatives: true } } }
       })
     } else {
-      const questions = await this.prisma.question.findMany({ select: { id: true } })
+      const questions = await this.prisma.question.findMany({
+        where: {
+          enunciado: {
+            not: {
+              search: "^\\s*$"
+            }
+          }
+        },
+        select: { id: true }
+      })
 
       const quantites = [10, 15, 20, 25, 30]
       const quantity = getRandomItem(quantites)
@@ -459,6 +501,12 @@ export class QuestionsService {
         include: { questions: { include: { alternatives: true } } }
       })
     }
+  }
+
+  async deleteSimulado(userId: string, id: string) {
+    await this.prisma.simulado.deleteMany({ where: { id, userId } })
+
+    return true
   }
 
   async relatorioDeDesempenho(userId: string) {

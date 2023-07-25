@@ -2,6 +2,7 @@ import { Service } from "typedi"
 import { PrismaService } from "../prisma"
 import { Role } from "./models/user.model"
 import bcryptjs from "bcryptjs"
+import { GraphQLError } from "graphql"
 
 @Service()
 export class UsersService {
@@ -56,6 +57,43 @@ export class UsersService {
 
   async deleteUser(id: string) {
     await this.prisma.user.delete({ where: { id } })
+    return true
+  }
+
+  async updateUser(
+    id: string,
+    name: string | undefined = undefined,
+    photoUrl: string | undefined = undefined
+  ) {
+    await this.prisma.user.update({
+      where: { id },
+      data: {
+        name,
+        photoUrl
+      }
+    })
+
+    return true
+  }
+
+  async updatePassword(
+    id: string,
+    oldPassword: string,
+    newPassword: string
+  ) {
+    const user = await this.prisma.user.findUnique({ where: { id } })
+
+    if (!(await bcryptjs.compare(oldPassword, user?.password!))) {
+      throw new GraphQLError("Senha incorreta!")
+    }
+
+    await this.prisma.user.update({
+      where: { id },
+      data: {
+        password: await bcryptjs.hash(newPassword, 12)
+      }
+    })
+
     return true
   }
 }

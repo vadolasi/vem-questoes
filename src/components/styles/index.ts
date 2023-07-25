@@ -43,19 +43,9 @@ export const Content = styled('main', {
 
         padding: '42px',
 
-        display: 'grid',
-        gridTemplateColumns: "1fr 1fr",
-        gridTemplateRows: "1fr 1fr",
+        display: 'flex',
         gap: "50px",
-
-
-        '@media (max-width: 1050px)':{
-                gridTemplateColumns: "auto",
-                gridTemplateRows: "auto auto auto auto",
-                gap: '35px',
-
-                padding: '20px'
-        },
+        flexWrap: "wrap"
 })
 
 export const OfferCard = styled('div', {
@@ -91,7 +81,7 @@ export const OfferCard = styled('div', {
                         display: 'flex',
                         flexDirection: "column",
                         alignItems: "flex-start",
-                        
+
                         "h1": {
                                 fontWeight: 700,
                                 fontSize: '20px',
@@ -177,6 +167,4 @@ export const OfferCard = styled('div', {
                         }
                 }
         }
-
-        
 })

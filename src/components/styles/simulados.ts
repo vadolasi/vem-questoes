@@ -9,7 +9,7 @@ export const Container = styled('div', {
         gridTemplateRows: '100px auto',
         gridTemplateAreas:
         `
-        "header header" 
+        "header header"
         "menu content"
         `,
 
@@ -33,7 +33,7 @@ export const Content = styled('main', {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-
+        width: "100%",
 
 })
 export const Search = styled('div', {
@@ -45,5 +45,5 @@ export const Search = styled('div', {
         gap: "17px",
 
         marginTop: "32px"
-        
+
 })

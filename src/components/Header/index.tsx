@@ -7,7 +7,7 @@ import { Container, Profile, DropMenu, ProfileInfo } from "./styles";
 import Logo from '../../assets/logo.png';
 import Link from 'next/link';
 import { graphql } from '@/gql';
-import { useQuery } from 'urql';
+import { useMutation, useQuery } from 'urql';
 
 import { SpinnerCircular } from 'spinners-react';
 import NotificacoesCard from '../NotificacoesCard';
@@ -26,10 +26,17 @@ const meQuery = graphql(/* GraphQL */ `
   }
 `);
 
+const logoutMutation = graphql(/* GraphQL */ `
+  mutation Logout {
+    logout
+  }
+`);
+
 export const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showNotificacoes, setShowNotificacoes] = useState(false);
   const [result] = useQuery({ query: meQuery })
+  const [, execute] = useMutation(logoutMutation)
 
   const { data, fetching } = result
 
@@ -38,7 +45,7 @@ export const Header = () => {
   }
 
   return (
-    <>
+    <div style={{ backgroundColor: "white", position: "sticky", top: "0", zIndex: 40, width: "100vw" }}>
       <Container>
         <Image src={Logo} alt="Logo escrito 'Vem questões'" className='Logo' />
         <Profile>
@@ -106,7 +113,7 @@ export const Header = () => {
             </li>
 
             <li>
-              <Link href="#">
+              <Link href="/login" onClick={() => execute({})}>
                 <AiOutlinePoweroff />
                 Sair
               </Link>
@@ -114,6 +121,6 @@ export const Header = () => {
           </DropMenu>
         </Profile>
       </Container>
-    </>
+    </div>
   );
 }

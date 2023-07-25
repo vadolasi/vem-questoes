@@ -347,8 +347,6 @@ export const Content = styled("div", {
   paddingTop: "33px",
   paddingLeft: "42px",
 
-  overflowX: "hidden",
-
   '.MatterWrap':{
           width: "1020px",
           margin: "42px auto 20px",

@@ -144,9 +144,10 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string,
     @Arg("questionId") questionId: string,
     @Arg("alternativeId") alternativeId: string,
-    @Arg("simuladoId", { nullable: true }) simuladoId?: string
+    @Arg("simuladoId", { nullable: true }) simuladoId?: string,
+    @Arg("notebookId", { nullable: true }) notebookId?: string
   ) {
-    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId)
+    return await this.questionsService.resolveQuestion(userId, questionId, alternativeId, simuladoId, notebookId)
   }
 
   @Authorized()
@@ -260,6 +261,15 @@ export class QuestionsResolver {
     @Arg("areas", type => [AreaToSimuladoInput]) areas: AreaToSimuladoInput[]
   ) {
     return await this.questionsService.createSimulado(userId, name, type, areas)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async deleteSimulado(
+    @CurrentUserID() userId: string,
+    @Arg("id") id: string
+  ) {
+    return await this.questionsService.deleteSimulado(userId, id)
   }
 
   @Authorized()

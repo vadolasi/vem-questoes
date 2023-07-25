@@ -11,7 +11,7 @@ export const Container = styled('ul', {
     flexDirection: "column",
     boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.05);',
     clipPath: 'inset(0px -15px 0px 0px)',
-
+    height: '100%',
 
     gap: '13px',
 

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { Container, Content, Search } from '../../components/styles/simulados';
+import { Content, Search } from '../../components/styles/simulados';
 
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
@@ -16,6 +16,8 @@ import simulado from '@/assets/Test.png'
 
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
+import { toast } from 'react-toastify';
+import Layout from '@/components/layout';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -41,20 +43,39 @@ const createSimuladoMutation = graphql(/* GraphQL */`
   }
 `)
 
-export default function Home() {
-  const [result] = useQuery({ query: simuladosQuery })
+const deleteSimuladoMutation = graphql(/* GraphQL */`
+  mutation DeleteSimulado($id: String!) {
+    deleteSimulado(
+      id: $id
+    )
+  }
+`)
 
-  const { data } = result
+export default function Home() {
+  const [result, executeQuery] = useQuery({ query: simuladosQuery })
+
+  const { data, fetching } = result
 
   const [showExamModal, setShowExamModal] = useState(false);
   const [showSimuladoModal, setShowSimuladoModal] = useState(false);
   const [value, setValue] = useState('')
   const [, execute] = useMutation(createSimuladoMutation)
+  const [, executeDelete] = useMutation(deleteSimuladoMutation)
 
   function handleRemoveExam(deleted: any){
-    const confirmDelete = confirm(`deseja excluir o caderno ${deleted.title}`);
-    if(!confirmDelete){
-      return
+    const confirmDelete = confirm(`deseja excluir o simulado ${deleted.name}?`);
+    if (confirmDelete) {
+      toast.promise(
+        async () => {
+          await executeDelete({ id: deleted.id })
+          executeQuery({ requestPolicy: "network-only" })
+        },
+        {
+          error: "Erro ao excluir simulado",
+          pending: "Excluindo simulado",
+          success: "Simulado excluido com sucesso"
+        }
+      )
     }
   }
 
@@ -66,31 +87,39 @@ export default function Home() {
     if (value == 'Personalizado') {
       setShowExamModal(!showExamModal)
     } else {
-      await execute({ name: "Simulado aleatório" })
+      toast.promise(
+        async () => {
+          await execute({ name: "Simulado aleatório" })
+          executeQuery()
+        },
+        {
+          error: "Erro ao criar simulado",
+          pending: "Criando simulado",
+          success: "Simulado criado com sucesso"
+        }
+      )
     }
   }
 
   return (
-    <Container>
-      <Header/>
-      <Menu page=''/>
+    <Layout page="mesa-de-estudos">
       <Content>
-        <Modal className={showExamModal ? '' : 'hidden'} onClick={() => setShowExamModal(!showExamModal)} create={true}/>
+      {showExamModal && <Modal onClick={() => setShowExamModal(false)} create={true}/>}
 
-        <Search>
-          <SearchInput onChange={() => {}} />
-          <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
-          <Button onClick={createSimulado}>Criar</Button>
-        </Search>
-        <DefaultSearchPage text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
-          {data?.simulados && data.simulados.simulados.map((exam) => (
-            <>
-              <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-              <Modal  href={exam.id} key={exam.id} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>
-            </>
-          ))}
-        </DefaultSearchPage>
+      <Search>
+        <SearchInput onChange={() => {}} />
+        <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
+        <Button onClick={createSimulado}>Criar</Button>
+      </Search>
+      <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
+        {data?.simulados && data.simulados.simulados.map((exam) => (
+          <>
+            <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+            {showSimuladoModal && <Modal href={exam.id} key={`${exam.id}-m`} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>}
+          </>
+        ))}
+      </DefaultSearchPage>
       </Content>
-    </Container>
+    </Layout>
   )
 }

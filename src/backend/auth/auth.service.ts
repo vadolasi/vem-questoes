@@ -60,4 +60,10 @@ export class AuthService {
 
     return accessToken
   }
+
+  async logout(refreshToken: string | null) {
+    if (!refreshToken) throw new Error("No refresh token provided")
+
+    await this.prisma.refreshToken.delete({ where: { id: refreshToken } })
+  }
 }

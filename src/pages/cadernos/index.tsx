@@ -51,7 +51,7 @@ export default function Home() {
   const [, executeCreateNotebook] = useMutation(createNotebookMutation)
   const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
 
-  const { data } = result
+  const { data, fetching } = result
 
   const _addNotebook = async () => {
     await executeCreateNotebook({ name: "Título", description: "Descrição", questions: [] })
@@ -98,6 +98,7 @@ export default function Home() {
           text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'}
           picture={notebook} alt='Mulher escrevendo informações em um carderno'
           content={(data?.notebooks!.length || 0) > 0}
+          loading={fetching}
         >
           {data?.notebooks && data.notebooks.map(notebook => (
             <NotebookCard
@@ -108,6 +109,7 @@ export default function Home() {
               description={notebook.description!}
               questions={notebook.questions}
               deleteClick={() => deleteNotebook(notebook.id)}
+              onEdit={() => executeQuery({ requestPolicy: "network-only" })}
             />
           ))}
         </DefaultSearchPage>
