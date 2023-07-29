@@ -24,6 +24,7 @@ export const Content = styled('div', {
             width:' 100%',
             height: '140px',
             background: '$blue_2',
+            marginTop: '100px',
             'a':{
                 fontSize: '16px',
             }
