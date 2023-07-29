@@ -38,9 +38,6 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
         if(!selectValue){
           return toast.warn('Adicione um tipo de erro!')
         }
-        if(!title){
-          return toast.warn('Adicione um titulo ao erro!')
-        }
         if(!motivo){
           return toast.warn('Adicione o motivo do erro!')
         }
@@ -59,14 +56,6 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
     return show ? (
         <Container className={show ? 'show' : 'hidden'}>
             <Select label='Tipo do erro' options={[{option: 'Bug do sistema', value: 'BUG'}, {option: 'Sugestão', value: 'FEATURE'}, {option: 'Erro relacionado a questão', value: 'QUESTION'}, {option: 'Outro', value: 'OTHER'}]}  value={selectValue} onChange={(e: any) => {setSelectValue(e.target.value)}}/>
-            <div className="input-wrapper">
-                <label htmlFor="title">Titulo</label>
-                <input  id="title"
-                placeholder="Título do Erro"
-                value={title}
-                onChange={(e: any) => setTitle(e.target.value)}
-                />
-              </div>
             <div className="input-wrapper">
                 <label htmlFor="textarea">Mensagem</label>
                 <textarea  id="textarea"
