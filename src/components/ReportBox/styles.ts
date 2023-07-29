@@ -15,8 +15,10 @@ export const Container = styled("div", {
     borderRadius: '5px',
 
     position: 'absolute',
-    bottom:'-400px',
+    bottom:'-390px',
     right: 0,
+
+    boxShadow: '2px 2px 4px rgba(0,0,0,0.5)',
 
     '& .hidden':{
         display: 'none'
@@ -56,14 +58,14 @@ export const Container = styled("div", {
         input: {
             background: '#FAFAFC',
 
-            height: '56px',
+            height: '48px',
 
             border: '1px solid $border',
             borderRadius: '8px',
 
             outline: 0,
 
-            padding: '5px',
+            padding: '3px 5px',
         },
     },
 })
