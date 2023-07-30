@@ -1,5 +1,8 @@
 import { useState } from "react"
-import { Container, Page } from "../../../components/styles/questao"
+import { Container } from "@/components/styles/adminContainer";
+import { Header } from "@/components/Header";
+import { AdminMenu } from "@/components/AdminMenu";
+import { Page } from "../../../components/styles/questao"
 import { Button } from "@/components/Button"
 import { graphql } from "@/gql";
 import { useMutation } from "urql";
@@ -30,6 +33,8 @@ export default function Admin() {
 
   return (
     <Container>
+      <Header/>
+      <AdminMenu page={'notificacao'}/>
         <Page>
          <header>
           <h1>Cadastrar Notificação</h1>

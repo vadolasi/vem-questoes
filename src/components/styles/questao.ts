@@ -4,20 +4,6 @@ import { styled } from "@/styles";
 export const Container = styled("div", {
     width: '100vw',
     height: '100vh',
-    
-    "&::before":{
-        content: '',
-        width: "100%",
-        height: "436px",
-
-        zIndex: -1,
-
-        position: "absolute",
-        top: 0,
-        left: 0,
-        
-        background: "$blue_1",
-    },
 
 })
 
@@ -30,14 +16,13 @@ export const Page = styled("div", {
     header: {
         marginTop: '140px',
         width: '417px',
-
+        color: "$blue_1",
         h1:{
             fontWeight: 400,
 
             fontSize: '48px',
             lineHeight: '60px',
         
-            color: '#FFFFFF',
             marginBottom: '18px', 
         
         },
@@ -45,9 +30,6 @@ export const Page = styled("div", {
         p:{
             fontSize: '20px',
             lineHeight: '30px',
-        
-        
-            color: '#FFFFFF'
         },
     },
 

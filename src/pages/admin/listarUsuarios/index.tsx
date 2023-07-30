@@ -1,4 +1,7 @@
-import { Container, Page } from "../../../components/styles/questao"
+import { Container } from "@/components/styles/adminContainer";
+import { Header } from "@/components/Header";
+import { AdminMenu } from "@/components/AdminMenu";
+import { Page } from "../../../components/styles/questao"
 import { ListUserCard } from '../../../components/ListUserCard'
 import { graphql } from "@/gql";
 import { useQuery } from "urql";
@@ -22,6 +25,8 @@ export default function Admin() {
 
   return (
     <Container>
+      <Header/>
+      <AdminMenu page={'userList'}/>
         <Page>
          <header>
           <h1>Lista de usuários</h1>
