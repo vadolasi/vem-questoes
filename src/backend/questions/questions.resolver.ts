@@ -20,6 +20,8 @@ import { QuestionsResponse } from "./responses/questions.response"
 import { SimuladosResponse } from "./responses/simulados.response"
 import { AddAnswerResponse } from "./responses/addAnswer"
 import { RelatorioResponse } from "./responses/relatorio"
+import { CreateQuestionInput } from "./inputs/createQuestion.input"
+import { CreateQuestionResponse } from "./responses/createQuestion.response"
 
 function getRequestedFields(info: GraphQLResolveInfo): string[] {
   const fieldList: string[] = [];
@@ -278,5 +280,85 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string
   ) {
     return await this.questionsService.relatorioDeDesempenho(userId)
+  }
+
+  @Authorized()
+  @Query(_returns => CreateQuestionResponse)
+  async createQuestion(
+    @Args() {
+      enunciado,
+      alternatives,
+      correct,
+      processoSeletivoId,
+      newProcessoSeletivo,
+      anoId,
+      newAno,
+      localId,
+      newLocal,
+      perfilId,
+      newPerfil,
+      areaId,
+      newArea,
+      subAreaId,
+      newSubArea,
+      estadoId,
+      newEstado,
+      bancaId,
+      newBanca
+    }: CreateQuestionInput
+  ): Promise<CreateQuestionResponse> {
+    return await this.questionsService.createQuestion({
+      enunciado,
+      alternatives,
+      correct,
+      processoSeletivo: {
+        id: processoSeletivoId,
+        new: newProcessoSeletivo ? {
+          name: newProcessoSeletivo
+        } : undefined
+      },
+      ano: {
+        id: anoId,
+        new: newAno ? {
+          ano: newAno
+        } : undefined
+      },
+      local: {
+        id: localId,
+        new: newLocal ? {
+          name: newLocal
+        } : undefined
+      },
+      perfil: {
+        id: perfilId,
+        new: newPerfil ? {
+          name: newPerfil
+        } : undefined
+      },
+      area: {
+        id: areaId,
+        new: newArea ? {
+          name: newArea
+        } : undefined
+      },
+      subarea: {
+        id: subAreaId,
+        new: newSubArea ? {
+          name: newSubArea
+        } : undefined
+      },
+      estado: {
+        id: estadoId,
+        new: newEstado ? {
+          name: newEstado
+        } : undefined
+      },
+      banca: {
+        id: bancaId,
+        new: newBanca ? {
+          name: newBanca
+        } : undefined
+      }
+    })
   }
 }

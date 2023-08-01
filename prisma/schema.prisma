@@ -12,6 +12,8 @@ datasource db {
 enum Role {
   DEVELOPER
   ADMIN
+  TEATCHER
+  MANAGER
   USER
 }
 
@@ -214,4 +216,11 @@ model Ticket {
   createdAt  DateTime     @default(now())
   question   Question?    @relation(fields: [questionId], references: [id])
   questionId String?
+}
+
+model Oferta {
+  id        String @id @default(cuid())
+  name      String @unique
+  imageUrl  String?
+  preco     Float
 }

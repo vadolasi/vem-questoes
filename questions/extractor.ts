@@ -5,7 +5,7 @@ import * as xlsx from "xlsx"
 const prisma = new PrismaClient()
 
 function extractQuestions(text: string) {
-  const matchTextRegex = new RegExp("^(.*?)(?=\\s*[A-E]\\))", "gms")
+  const matchTextRegex = new RegExp("^(.*?)(?=(?:\\n[A-E]\\)|$))", "ms")
   const matchText = matchTextRegex.exec(text)
 
   if (!matchText) {
@@ -13,7 +13,7 @@ function extractQuestions(text: string) {
   }
 
   const replaceText = text.replace(matchText[0], "")
-  const matchesRegex = new RegExp("^([A-E])\\)\\s*(.*?)\\s*(?=\\n[A-E]\\)|\\n*$)", "gms")
+  const matchesRegex = new RegExp("(?:^|\\n)([A-E])\\)\\s*(.*?)(?=\\n[A-E]\\)|\\n*$)", "gms")
   const matches = replaceText.matchAll(matchesRegex)
 
   const questions: { [key: string]: string } = {}

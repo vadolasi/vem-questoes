@@ -71,6 +71,167 @@ export class QuestionsService {
     return this.prisma.banca.findMany()
   }
 
+  async createQuestion({
+    enunciado,
+    alternatives,
+    correct,
+    processoSeletivo,
+    ano,
+    local,
+    perfil,
+    area,
+    subarea,
+    estado,
+    banca
+  }: {
+    enunciado: string,
+    alternatives: string[],
+    correct: number,
+    processoSeletivo: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    ano: {
+      id?: string,
+      new?: {
+        ano: number
+      }
+    },
+    local: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    perfil: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    area: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    subarea: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    estado: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    },
+    banca: {
+      id?: string,
+      new?: {
+        name: string
+      }
+    }
+  }) {
+    const question = await this.prisma.question.create({
+      data: {
+        enunciado,
+        processoSeletivo: {
+          connectOrCreate: {
+            create: {
+              name: processoSeletivo.new?.name!
+            },
+            where: {
+              id: processoSeletivo.id
+            }
+          }
+        },
+        ano: {
+          connectOrCreate: {
+            create: {
+              ano: ano.new?.ano!
+            },
+            where: {
+              id: ano.id
+            }
+          }
+        },
+        local: {
+          connectOrCreate: {
+            create: {
+              name: local.new?.name!
+            },
+            where: {
+              id: local.id
+            }
+          }
+        },
+        perfil: {
+          connectOrCreate: {
+            create: {
+              name: perfil.new?.name!
+            },
+            where: {
+              id: perfil.id
+            }
+          }
+        },
+        area: {
+          connectOrCreate: {
+            create: {
+              name: area.new?.name!
+            },
+            where: {
+              id: area.id
+            }
+          }
+        },
+        subarea: {
+          connectOrCreate: {
+            create: {
+              name: subarea.new?.name!
+            },
+            where: {
+              id: subarea.id
+            }
+          }
+        },
+        estado: {
+          connectOrCreate: {
+            create: {
+              name: estado.new?.name!
+            },
+            where: {
+              id: estado.id
+            }
+          }
+        },
+        banca: {
+          connectOrCreate: {
+            create: {
+              name: banca.new?.name!
+            },
+            where: {
+              id: banca.id
+            }
+          }
+        },
+        alternatives: {
+          create: alternatives.map((alternative, index) => ({
+            text: alternative,
+            correct: index === correct,
+            letter: ["A", "B", "C", "D", "E"][index]
+          }))
+        }
+      }
+    })
+
+    return question
+  }
+
   async getQuestions(
     userId: string,
     page: number,
@@ -95,6 +256,18 @@ export class QuestionsService {
         enunciado: {
           not: {
             search: "^\\s*$"
+          }
+        },
+        alternatives: {
+          some: {
+            correct: true
+          },
+          every: {
+            NOT: {
+              text: {
+                search: "^\\s*$"
+              }
+            }
           }
         },
         OR: [
@@ -136,7 +309,7 @@ export class QuestionsService {
         } : undefined,
         bancaId: (bancaIds?.length || 0) > 0 ? {
           in: bancaIds
-        }: undefined,
+        }: undefined
       }
     })
 
@@ -145,6 +318,18 @@ export class QuestionsService {
         enunciado: {
           not: {
             search: "^\\s*$"
+          }
+        },
+        alternatives: {
+          some: {
+            correct: true
+          },
+          every: {
+            NOT: {
+              text: {
+                search: "^\\s*$"
+              }
+            }
           }
         },
         OR: text ? [
