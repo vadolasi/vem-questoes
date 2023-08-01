@@ -1,5 +1,8 @@
 import { useState } from "react"
-import { Container, Page } from "../../../components/styles/questao"
+import { Container } from "../../../components/styles/adminContainer"
+import { Page } from "@/components/styles/questao";
+import { Header } from "@/components/Header";
+import { AdminMenu } from "@/components/AdminMenu";
 import { Button } from "@/components/Button"
 import { graphql } from "@/gql";
 import { useMutation } from "urql";
@@ -47,49 +50,52 @@ export default function Admin() {
 
   return (
     <Container>
-      <Page>
+        <Header />
+        <AdminMenu page="userAdd"/>
+        <Page>
         <header>
         <h1>Cadastrar Usuário</h1>
         <p>Preencha o formulário para cadastrar um usuário</p>
         </header>
         <form id="usuario">
-        <fieldset>
-          <div className="fieldset-wrapper">
-            <legend>Informações do usuário</legend>
+          <fieldset>
+            <div className="fieldset-wrapper">
+              <legend>Informações do usuário</legend>
 
-            <div className="input-wrapper">
-                <label htmlFor="name">Nome</label>
-                <input type="text" id="name"
-                placeholder="Coloque o nome do usuário"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                />
-                </div>
-            <div className="input-wrapper">
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email"
-                placeholder="Coloque o email do usuário"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                />
-                </div>
-            <div className="input-wrapper">
-                <label htmlFor="role">Cargo</label>
-                <select
-                id="role"
-                placeholder="Defina um cargo para o usuário"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="USER">Usuário</option>
-                  <option value="ADMIN">Administrador</option>
-                </select>
-                </div>
-              <Button onClick={onSubmit}>Cadastrar</Button>
-          </div>
-        </fieldset>
+              <div className="input-wrapper">
+                  <label htmlFor="name">Nome</label>
+                  <input type="text" id="name"
+                  placeholder="Coloque o nome do usuário"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  />
+                  </div>
+              <div className="input-wrapper">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" id="email"
+                  placeholder="Coloque o email do usuário"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  />
+                  </div>
+              <div className="input-wrapper">
+                  <label htmlFor="role">Cargo</label>
+                  <select
+                  id="role"
+                  placeholder="Defina um cargo para o usuário"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="USER">Usuário</option>
+                    <option value="ADMIN">Administrador</option>
+                  </select>
+                  </div>
+                <Button onClick={onSubmit}>Cadastrar</Button>
+            </div>
+          </fieldset>
         </form>
-      </Page>
+        </Page>
+        
     </Container>
   )
 }
