@@ -2,11 +2,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     // @ts-ignore
     try {
-<<<<<<<< HEAD:public/workbox-3576cac3.js
-      self['workbox:core:6.5.4'] && _();
-========
       self['workbox:core:6.6.0'] && _();
->>>>>>>> 9c8cd4a155820515ed5dc784ecee9cd5839e081e:public/workbox-e34f44db.js
     } catch (e) {}
 
     /*
@@ -460,11 +456,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     // @ts-ignore
     try {
-<<<<<<<< HEAD:public/workbox-3576cac3.js
-      self['workbox:routing:6.5.4'] && _();
-========
       self['workbox:routing:6.6.0'] && _();
->>>>>>>> 9c8cd4a155820515ed5dc784ecee9cd5839e081e:public/workbox-e34f44db.js
     } catch (e) {}
 
     /*
@@ -1193,11 +1185,7 @@ define(['exports'], (function (exports) { 'use strict';
 
     // @ts-ignore
     try {
-<<<<<<<< HEAD:public/workbox-3576cac3.js
-      self['workbox:strategies:6.5.4'] && _();
-========
       self['workbox:strategies:6.6.0'] && _();
->>>>>>>> 9c8cd4a155820515ed5dc784ecee9cd5839e081e:public/workbox-e34f44db.js
     } catch (e) {}
 
     /*
@@ -2467,8 +2455,4 @@ define(['exports'], (function (exports) { 'use strict';
     exports.registerRoute = registerRoute;
 
 }));
-<<<<<<<< HEAD:public/workbox-3576cac3.js
-//# sourceMappingURL=workbox-3576cac3.js.map
-========
 //# sourceMappingURL=workbox-e34f44db.js.map
->>>>>>>> 9c8cd4a155820515ed5dc784ecee9cd5839e081e:public/workbox-e34f44db.js

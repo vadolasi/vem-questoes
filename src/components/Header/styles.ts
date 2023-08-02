@@ -13,7 +13,9 @@ export const Container = styled('header', {
     border: '1px solid $white_1',
     borderBottomWidth: '1px',
 
-
+    "& .hidden":{
+        display: 'none',
+    },
     ".Logo": {
         width: "85px",
         height: "56px"
