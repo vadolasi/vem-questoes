@@ -527,7 +527,7 @@ export default function Questoes() {
           />
         )}
       </CorrectAnswerContainer>
-      <Layout page="banco-de-questoes">
+      <Layout page="banco-de-questoes" visible={true}>
         <Content>
           <QuestionContainer>
             <ContainerFilter>

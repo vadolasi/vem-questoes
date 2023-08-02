@@ -8,20 +8,27 @@ import { FocusButton } from "./FocusButton";
 interface Props {
   children: ReactNode;
   page: string;
+  visible?: boolean;
 }
 
-export default function Layout({ children, page }: Props) {
+export default function Layout({ children, page, visible = false }: Props) {
   const [focus, setFocus] = useState(false);
   return (
     <>
       {focus ? (
         <ContainerFocus>
-          <FocusButton onClick={() => setFocus(!focus)} />
+          <FocusButton
+            onClick={() => setFocus(!focus)}
+            className={visible ? "" : "hidden"}
+          />
           <Content>{children}</Content>
         </ContainerFocus>
       ) : (
         <Container>
-          <FocusButton onClick={() => setFocus(!focus)} />
+          <FocusButton
+            onClick={() => setFocus(!focus)}
+            className={visible ? "" : "hidden"}
+          />
           <Header />
           <Menu page={page} />
           <Content>{children}</Content>
