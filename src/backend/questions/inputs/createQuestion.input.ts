@@ -1,6 +1,6 @@
-import { Field, InputType } from "type-graphql"
+import { ArgsType, Field } from "type-graphql"
 
-@InputType()
+@ArgsType()
 export class CreateQuestionInput {
   @Field()
   enunciado: string

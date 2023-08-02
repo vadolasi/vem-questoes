@@ -60,6 +60,11 @@ export type Comment = {
   user: User;
 };
 
+export type CreateQuestionResponse = {
+  __typename?: 'CreateQuestionResponse';
+  id: Scalars['ID'];
+};
+
 export type Estado = {
   __typename?: 'Estado';
   id: Scalars['ID'];
@@ -239,6 +244,7 @@ export type Query = {
   anos: Array<Ano>;
   areas: Array<Area>;
   bancas: Array<Banca>;
+  createQuestion: CreateQuestionResponse;
   estados: Array<Estado>;
   leaderBoard?: Maybe<Array<User>>;
   locais: Array<Local>;
@@ -256,6 +262,29 @@ export type Query = {
   simulados: SimuladosResponse;
   subareas: Array<Subarea>;
   users: Array<User>;
+};
+
+
+export type QueryCreateQuestionArgs = {
+  alternatives: Array<Scalars['String']>;
+  anoId?: InputMaybe<Scalars['String']>;
+  areaId?: InputMaybe<Scalars['String']>;
+  bancaId?: InputMaybe<Scalars['String']>;
+  correct: Scalars['Float'];
+  enunciado: Scalars['String'];
+  estadoId?: InputMaybe<Scalars['String']>;
+  localId?: InputMaybe<Scalars['String']>;
+  newAno?: InputMaybe<Scalars['Float']>;
+  newArea?: InputMaybe<Scalars['String']>;
+  newBanca?: InputMaybe<Scalars['String']>;
+  newEstado?: InputMaybe<Scalars['String']>;
+  newLocal?: InputMaybe<Scalars['String']>;
+  newPerfil?: InputMaybe<Scalars['String']>;
+  newProcessoSeletivo?: InputMaybe<Scalars['String']>;
+  newSubArea?: InputMaybe<Scalars['String']>;
+  perfilId?: InputMaybe<Scalars['String']>;
+  processoSeletivoId?: InputMaybe<Scalars['String']>;
+  subAreaId?: InputMaybe<Scalars['String']>;
 };
 
 
