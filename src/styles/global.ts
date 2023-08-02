@@ -29,7 +29,10 @@ body: {
 '*::-webkit-scrollbar-thumb': {
     backgroundColor: '$blue_1',
     borderRadius: '20px',
-}
+},
 
+'.hidden': {
+    display: 'none'
+}
 
 })

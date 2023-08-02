@@ -1,39 +1,17 @@
 import { styled } from '../../styles'
 
-export const Container = styled('div', {
+export const ContainerFocus = styled('div', {
         width: "100vw",
         height: "100vh",
 
-        display: 'grid',
-        gridTemplateColumns: '270px auto',
-        gridTemplateRows: '100px auto',
-        gridTemplateAreas:
-        `
-        "header header"
-        "menu content"
-        `,
+
 
         overflowX: "hidden",
 
         '.hidden': {
           display: 'none'
         },
-        '& .focus':{
-                gridTemplateColumns: 'auto',
-                gridTemplateRows: 'auto',
-                gridTemplateAreas:
-                `
-                "content"
-                `,      
-        },
-    '@media (max-width: 1200px)': {
-        gridTemplateRows: 'auto',
-        gridTemplateAreas:
-        `
-        "header header"
-        "content content"
-        `,
-      },
+
       '.box': {
         width: "100%",
         height: "380px",
