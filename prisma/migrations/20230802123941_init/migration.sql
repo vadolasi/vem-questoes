@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('DEVELOPER', 'ADMIN', 'USER');
+CREATE TYPE "Role" AS ENUM ('DEVELOPER', 'ADMIN', 'TEATCHER', 'MANAGER', 'USER');
 
 -- CreateEnum
 CREATE TYPE "TicketType" AS ENUM ('BUG', 'FEATURE', 'QUESTION', 'OTHER');
@@ -192,7 +192,6 @@ CREATE TABLE "Simulado" (
 -- CreateTable
 CREATE TABLE "Ticket" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "type" "TicketType" NOT NULL,
     "status" "TicketStatus" NOT NULL DEFAULT 'OPEN',
@@ -201,6 +200,16 @@ CREATE TABLE "Ticket" (
     "questionId" TEXT,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Oferta" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "imageUrl" TEXT,
+    "preco" DOUBLE PRECISION NOT NULL,
+
+    CONSTRAINT "Oferta_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -241,6 +250,9 @@ CREATE UNIQUE INDEX "Estado_name_key" ON "Estado"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Banca_name_key" ON "Banca"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Oferta_name_key" ON "Oferta"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_QuestionToSimulado_AB_unique" ON "_QuestionToSimulado"("A", "B");
