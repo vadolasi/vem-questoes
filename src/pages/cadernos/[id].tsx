@@ -23,6 +23,7 @@ import { SpinnerCircular } from 'spinners-react';
 import { toast } from 'react-toastify';
 
 import { useSearchParams } from 'next/navigation';
+import Layout from '@/components/layout';
 
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetNotebook($id: String!) {
@@ -179,9 +180,7 @@ export default function Questoes() {
 
 
   return (
-    <Container>
-     <Header/>
-     <Menu page=''/>
+    <Layout page="cadernos" visible={true}>
      <Content>
         <Timer>
           <h1>Caderno de erros</h1>
@@ -331,6 +330,6 @@ export default function Questoes() {
           </QuestionButtons>
         </QuestionContainer>
      </Content>
-    </Container>
+    </Layout>
   )
 }
