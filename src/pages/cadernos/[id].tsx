@@ -50,11 +50,11 @@ const getQuestionQuery = graphql(/* GraphQL */ `
 `)
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
-  mutation ResolveQuestionOnNotebook($questionId: String!, $alternativeId: String!, $simuladoId: String!) {
+  mutation ResolveQuestionOnNotebook($questionId: String!, $alternativeId: String!, $notebookId: String!) {
     addAnswer(
       questionId: $questionId
       alternativeId: $alternativeId
-      simuladoId: $simuladoId
+      notebookId: $notebookId
     ) {
       correct
       correctAlternative
@@ -105,12 +105,14 @@ export default function Questoes() {
     if (!isSelected) {
       return toast.error("Selecione uma alternativa")
     }
+
     if (isCorrect) {
       setQuestionNumber(questionNumber + 1)
       return
     }
+
     if (currentQuestion?.alternatives) {
-      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected, simuladoId: id! })
+      const result = await resolveQuestion({ questionId: currentQuestion.id, alternativeId: isSelected, notebookId: id! })
       setIsCorrect(result.data?.addAnswer.correctAlternative || null)
       if (result.data?.addAnswer.correct) {
         setIsConfettiActive(true)
