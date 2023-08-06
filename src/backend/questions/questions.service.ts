@@ -332,6 +332,11 @@ export class QuestionsService {
             }
           }
         },
+        NOT: {
+          alternatives: {
+            none: {}
+          }
+        },
         OR: text ? [
           {
             enunciado: {
@@ -646,6 +651,23 @@ export class QuestionsService {
                     not: {
                       search: "^\\s*$"
                     }
+                  },
+                  alternatives: {
+                    some: {
+                      correct: true
+                    },
+                    every: {
+                      NOT: {
+                        text: {
+                          search: "^\\s*$"
+                        }
+                      }
+                    }
+                  },
+                  NOT: {
+                    alternatives: {
+                      none: {}
+                    }
                   }
                 },
                 select: { id: true }
@@ -663,6 +685,23 @@ export class QuestionsService {
           enunciado: {
             not: {
               search: "^\\s*$"
+            }
+          },
+          alternatives: {
+            some: {
+              correct: true
+            },
+            every: {
+              NOT: {
+                text: {
+                  search: "^\\s*$"
+                }
+              }
+            }
+          },
+          NOT: {
+            alternatives: {
+              none: {}
             }
           }
         },

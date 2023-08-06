@@ -5,28 +5,36 @@ import * as xlsx from "xlsx"
 const prisma = new PrismaClient()
 
 function extractQuestions(text: string) {
-  const matchTextRegex = new RegExp("^(.*?)(?=(?:\\n[A-E]\\)|$))", "ms")
-  const matchText = matchTextRegex.exec(text)
-
-  if (!matchText) {
-    return null
-  }
-
-  const replaceText = text.replace(matchText[0], "")
   const matchesRegex = new RegExp("(?:^|\\n)([A-E])\\)\\s*(.*?)(?=\\n[A-E]\\)|\\n*$)", "gms")
-  const matches = replaceText.matchAll(matchesRegex)
+  const matches = text.matchAll(matchesRegex)
 
   const questions: { [key: string]: string } = {}
+  let previousOption = "a"
+
   for (const match of matches) {
     const option = match[1]
     const question = match[2].replace(/_x000D_/g, "").trim()
-    questions[option] = question
+
+    if (!isNextOption(previousOption, option)) {
+      previousOption = nextOption(previousOption)
+    }
+
+    questions[previousOption] = question
+    previousOption = nextOption(previousOption)
   }
 
   return {
-    text: matchText[0].trim().replace(/_x000D_/g, ""),
+    text: text.replace(/_x000D_/g, ""),
     questions: questions
   }
+}
+
+function isNextOption(previous: string, current: string): boolean {
+  return current.charCodeAt(0) === previous.charCodeAt(0) + 1
+}
+
+function nextOption(option: string): string {
+  return String.fromCharCode(option.charCodeAt(0) + 1)
 }
 
 async function main() {
