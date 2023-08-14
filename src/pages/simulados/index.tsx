@@ -89,7 +89,7 @@ export default function Home() {
     } else {
       toast.promise(
         async () => {
-          await execute({ name: "Simulado aleatório" })
+          await execute({ name: `Simulado aleatório ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().split(" ")[0]}` })
           executeQuery()
         },
         {
@@ -104,7 +104,7 @@ export default function Home() {
   return (
     <Layout page="mesa-de-estudos">
       <Content>
-      {showExamModal && <Modal onClick={() => setShowExamModal(false)} create={true}/>}
+      {showExamModal && <Modal onClick={() => setShowExamModal(false)} create={true} />}
 
       <Search>
         <SearchInput onChange={() => {}} />
