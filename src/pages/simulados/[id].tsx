@@ -43,6 +43,7 @@ import {
   TimerResult,
   StopwatchResult,
 } from "react-timer-hook";
+import { ReportBox } from "@/components/ReportBox";
 
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetSimulado2($id: String!) {
@@ -103,6 +104,7 @@ export default function Questoes() {
   const [isSelected, setIsSelected] = useState<string | null>(null);
 
   const [isCorrect, setIsCorrect] = useState<string | null>(null);
+  const [showReportBox, setShowReportBox] = useState(false);
 
   const mode = params.get("mode");
 
@@ -403,7 +405,10 @@ export default function Questoes() {
           <QuestionStatement>
             <div className="title">
               <h1>Questão {questionNumber}</h1>
-              <ButtonReport>Reportar</ButtonReport>
+              <ButtonReport onClick={() => setShowReportBox(!showReportBox)}>
+                Reportar
+              </ButtonReport>
+              <ReportBox show={showReportBox} question={currentQuestion} />
             </div>
 
             <div className="questionInfo">
