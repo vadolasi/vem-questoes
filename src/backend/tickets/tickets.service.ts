@@ -1,27 +1,25 @@
 import { Service } from "typedi"
-import { PrismaService } from "../prisma"
+import prisma from "../../lib/prisma"
 import { TicketType } from "./models/ticket.model"
 
 @Service()
 export class TicketsService {
-  constructor(
-    private readonly prisma: PrismaService
-  ) {}
+  constructor() {}
 
   async getById(id: string) {
-    return this.prisma.ticket.findUnique({
+    return prisma.ticket.findUnique({
       where: { id }
     })
   }
 
   async getOpened() {
-    return this.prisma.ticket.findMany({
+    return prisma.ticket.findMany({
       where: { status: "OPEN" }
     })
   }
 
   async delete(id: string) {
-    await this.prisma.ticket.delete({ where: { id } })
+    await prisma.ticket.delete({ where: { id } })
     return true
   }
 
@@ -31,7 +29,7 @@ export class TicketsService {
     type: TicketType,
     questionId?: string
   ) {
-    return await this.prisma.ticket.create({
+    return await prisma.ticket.create({
       data: {
         content,
         type: TicketType[type] as keyof typeof TicketType,

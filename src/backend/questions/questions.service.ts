@@ -1,5 +1,5 @@
 import { Service } from "typedi"
-import { PrismaService } from "../prisma"
+import prisma from "../../lib/prisma"
 import { SimuladoType } from "./models/simulado.model"
 import { Alternative } from "@prisma/client"
 import { GraphQLError } from "graphql"
@@ -35,40 +35,38 @@ function getRandomItem(arr: any[]) {
 
 @Service()
 export class QuestionsService {
-  constructor(
-    private readonly prisma: PrismaService
-  ) {}
+  constructor() {}
 
   async getProcessosSeletivos() {
-    return this.prisma.processoSeletivo.findMany()
+    return prisma.processoSeletivo.findMany()
   }
 
   async getAnos() {
-    return this.prisma.ano.findMany()
+    return prisma.ano.findMany()
   }
 
   async getLocais() {
-    return this.prisma.local.findMany()
+    return prisma.local.findMany()
   }
 
   async getPerfis() {
-    return this.prisma.perfil.findMany()
+    return prisma.perfil.findMany()
   }
 
   async getAreas() {
-    return this.prisma.area.findMany()
+    return prisma.area.findMany()
   }
 
   async getSubareas() {
-    return this.prisma.subarea.findMany()
+    return prisma.subarea.findMany()
   }
 
   async getEstados() {
-    return this.prisma.estado.findMany()
+    return prisma.estado.findMany()
   }
 
   async getBancas() {
-    return this.prisma.banca.findMany()
+    return prisma.banca.findMany()
   }
 
   async createQuestion({
@@ -136,7 +134,7 @@ export class QuestionsService {
       }
     }
   }) {
-    const question = await this.prisma.question.create({
+    const question = await prisma.question.create({
       data: {
         enunciado,
         processoSeletivo: {
@@ -251,7 +249,7 @@ export class QuestionsService {
     apenasRespondidasCertas?: boolean,
     apenasRespondidasErradas?: boolean
   ) {
-     const quantity = await this.prisma.question.count({
+     const quantity = await prisma.question.count({
       where: {
         enunciado: {
           not: {
@@ -313,7 +311,7 @@ export class QuestionsService {
       }
     })
 
-    const questions = await this.prisma.question.findMany({
+    const questions = await prisma.question.findMany({
       where: {
         enunciado: {
           not: {
@@ -407,7 +405,7 @@ export class QuestionsService {
   }
 
   async getQuestion(questionId: string, requestedFields: string[]) {
-    return await this.prisma.question.findFirst({
+    return await prisma.question.findFirst({
       where: {
         id: questionId,
         enunciado: {
@@ -436,7 +434,7 @@ export class QuestionsService {
   }
 
   async resolveQuestion(userId: string, questionId: string, alternativeId: string, simuladoId?: string, notebookId?: string) {
-    const alternative = await this.prisma.alternative.findUnique({
+    const alternative = await prisma.alternative.findUnique({
       where: {
         id: alternativeId
       }
@@ -445,7 +443,7 @@ export class QuestionsService {
     let correctAlternative: Alternative
 
     if (!alternative?.correct) {
-      correctAlternative = (await this.prisma.alternative.findFirst({ where: { questionId, correct: true } }))!
+      correctAlternative = (await prisma.alternative.findFirst({ where: { questionId, correct: true } }))!
     } else {
       correctAlternative = alternative
     }
@@ -454,7 +452,7 @@ export class QuestionsService {
       throw new GraphQLError("Alternative not found")
     }
 
-    await this.prisma.response.create({
+    await prisma.response.create({
       data: {
         userId,
         questionId,
@@ -465,7 +463,7 @@ export class QuestionsService {
       }
     })
 
-    await this.prisma.user.update({
+    await prisma.user.update({
       where: {
         id: userId
       },
@@ -483,7 +481,7 @@ export class QuestionsService {
   }
 
   async addComment(userId: string, questionId: string, content: string) {
-    await this.prisma.comment.create({
+    await prisma.comment.create({
       data: {
         userId,
         questionId,
@@ -495,7 +493,7 @@ export class QuestionsService {
   }
 
   async addNotebook(userId: string, name: string, questions: string[], description?: string) {
-    return await this.prisma.notebook.create({
+    return await prisma.notebook.create({
       data: {
         userId,
         name,
@@ -509,13 +507,13 @@ export class QuestionsService {
   }
 
   async updateNotebook(userId: string, notebookId: string, name?: string, description?: string, questions?: string[]) {
-    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+    const notebook = await prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
       throw new GraphQLError("Notebook not found!")
     }
 
-    await this.prisma.notebook.update({
+    await prisma.notebook.update({
       where: { id: notebookId },
       data: {
         name: {
@@ -532,17 +530,17 @@ export class QuestionsService {
   }
 
   async deleteNotebook(userId: string, id: string) {
-    await this.prisma.notebook.deleteMany({ where: { id, userId } })
+    await prisma.notebook.deleteMany({ where: { id, userId } })
 
     return true
   }
 
   async getNotebooks(userId: string) {
-    return await this.prisma.notebook.findMany({ where: { userId }, include: { questions: { include: { alternatives: true } } } })
+    return await prisma.notebook.findMany({ where: { userId }, include: { questions: { include: { alternatives: true } } } })
   }
 
   async getNotebook(userId: string, notebookId: string) {
-    const notebook = await this.prisma.notebook.findFirst({
+    const notebook = await prisma.notebook.findFirst({
       where: { id: notebookId, userId },
       include: {
         questions: {
@@ -564,13 +562,13 @@ export class QuestionsService {
   }
 
   async addQuestionToNotebook(userId: string, notebookId: string, questionId: string) {
-    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+    const notebook = await prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
       throw new GraphQLError("Notebook not found")
     }
 
-    return await this.prisma.notebook.update({
+    return await prisma.notebook.update({
       where: {
         id: notebookId
       },
@@ -585,13 +583,13 @@ export class QuestionsService {
   }
 
   async removeQuestionFromNotebook(userId: string, notebookId: string, questionId: string) {
-    const notebook = await this.prisma.notebook.findFirst({ where: { id: notebookId, userId } })
+    const notebook = await prisma.notebook.findFirst({ where: { id: notebookId, userId } })
 
     if (!notebook) {
       throw new GraphQLError("Notebook not found")
     }
 
-    return await this.prisma.notebook.update({
+    return await prisma.notebook.update({
       where: {
         id: notebookId
       },
@@ -606,9 +604,9 @@ export class QuestionsService {
   }
 
   async simulados(page: number, itemsPerPage: number, userId: string) {
-    const quantity = await this.prisma.simulado.count({ where: { userId } })
+    const quantity = await prisma.simulado.count({ where: { userId } })
 
-    const simulados = await this.prisma.simulado.findMany({
+    const simulados = await prisma.simulado.findMany({
       where: { userId },
       include: { questions: { include: { alternatives: true } } },
       skip: itemsPerPage * (page - 1),
@@ -619,7 +617,7 @@ export class QuestionsService {
   }
 
   async simulado(id: string, userId: string) {
-    const simulado = await this.prisma.simulado.findFirst({
+    const simulado = await prisma.simulado.findFirst({
       where: { id, userId },
       include: { questions: { include: { alternatives: true, ano: true, banca: true, processoSeletivo: true } } }
     })
@@ -636,7 +634,7 @@ export class QuestionsService {
       const totalQuestions = areas?.reduce((counter, area) => area.quantity + counter, 0)!
       const totalMinutes = totalQuestions * 3
 
-      return await this.prisma.simulado.create({
+      return await prisma.simulado.create({
         data: {
           userId,
           name,
@@ -644,7 +642,7 @@ export class QuestionsService {
           totalMinutes,
           questions: {
             connect: (await Promise.all(areas.map(async ({ areaId, quantity }) => {
-              const questions = await this.prisma.question.findMany({
+              const questions = await prisma.question.findMany({
                 where: {
                   areaId,
                   enunciado: {
@@ -680,7 +678,7 @@ export class QuestionsService {
         include: { questions: { include: { alternatives: true } } }
       })
     } else {
-      const questions = await this.prisma.question.findMany({
+      const questions = await prisma.question.findMany({
         where: {
           enunciado: {
             not: {
@@ -712,7 +710,7 @@ export class QuestionsService {
       const quantity = getRandomItem(quantites)
       const totalMinutes = quantity * 3
 
-      return await this.prisma.simulado.create({
+      return await prisma.simulado.create({
         data: {
           userId,
           name,
@@ -728,13 +726,13 @@ export class QuestionsService {
   }
 
   async deleteSimulado(userId: string, id: string) {
-    await this.prisma.simulado.deleteMany({ where: { id, userId } })
+    await prisma.simulado.deleteMany({ where: { id, userId } })
 
     return true
   }
 
   async relatorioDeDesempenho(userId: string) {
-    const responses = await this.prisma.response.findMany({
+    const responses = await prisma.response.findMany({
       where: { userId }
     })
 

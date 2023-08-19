@@ -1,14 +1,12 @@
 import { Service } from "typedi"
-import { PrismaService } from "../prisma"
+import prisma from "../../lib/prisma"
 
 @Service()
 export class NotificationsService {
-  constructor(
-    private readonly prisma: PrismaService
-  ) {}
+  constructor() {}
 
   async createNotification(title: string, body: string) {
-    return await this.prisma.notification.create({
+    return await prisma.notification.create({
       data: {
         title,
         body
@@ -17,7 +15,7 @@ export class NotificationsService {
   }
 
   async getUnreadNotifications(userId: string) {
-    return this.prisma.notification.findMany({
+    return prisma.notification.findMany({
       where: {
         users: {
           none: {
@@ -29,7 +27,7 @@ export class NotificationsService {
   }
 
   async readNotifications(userId: string, notificationsIds: string[]) {
-    await this.prisma.notificationToUser.createMany({
+    await prisma.notificationToUser.createMany({
       data: notificationsIds.map(notificationId => ({
         notificationId,
         userId
