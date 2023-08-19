@@ -1,7 +1,7 @@
 import { styled } from "@/styles";
 
 export const Container = styled('header', {
-    width: '100vw',
+    width: '100%',
     padding: '23px 42px',
 
     zIndex: 3,
@@ -115,7 +115,7 @@ export const ProfileInfo = styled("div", {
     justifyContent: "center",
     gap: '10px',
 
-    padding: '3px 15px 3px 2px',
+    padding: '3px',
 
     background: "$white_1",
 

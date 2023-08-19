@@ -14,6 +14,9 @@ import { useQuery } from 'urql';
 
 import { Chart } from "react-google-charts";
 
+import Layout from '@/components/layout';
+
+
 const chartQuery = graphql(/* GraphQL */ `
   query Chart {
     relatorio {
@@ -43,10 +46,8 @@ const [optionsBar, setOptionsBar] = useState({
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
   return (
-    <Container>
-     <Header/>
-     <Menu page='estatisticas'/>
-     <Content>
+    <Layout page="estatisticas">
+      <Content>
            <h1>Analise Geral</h1>
            <div className='circularGraph'>
             <CircularProgressbar value={percentage} text={`${percentage.toFixed(2)}%`} className='circle'/>
@@ -62,7 +63,7 @@ const [optionsBar, setOptionsBar] = useState({
      options={optionsBar}
    />
            </div>
-     </Content>
-    </Container>
+          </Content>
+    </Layout>
   )
 }

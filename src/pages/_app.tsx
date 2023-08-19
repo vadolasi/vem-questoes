@@ -14,6 +14,8 @@ import { Tooltip } from 'react-tooltip'
 
 import 'react-tooltip/dist/react-tooltip.css'
 
+import '../styles/index.css'
+
 globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) {

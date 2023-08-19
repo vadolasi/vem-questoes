@@ -9,7 +9,7 @@ export const Container = styled('div', {
         gridTemplateRows: '100px auto',
         gridTemplateAreas:
         `
-        "header header" 
+        "header header"
         "menu content"
         `,
 
@@ -27,21 +27,22 @@ export const Container = styled('div', {
 export const Content = styled("div", {
         gridArea: 'content',
 
+        width: "100%",
 
         padding: "100px 58px",
 
         h1:{
             textAlign: 'center'
         },
-        
+
         '.circularGraph':{
-            marginTop: '20px', 
+            marginTop: '20px',
 
             display: 'flex',
             flexDirection: 'column',
             gap: '5px',
             alignItems: 'center',
-    
+
             span:{
                 fontSize: '16px',
                 lineHeight: '20px',
@@ -52,8 +53,8 @@ export const Content = styled("div", {
             width: '200px',
             height: '200px',
         },
-      
-        
+
+
         '@media (max-width: 1200px)':{
                 gridTemplateColumns: "auto",
                 gridTemplateRows: "auto auto auto",

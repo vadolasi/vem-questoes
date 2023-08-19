@@ -59,11 +59,19 @@ export default function Layout({ children, page, visible = false }: Props) {
           <Content>{children}</Content>
         </ContainerFocus>
       ) : (
-        <Container>
-          <Header />
-          <Menu page={page} />
-          <Content>{children}</Content>
-        </Container>
+        <div className="drawer lg:drawer-open">
+          <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex flex-col">
+            <Container>
+              <Header />
+              <Content>{children}</Content>
+            </Container>
+          </div>
+          <div className="drawer-side z-50">
+            <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+            <Menu page={page} />
+          </div>
+        </div>
       )}
     </>
   );

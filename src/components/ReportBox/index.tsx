@@ -13,7 +13,6 @@ import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 import { TicketType } from '@/gql/graphql';
 import { toast } from 'react-toastify';
-import { SpinnerCircular } from 'spinners-react';
 
 const createReportMutation = graphql(/* GraphQL */ `
   mutation CreateReport($content: String!, $type: TicketType!) {
@@ -50,7 +49,7 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
           setSelectValue('')
           toast.success('Report recebido com sucesso!')
         })
-      
+
       }
 
     return show ? (
@@ -64,7 +63,7 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
                 onChange={(e: any) => setMotivo(e.target.value)}
                 />
               </div>
-              <Button onClick={() => addReport()}>{isSending ? <SpinnerCircular/> : 'Enviar' }</Button>
+              <Button onClick={() => addReport()}>{isSending ? <span className="loading loading-spinner loading-lg"></span> : 'Enviar' }</Button>
         </Container>
     ) : null;
 };

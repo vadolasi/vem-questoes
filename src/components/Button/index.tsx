@@ -2,7 +2,6 @@ import { useEffect, useState, ReactNode, ButtonHTMLAttributes } from "react";
 import { Container, ButtonTT } from "./styles";
 
 import Link from 'next/link';
-import { SpinnerCircular } from "spinners-react";
 
 
 interface ButtonInterface extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -23,7 +22,7 @@ export const Button = (props: ButtonInterface) => {
   return (
     <Container>
       <Link href={linkText}>
-        <ButtonTT onClick={onClick} {...rest}>{loading ? <SpinnerCircular color="#f0f0fc" size="40" /> : children}</ButtonTT>
+        <ButtonTT onClick={onClick} {...rest}>{loading ? <span className="loading loading-spinner loading-lg"></span> : children}</ButtonTT>
       </Link>
     </Container>
   );

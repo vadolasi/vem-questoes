@@ -32,8 +32,6 @@ import { Timer } from "@/components/Timer";
 import { graphql } from "@/gql";
 import { useQuery, useMutation } from "urql";
 
-import { SpinnerCircular } from "spinners-react";
-
 import { toast } from "react-toastify";
 
 import { useSearchParams } from "next/navigation";
@@ -427,11 +425,7 @@ export default function Questoes() {
                 <li>
                   <strong>Ano:</strong>{" "}
                   {fetching ? (
-                    <SpinnerCircular
-                      color="#f0f0fc"
-                      size="20"
-                      className="spin"
-                    />
+                    <span className="loading loading-spinner loading-lg"></span>
                   ) : (
                     <>{currentQuestion?.ano?.ano}</>
                   )}
@@ -439,11 +433,7 @@ export default function Questoes() {
                 <li>
                   <strong>Banca:</strong>{" "}
                   {fetching ? (
-                    <SpinnerCircular
-                      color="#f0f0fc"
-                      size="20"
-                      className="spin"
-                    />
+                    <span className="loading loading-spinner loading-lg"></span>
                   ) : (
                     <>{currentQuestion?.banca?.name}</>
                   )}
@@ -451,11 +441,7 @@ export default function Questoes() {
                 <li>
                   <strong>Prova:</strong>{" "}
                   {fetching ? (
-                    <SpinnerCircular
-                      color="#f0f0fc"
-                      size="20"
-                      className="spin"
-                    />
+                    <span className="loading loading-spinner loading-lg"></span>
                   ) : (
                     <>{currentQuestion?.processoSeletivo?.name}</>
                   )}

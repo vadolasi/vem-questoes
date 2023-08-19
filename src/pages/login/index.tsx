@@ -14,8 +14,6 @@ import { useMutation } from 'urql';
 import { graphql } from '@/gql';
 import { toast } from 'react-toastify';
 
-import { SpinnerCircular } from 'spinners-react';
-
 const LoginMutation = graphql(/* GraphQL */ `
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password)

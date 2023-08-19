@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "../../assets/logo.png";
 
 import { Container } from "./styles";
 import {
@@ -20,10 +21,14 @@ interface menuProps {
 
 export const Menu: FC<menuProps> = ({ page, invisible }) => {
   return (
-    <div style={{ position: "fixed", height: "100%" }}>
+    <div className="h-full flex flex-col bg-base-100">
+      <div className="border-b md:flex flex-1 hidden">
+        <div className="h-20 flex items-center pl-10">
+          <div className="flex-1 px-2 mx-2 hidden md:block"><Image src={Logo} alt="Logo escrito 'Vem questões'" height={50} className="Logo" /></div>
+        </div>
+      </div>
       <Container
-        style={{ marginTop: "100px" }}
-        className={`${invisible ? "hidden" : ""}`}
+        className={`${invisible ? "hidden" : ""} border-r h-full`}
       >
         <li>
           <Link href="/" className={page == "home" ? "page" : ""}>

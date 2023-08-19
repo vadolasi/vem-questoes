@@ -1,18 +1,8 @@
 import { styled } from '../../styles'
 
 export const Container = styled('div', {
-        width: "100vw",
+        width: "100%",
         height: "100vh",
-
-        display: 'grid',
-        gridTemplateColumns: '270px auto',
-        gridTemplateRows: '100px auto',
-        gridTemplateAreas:
-        `
-        "header header"
-        "menu content"
-        `,
-
         overflowX: "hidden",
 
         '.hidden': {
@@ -24,7 +14,7 @@ export const Container = styled('div', {
                 gridTemplateAreas:
                 `
                 "content"
-                `,      
+                `,
         },
     '@media (max-width: 1200px)': {
         gridTemplateRows: 'auto',
