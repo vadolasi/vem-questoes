@@ -115,7 +115,7 @@ export const ProfileInfo = styled("div", {
     justifyContent: "center",
     gap: '10px',
 
-    padding: '3px',
+    padding: '3px 15px 3px 2px',
 
     background: "$white_1",
 

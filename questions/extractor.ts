@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client"
+import prisma from "../src/lib/prisma"
 import { join } from "path"
 import * as xlsx from "xlsx"
-
-const prisma = new PrismaClient()
 
 function extractQuestions(text: string) {
   const matchesRegex = new RegExp("(?:^|\\n)([A-E])\\)\\s*(.*?)(?=\\n[A-E]\\)|\\n*$)", "gms")
