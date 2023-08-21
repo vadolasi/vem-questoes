@@ -47,8 +47,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>Vem Questões</title>
         <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async={true} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <ToastContainer />
+      <ToastContainer style={{ zIndex: 200000 }} />
       <Tooltip id="tooltip" />
       <Component {...pageProps} />
       <Modals />

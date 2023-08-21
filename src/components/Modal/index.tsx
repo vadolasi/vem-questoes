@@ -17,6 +17,7 @@ import { nanoid } from 'nanoid';
 import { create } from "zustand"
 import { immer } from 'zustand/middleware/immer'
 import { enableMapSet } from 'immer'
+import clsx from "clsx"
 
 enableMapSet()
 
@@ -28,7 +29,7 @@ interface ModalProps2 {
 }
 
 const GetAreasQuery = graphql(/* GraphQL */ `
-  query GetAreas {
+  query GetAreas2 {
     areas {
       id
       name
@@ -37,7 +38,7 @@ const GetAreasQuery = graphql(/* GraphQL */ `
 `)
 
 const createSimuladoMutation = graphql(/* GraphQL */ `
-  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {
+  mutation CreateSimulado2($name: String!, $areas: [AreaToSimuladoInput!]!) {
     createSimulado(
       name: $name
       type: Custom
@@ -145,12 +146,13 @@ const useModalsStore = create(
 interface ModalProps {
   children: React.ReactNode
   id: string
+  bottom: boolean
 }
 
-const Modal: React.FC<ModalProps> = ({ id, children }) => {
+const Modal: React.FC<ModalProps> = ({ id, children, bottom }) => {
   return (
-    <dialog id={id} className="modal modal-bottom sm:modal-middle">
-      <div className="modal-box w-11/12 max-w-5xl">
+    <dialog id={id} className={clsx("modal", bottom && "modal-bottom sm:modal-middle")}>
+      <div className={clsx("modal-box w-full md:w-11/12 max-w-5xl", bottom && "sm:w-full")}>
         <form method="dialog" className="absolute right-2 top-2">
           <button className="btn btn-sm btn-circle btn-ghost">✕</button>
         </form>
@@ -163,14 +165,26 @@ const Modal: React.FC<ModalProps> = ({ id, children }) => {
   )
 }
 
-export function useModal(element: React.ReactNode, showClose = true): [() => void, (element: React.ReactNode) => void] {
+interface UseModalOptions {
+  bottom?: boolean
+}
+
+const defaultOptions: Required<UseModalOptions> = {
+  bottom: true
+}
+
+export function useModal(element: React.ReactNode, options?: UseModalOptions): [() => void, (element: React.ReactNode) => void] {
+  const {
+    bottom
+  } = { ...defaultOptions, ...options }
+
   const { addModal, removeModal } = useModalsStore()
   const [id] = useState(nanoid())
 
   useEffect(() => {
     addModal(
       id,
-      <Modal id={id}>
+      <Modal id={id} bottom={bottom}>
         {element}
       </Modal>
     )
@@ -183,7 +197,7 @@ export function useModal(element: React.ReactNode, showClose = true): [() => voi
     (element: React.ReactNode) => {
       addModal(
         id,
-        <Modal id={id}>
+        <Modal id={id} bottom={bottom}>
           {element}
         </Modal>
       )

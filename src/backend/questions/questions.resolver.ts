@@ -5,7 +5,7 @@ import { ProcessoSeletivo } from "./models/processoSeletico.model"
 import { Ano } from "./models/ano.model"
 import { Local } from "./models/local.model"
 import { Perfil } from "./models/perfil.model"
-import { Area } from "./models/area.model"
+import { Area, AreasResponse } from "./models/area.model"
 import { Subarea } from "./models/subarea.model"
 import { Estado } from "./models/estado.model"
 import { Banca } from "./models/banca.model"
@@ -77,7 +77,7 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Query(() => [Area])
+  @Query(() => [AreasResponse])
   async areas() {
     return this.questionsService.getAreas()
   }

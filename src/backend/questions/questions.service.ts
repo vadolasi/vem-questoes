@@ -54,7 +54,13 @@ export class QuestionsService {
   }
 
   async getAreas() {
-    return prisma.area.findMany()
+    const areas = await prisma.area.findMany({ include: { _count: { select: { questions: true } } } })
+
+    return areas.map(area => ({
+      id: area.id,
+      name: area.name,
+      count: area._count.questions
+    }))
   }
 
   async getSubareas() {

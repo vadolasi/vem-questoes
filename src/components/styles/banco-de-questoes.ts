@@ -1,10 +1,5 @@
 import { styled } from "@/styles";
 
-export const QuestionContainer = styled("div", {
-    width: "100%",
-    paddingRight: "42px",
-});
-
 export const Navigation = styled("div", {
     width: "100%",
     marginTop: "42px",
@@ -186,36 +181,6 @@ export const QuestionStatement = styled("div", {
         }
     }
 })
-
-export const ButtonReport = styled("button", {
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "2px",
-
-    padding: "4px 8px",
-
-    fontWeight: 700,
-    fontSize: '15px',
-    lineHeight: '20px',
-    color:"$red",
-
-    border: "1px solid $red",
-    borderRadius: "33px",
-
-    background: "transparent",
-
-    cursor: 'pointer',
-
-    transition: "0.2s",
-
-    "&:hover":{
-        filter: "brightness(0.8)"
-    },
-
-})
-
 
 export const QuestionButtons = styled("div", {
     width: "100%",

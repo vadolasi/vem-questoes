@@ -4,7 +4,7 @@ import { getCssText } from "../styles";
 
 export default function Document() {
   return (
-    <Html lang="pt-br" className="min-h-screen w-full">
+    <Html lang="pt-br">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -12,7 +12,7 @@ export default function Document() {
         <link rel="shortcut icon" href="/favicon.png" />
         <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       </Head>
-      <body className="min-h-screen w-full">
+      <body>
         <Main />
         <NextScript />
       </body>

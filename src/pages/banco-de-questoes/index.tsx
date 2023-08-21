@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { QuestionContainer } from "../../components/styles/banco-de-questoes";
-
 import { SearchInput } from "@/components/SearchInput";
 import { Checkbox } from "@/components/Checkbox";
 
@@ -250,148 +248,148 @@ export default function Questoes() {
 
   return (
     <Layout page="banco-de-questoes" visible={true}>
-        <QuestionContainer>
-          <ContainerFilter>
-            <SearchInput
-              placeholder="Pesquisar"
-              onChange={(text) => setText(text)}
-            />
-            <div className="inputs">
-              <div className="flex flex-wrap gap-2 h-min">
-                <Select
-                  title="Processos seletivos"
-                  setValue={options => setFilterProcessoSeletivo(options)}
-                  options={
-                    filterData?.processosSeletivos.map(({ id, name }) => ({
-                      value: id,
-                      label: name
-                    })) || []
-                  }
-                  value={filterProcessoSeletivo}
-                />
-                <Select
-                  title="Anos"
-                  setValue={options => setFilterAno(options)}
-                  options={
-                    filterData?.anos.map(({ id, ano }) => ({
-                      value: id,
-                      label: ano.toString()
-                    })) || []
-                  }
-                  value={filterAno}
-                />
-                <Select
-                  title="Locais"
-                  setValue={options => setFilterLocal(options)}
-                  options={
-                    filterData?.locais.map(({ id, name }) => ({
-                      value: id,
-                      label: name
-                    })) || []
-                  }
-                  value={filterLocal}
-                />
-                <Select
-                  title="Perfis"
-                  setValue={options => setFilterPerfil(options)}
-                  options={
-                    filterData?.perfis.map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    })) || []
-                  }
-                  value={filterPerfil}
-                />
-                <Select
-                  title="Areas"
-                  setValue={options => setFilterArea(options)}
-                  options={
-                    filterData?.areas.map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    })) || []
-                  }
-                  value={filterArea}
-                />
-                <Select
-                  title="Subareas"
-                  setValue={options => setFilterSubarea(options)}
-                  options={
-                    filterData?.subareas.map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    })) || []
-                  }
-                  value={filterSubarea}
-                />
-                <Select
-                  title="Estados"
-                  setValue={options => setFilterEstado(options)}
-                  options={
-                    filterData?.estados.map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    })) || []
-                  }
-                  value={filterEstado}
-                />
-                <Select
-                  title="Bancas"
-                  setValue={options => setFilterBanca(options)}
-                  options={
-                    filterData?.bancas.map(({ id, name }) => ({
-                      value: id,
-                      label: name,
-                    })) || []
-                  }
-                  value={filterBanca}
-                />
-              </div>
-
-              <Fieldset>
-                <legend>Ocultar Questões</legend>
-                <Checkbox label="Dos cadernos de erros" />
-                <Checkbox label="Dos meus simulados" />
-                <Checkbox label="Anuladas" />
-                <Checkbox label="Desatualizadas" />
-              </Fieldset>
-            </div>
-
-            <div className="buttons">
-              <ButtonFilter className="filter" onClick={updateFilter}>
-                <AiOutlineFilter />
-                Salvar Filtro
-              </ButtonFilter>
-              <ButtonFilter className="reset" onClick={clearFilter}>
-                <AiOutlineUndo />
-                Limpar Filtro
-              </ButtonFilter>
-            </div>
-          </ContainerFilter>
-
-          <QuestionRunner
-            confetti={true}
-            loadingQuestion={fetching}
-            loadingReponse={loadingReponse}
-            questionNumber={questionNumber}
-            setQuestionNumber={setQuestionNumber}
-            resolveQuestion={answerQuestion}
-            totalQuantity={data?.questions.quantity || 0}
-            question={currentQuestion ? {
-              id: currentQuestion.id,
-              ano: currentQuestion.ano?.ano!,
-              banca: currentQuestion.banca?.name!,
-              enunciado: currentQuestion.enunciado,
-              processoSeletivo: currentQuestion.processoSeletivo?.name!,
-              alternatives: currentQuestion.alternatives?.map(alternative => ({
-                id: alternative.id,
-                letter: alternative.letter,
-                text: alternative.text
-              })) || []
-            } : undefined}
-            extras={true}
+      <div className="w-full">
+        <ContainerFilter className="w-full">
+          <SearchInput
+            placeholder="Pesquisar"
+            onChange={(text) => setText(text)}
           />
-        </QuestionContainer>
+          <div className="inputs">
+            <div className="flex flex-wrap gap-2 h-min">
+              <Select
+                title="Processos seletivos"
+                setValue={options => setFilterProcessoSeletivo(options)}
+                options={
+                  filterData?.processosSeletivos.map(({ id, name }) => ({
+                    value: id,
+                    label: name
+                  })) || []
+                }
+                value={filterProcessoSeletivo}
+              />
+              <Select
+                title="Anos"
+                setValue={options => setFilterAno(options)}
+                options={
+                  filterData?.anos.map(({ id, ano }) => ({
+                    value: id,
+                    label: ano.toString()
+                  })) || []
+                }
+                value={filterAno}
+              />
+              <Select
+                title="Locais"
+                setValue={options => setFilterLocal(options)}
+                options={
+                  filterData?.locais.map(({ id, name }) => ({
+                    value: id,
+                    label: name
+                  })) || []
+                }
+                value={filterLocal}
+              />
+              <Select
+                title="Perfis"
+                setValue={options => setFilterPerfil(options)}
+                options={
+                  filterData?.perfis.map(({ id, name }) => ({
+                    value: id,
+                    label: name,
+                  })) || []
+                }
+                value={filterPerfil}
+              />
+              <Select
+                title="Areas"
+                setValue={options => setFilterArea(options)}
+                options={
+                  filterData?.areas.map(({ id, name }) => ({
+                    value: id,
+                    label: name,
+                  })) || []
+                }
+                value={filterArea}
+              />
+              <Select
+                title="Subareas"
+                setValue={options => setFilterSubarea(options)}
+                options={
+                  filterData?.subareas.map(({ id, name }) => ({
+                    value: id,
+                    label: name,
+                  })) || []
+                }
+                value={filterSubarea}
+              />
+              <Select
+                title="Estados"
+                setValue={options => setFilterEstado(options)}
+                options={
+                  filterData?.estados.map(({ id, name }) => ({
+                    value: id,
+                    label: name,
+                  })) || []
+                }
+                value={filterEstado}
+              />
+              <Select
+                title="Bancas"
+                setValue={options => setFilterBanca(options)}
+                options={
+                  filterData?.bancas.map(({ id, name }) => ({
+                    value: id,
+                    label: name,
+                  })) || []
+                }
+                value={filterBanca}
+              />
+            </div>
+
+            <Fieldset>
+              <legend>Ocultar Questões</legend>
+              <Checkbox label="Dos cadernos de erros" />
+              <Checkbox label="Dos meus simulados" />
+              <Checkbox label="Anuladas" />
+              <Checkbox label="Desatualizadas" />
+            </Fieldset>
+          </div>
+
+          <div className="flex gap-2">
+            <button className="btn btn-sm btn-info btn-outline rounded-full w-1/2 md:w-auto flex-1" onClick={updateFilter}>
+              <AiOutlineFilter />
+              Salvar Filtro
+            </button>
+            <button className="btn btn-sm btn-error btn-outline rounded-full w-1/2 md:w-auto flex-1" onClick={clearFilter}>
+              <AiOutlineUndo />
+              Limpar Filtro
+            </button>
+          </div>
+        </ContainerFilter>
+
+        <QuestionRunner
+          confetti={true}
+          loadingQuestion={fetching}
+          loadingReponse={loadingReponse}
+          questionNumber={questionNumber}
+          setQuestionNumber={setQuestionNumber}
+          resolveQuestion={answerQuestion}
+          totalQuantity={data?.questions.quantity || 0}
+          question={currentQuestion ? {
+            id: currentQuestion.id,
+            ano: currentQuestion.ano?.ano!,
+            banca: currentQuestion.banca?.name!,
+            enunciado: currentQuestion.enunciado,
+            processoSeletivo: currentQuestion.processoSeletivo?.name!,
+            alternatives: currentQuestion.alternatives?.map(alternative => ({
+              id: alternative.id,
+              letter: alternative.letter,
+              text: alternative.text
+            })) || []
+          } : undefined}
+          extras={true}
+        />
+      </div>
     </Layout>
   );
 }

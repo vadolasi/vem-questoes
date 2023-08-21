@@ -3,7 +3,7 @@ type Query {
   anos: [Ano!]!
   locais: [Local!]!
   perfis: [Perfil!]!
-  areas: [Area!]!
+  areas: [AreasResponse!]!
   subareas: [Subarea!]!
   estados: [Estado!]!
   bancas: [Banca!]!
@@ -43,9 +43,10 @@ type Perfil {
   name: String!
 }
 
-type Area {
+type AreasResponse {
   id: ID!
   name: String!
+  count: Float!
 }
 
 type Subarea {
@@ -89,6 +90,11 @@ type Alternative {
   text: String!
   letter: String!
   correct: Boolean!
+}
+
+type Area {
+  id: ID!
+  name: String!
 }
 
 type Comment {

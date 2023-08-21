@@ -69,6 +69,8 @@ export default function QuestionRunner({
       if (correct === selected && confetti) {
         setIsConfettiActive(true)
       }
+
+      setSelected(null)
     }
   }
 
@@ -107,7 +109,7 @@ export default function QuestionRunner({
           ]}
         />
       )}
-      <Navigation>
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mt-10">
         <span>{totalQuantity} questões</span>
 
         <Pagination currentPage={questionNumber} setCurrentPage={setQuestionNumber} totalPages={totalQuantity} />
@@ -125,7 +127,7 @@ export default function QuestionRunner({
             <AiOutlineRight />
           </button>
         </GoTo>
-      </Navigation>
+      </div>
 
       <QuestionStatement>
         <div className="title">
@@ -208,16 +210,16 @@ export default function QuestionRunner({
             ))}
         </ul>
       </QuestionStatement>
-      <QuestionButtons>
-        <div className="resposta">
-          {correct ? (
-            <Button onClick={() => setQuestionNumber(questionNumber + 1)}>Próximo</Button>
-          ) : (
-            <Button onClick={answerQuestion} loading={loadingReponse}>Responder</Button>
-          )}
-        </div>
+      <div className="flex flex-wrap md:flex-nowrap justify-between mt-10 gap-5">
+        {correct ? (
+          <button className="btn btn-primary w-full md:w-auto" onClick={() => setQuestionNumber(questionNumber + 1)}>Próximo</button>
+        ) : (
+          <button className="btn btn-primary w-full md:w-auto" disabled={loadingReponse} onClick={answerQuestion}>
+            {loadingReponse ? <span className="loading loading-spinner" /> : "Responder"}
+          </button>
+        )}
         {extras && <Extras active={active} questionId={question?.id!} />}
-      </QuestionButtons>
+      </div>
     </div>
   )
 }

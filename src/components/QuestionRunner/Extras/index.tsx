@@ -20,48 +20,40 @@ const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
   }, [questionId])
 
   return (
-    <ul className="flex gap-5">
-      <li>
-        <button
-          onClick={showExplicationModal}
-          disabled={!active}
-          className="btn"
-        >
-          <AiOutlineCompass />
-          <span>Explicação</span>
-        </button>
-      </li>
-      <li>
-        <button
-          onClick={showCommentsModal}
-          disabled={!active}
-          className="btn"
-        >
-          <AiOutlineComment />
-          <span>Comentários</span>
-        </button>
-      </li>
-      <li>
-        <button
-          onClick={showNotebooksModal}
-          disabled={!active}
-          className="btn"
-        >
-          <AiOutlineBook />
-          <span>Cadernos</span>
-        </button>
-      </li>
-      <li>
-        <button
-          onClick={showXRayModal}
-          disabled={!active}
-          className="btn"
-        >
-          <AiOutlineProfile />
-          <span>Raio-X</span>
-        </button>
-      </li>
-    </ul>
+    <div className="flex gap-5 flex-wrap md:flex-nowrap">
+      <button
+        onClick={showExplicationModal}
+        disabled={!active}
+        className="btn w-full md:w-auto"
+      >
+        <AiOutlineCompass />
+        <span>Explicação</span>
+      </button>
+      <button
+        onClick={showCommentsModal}
+        disabled={!active}
+        className="btn  w-full md:w-auto"
+      >
+        <AiOutlineComment />
+        <span>Comentários</span>
+      </button>
+      <button
+        onClick={showNotebooksModal}
+        disabled={!active}
+        className="btn  w-full md:w-auto"
+      >
+        <AiOutlineBook />
+        <span>Cadernos</span>
+      </button>
+      <button
+        onClick={showXRayModal}
+        disabled={!active}
+        className="btn  w-full md:w-auto"
+      >
+        <AiOutlineProfile />
+        <span>Raio-X</span>
+      </button>
+    </div>
   )
 }
 

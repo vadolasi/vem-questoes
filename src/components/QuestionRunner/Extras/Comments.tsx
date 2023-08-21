@@ -74,7 +74,7 @@ const Comments: React.FC<IProps> = ({ questionId }) => {
     )
   }
 
-  const [showDeleteModal, editDeleteModal] = useModal(<></>)
+  const [showDeleteModal, editDeleteModal] = useModal(<></>, { bottom: false })
 
   const editComment = () => {
     toast.promise(
@@ -95,7 +95,7 @@ const Comments: React.FC<IProps> = ({ questionId }) => {
     )
   }
 
-  const [showEditModal, editEditModal] = useModal(<></>)
+  const [showEditModal, editEditModal] = useModal(<></>, { bottom: false })
 
   useEffect(() => {
     editDeleteModal(

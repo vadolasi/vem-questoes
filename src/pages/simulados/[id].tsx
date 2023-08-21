@@ -5,7 +5,6 @@ import { Content } from "../../components/styles/simulados";
 import { graphql } from "@/gql";
 import { useQuery, useMutation } from "urql";
 
-import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import Layout from "@/components/layout";

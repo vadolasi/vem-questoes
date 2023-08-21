@@ -10,7 +10,7 @@ import { Select } from '@/components/Select';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 import { ExamBar } from '@/components/ExamBar';
-import { Modal } from '@/components/Modal';
+import { useModal } from '@/components/Modal';
 
 import simulado from '@/assets/Test.png'
 
@@ -18,6 +18,7 @@ import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 import { toast } from 'react-toastify';
 import Layout from '@/components/layout';
+import AddSimualdoModal from '@/components/AddSimulado';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -62,6 +63,8 @@ export default function Home() {
   const [, execute] = useMutation(createSimuladoMutation)
   const [, executeDelete] = useMutation(deleteSimuladoMutation)
 
+  const [showAddSimulatoModal] = useModal(<AddSimualdoModal />)
+
   function handleRemoveExam(deleted: any){
     const confirmDelete = confirm(`deseja excluir o simulado ${deleted.name}?`);
     if (confirmDelete) {
@@ -103,23 +106,19 @@ export default function Home() {
 
   return (
     <Layout page="mesa-de-estudos">
-      <Content>
-      {showExamModal && <Modal onClick={() => setShowExamModal(false)} create={true} />}
-
-      <Search>
-        <SearchInput onChange={() => {}} />
-        <Select label='Tipo' options={[{option: 'Aleatorio', value: 'Aleatorio'}, {option: 'Personalizado', value: 'Personalizado'}]}  value={value} onChange={(e: any) => {setValue(e.target.value)}}/>
-        <Button onClick={createSimulado}>Criar</Button>
-      </Search>
-      <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
-        {data?.simulados && data.simulados.simulados.map((exam) => (
-          <>
-            <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-            {showSimuladoModal && <Modal href={exam.id} key={`${exam.id}-m`} className={showSimuladoModal ? '' : 'hidden'} onClick={() => setShowSimuladoModal(!showSimuladoModal)} create={false}/>}
-          </>
-        ))}
-      </DefaultSearchPage>
-      </Content>
+      <div className="w-full">
+        <Search className="w-full flex items-center">
+          <SearchInput onChange={() => {}} />
+          <button className="btn btn-primary" onClick={showAddSimulatoModal}>Criar</button>
+        </Search>
+        <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
+          {data?.simulados && data.simulados.simulados.map((exam) => (
+            <>
+              <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
+            </>
+          ))}
+        </DefaultSearchPage>
+      </div>
     </Layout>
   )
 }
