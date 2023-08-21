@@ -11,10 +11,16 @@ import { Button } from '../Button';
 import { Container, ModalWindow } from './styles';
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
-import { SimuladoType } from '@/gql/graphql';
 import { useRouter } from 'next/navigation';
+import { nanoid } from 'nanoid';
 
-interface ModalProps {
+import { create } from "zustand"
+import { immer } from 'zustand/middleware/immer'
+import { enableMapSet } from 'immer'
+
+enableMapSet()
+
+interface ModalProps2 {
   onClick?: any,
   href?: string | undefined,
   className?: string,
@@ -45,7 +51,7 @@ const createSimuladoMutation = graphql(/* GraphQL */ `
   }
 `)
 
-export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href}) => {
+export const Modal2: React.FC<ModalProps2> = ({ onClick, className, create, href}) => {
   const [name, setName] = useState("")
   const [areas, setAreas] = useState<{ area: string, quantity: number }[]>(() => {
     const array = Array.from({ length: 100 }, () => ({ area: "", quantity: 1 }))
@@ -117,3 +123,71 @@ export const Modal: React.FC<ModalProps> = ({ onClick, className, create, href})
     </Container>
   );
 };
+
+interface IStore {
+  modals: Map<string, React.ReactNode>
+  addModal: (id: string, element: React.ReactNode) => void
+  removeModal: (id: string) => void
+}
+
+const useModalsStore = create(
+  immer<IStore>(set => ({
+    modals: new Map(),
+    addModal: (id, element) => set(state => {
+      state.modals.set(id, element)
+    }),
+    removeModal: (id) => set(state => {
+      state.modals.delete(id)
+    })
+  }))
+)
+
+interface ModalProps {
+  children: React.ReactNode
+  id: string
+}
+
+const Modal: React.FC<ModalProps> = ({ id, children }) => {
+  return (
+    <dialog id={id} className="modal modal-bottom sm:modal-middle">
+      <form method="dialog" className="modal-box">
+        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        {children}
+      </form>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
+  )
+}
+
+export function useModal(element: React.ReactNode) {
+  const { addModal, removeModal } = useModalsStore()
+  const [id] = useState(nanoid())
+
+  useEffect(() => {
+    addModal(
+      id,
+      <Modal id={id}>
+        {element}
+      </Modal>
+    )
+
+    return () => removeModal(id)
+  }, [])
+
+  return () => {
+    (window as any)[id].showModal()
+    console.log(id)
+  }
+}
+
+export const Modals: React.FC = () => {
+  const modals = useModalsStore(store => store.modals)
+
+  return (
+    <>
+      {Array.from(modals.values()).map(modal => modal)}
+    </>
+  )
+}

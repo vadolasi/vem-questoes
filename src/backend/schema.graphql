@@ -191,7 +191,7 @@ type Mutation {
   deleteSimulado(id: String!): Boolean!
   createNotification(body: String!, title: String!): Notification!
   readNotifications(notificationIds: [String!]!): Boolean!
-  addTicket(question: String, type: TicketType!, content: String!): Ticket!
+  addTicket(questionId: String, type: TicketType!, content: String!): Ticket!
   resolveTicket(id: String!): Boolean!
   deleteUser(id: String!): Boolean!
   inviteUser(role: Role!, name: String!, email: String!): User!

@@ -22,7 +22,7 @@ export const Button = (props: ButtonInterface) => {
   return (
     <Container>
       <Link href={linkText}>
-        <ButtonTT onClick={onClick} {...rest}>{loading ? <span className="loading loading-spinner loading-lg"></span> : children}</ButtonTT>
+        <button className="btn btn-primary flex items-center justify-center text-center" onClick={onClick} {...rest}>{loading ? <span className="loading loading-spinner"></span> : children}</button>
       </Link>
     </Container>
   );

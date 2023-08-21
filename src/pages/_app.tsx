@@ -15,6 +15,7 @@ import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 
 import '../styles/index.css'
+import { Modals } from "@/components/Modal";
 
 globalStyles();
 
@@ -50,6 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ToastContainer />
       <Tooltip id="tooltip" />
       <Component {...pageProps} />
+      <Modals />
     </Provider>
   )
 }

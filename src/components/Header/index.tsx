@@ -61,7 +61,7 @@ export const Header = ({ invisible = false }: HeaderProps) => {
 
   return (
     <div
-      className="navbar w-full sticky top-0 z-40 bg-white border-b h-20 pr-10"
+      className="navbar w-full sticky top-0 z-40 bg-base-100 border-b h-20 pr-10"
     >
       <div className="navbar-start">
       <div className="flex-none lg:hidden">

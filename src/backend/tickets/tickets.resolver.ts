@@ -23,9 +23,9 @@ export class TicketsResolver {
     @CurrentUserID() userId: string,
     @Arg("content") content: string,
     @Arg("type") role: TicketType,
-    @Arg("question", { nullable: true }) questionId: string
+    @Arg("questionId", { nullable: true }) questionId: string
   ) {
-    return await this.ticketsService.create(userId, content, role)
+    return await this.ticketsService.create(userId, content, role, questionId)
   }
 
   @Mutation(returns => Boolean)

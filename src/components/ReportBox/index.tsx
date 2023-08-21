@@ -15,7 +15,7 @@ import { TicketType } from '@/gql/graphql';
 import { toast } from 'react-toastify';
 
 const createReportMutation = graphql(/* GraphQL */ `
-  mutation CreateReport($content: String!, $type: TicketType!) {
+  mutation CreateReport2($content: String!, $type: TicketType!) {
     addTicket(
       content: $content
       type: $type
@@ -27,7 +27,6 @@ const createReportMutation = graphql(/* GraphQL */ `
 
 export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
     const [selectValue, setSelectValue] = useState('');
-    const [title, setTitle] = useState('');
     const [motivo, setMotivo] = useState('');
     const [isSending, setIsSending] = useState(false)
 
@@ -41,10 +40,9 @@ export const ReportBox: React.FC<ReportBoxProps> = ({show, question}) => {
           return toast.warn('Adicione o motivo do erro!')
         }
         setIsSending(true)
-        await executeCreateReport({ title: title, content: motivo, type: "BUG" as TicketType })
+        await executeCreateReport({ content: motivo, type: "BUG" as TicketType })
         .then(() => {
           setIsSending(false)
-          setTitle('')
           setMotivo('')
           setSelectValue('')
           toast.success('Report recebido com sucesso!')

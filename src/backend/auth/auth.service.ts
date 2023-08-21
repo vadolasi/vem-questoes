@@ -1,15 +1,14 @@
 import { Service } from "typedi"
 import { UsersService } from "../users/users.service"
 import bcrypt from "bcryptjs"
-import { PrismaService } from "../prisma"
+import prisma from "../../lib/prisma"
 import jwt from "jsonwebtoken"
 import { GraphQLError } from "graphql"
 
 @Service()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly prisma: PrismaService
+    private readonly usersService: UsersService
   ) {}
 
   async login(email: string, password: string) {
@@ -19,7 +18,7 @@ export class AuthService {
     const valid = await bcrypt.compare(password, user.password)
     if (!valid) throw new GraphQLError("Invalid password")
 
-    const { id: refreshToken } = await this.prisma.refreshToken.create({
+    const { id: refreshToken } = await prisma.refreshToken.create({
       data: {
         user: { connect: { id: user.id } },
         createdAt: new Date(),
@@ -41,7 +40,7 @@ export class AuthService {
   async refreshToken(refreshToken: string | null) {
     if (!refreshToken) throw new Error("No refresh token provided")
 
-    const refreshTokenObject = await this.prisma.refreshToken.findUnique({
+    const refreshTokenObject = await prisma.refreshToken.findUnique({
       where: { id: refreshToken },
       select: { expiresAt: true, user: { select: { id: true } } }
     })
@@ -64,6 +63,6 @@ export class AuthService {
   async logout(refreshToken: string | null) {
     if (!refreshToken) throw new Error("No refresh token provided")
 
-    await this.prisma.refreshToken.delete({ where: { id: refreshToken } })
+    await prisma.refreshToken.delete({ where: { id: refreshToken } })
   }
 }
