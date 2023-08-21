@@ -404,6 +404,52 @@ export class QuestionsService {
     return { quantity, pagesQuantity: Math.ceil(quantity / itemsPerPage), questions }
   }
 
+  async getComments(questionId: string) {
+    return await prisma.comment.findMany({ where: { questionId }, include: { user: true } })
+  }
+
+  async deleteComment(userId: string, commentId: string) {
+    const [user, comment] = await prisma.$transaction([
+      prisma.user.findUnique({ where: { id: userId } }),
+      prisma.comment.findUnique({ where: { id: commentId } })
+    ])
+
+    if (!user) {
+      throw new GraphQLError("Usuário não encontrado")
+    } else if (!comment) {
+      throw new GraphQLError("Comentário não encontrado")
+    }
+
+    if (comment?.userId === userId || ["DEVELOPER", "ADMIN"].includes(user.role)) {
+      await prisma.comment.delete({ where: { id: commentId } })
+
+      return true
+    } else {
+      throw new GraphQLError("Você não pode deletar este comentário!")
+    }
+  }
+
+  async editComment(userId: string, commentId: string, content: string) {
+    const [user, comment] = await prisma.$transaction([
+      prisma.user.findUnique({ where: { id: userId } }),
+      prisma.comment.findUnique({ where: { id: commentId } })
+    ])
+
+    if (!user) {
+      throw new GraphQLError("Usuário não encontrado")
+    } else if (!comment) {
+      throw new GraphQLError("Comentário não encontrado")
+    }
+
+    if (comment?.userId === userId || ["DEVELOPER", "ADMIN"].includes(user.role)) {
+      await prisma.comment.update({ where: { id: commentId }, data: { content } })
+
+      return true
+    } else {
+      throw new GraphQLError("Você não pode deletar este comentário!")
+    }
+  }
+
   async getQuestion(questionId: string, requestedFields: string[]) {
     return await prisma.question.findFirst({
       where: {

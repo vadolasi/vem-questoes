@@ -3,6 +3,7 @@ import { Service } from "typedi"
 import { AuthService } from "./auth.service"
 import { LoginInput } from "./inputs/login.input"
 import type { ContextType } from "../auth"
+import { Role, User } from "../users/models/user.model"
 
 @Service()
 @Resolver()
@@ -11,16 +12,24 @@ export class AuthResolver {
     private readonly authService: AuthService
   ) {}
 
-  @Mutation(() => Boolean)
+  @Mutation(() => User)
   async login(
     @Args() { email, password }: LoginInput,
     @Ctx() ctx: ContextType
-  ) {
-    const { accessToken, refreshToken } = await this.authService.login(email, password)
+  ): Promise<User> {
+    const { accessToken, refreshToken, user } = await this.authService.login(email, password)
 
     ctx.setTokens(accessToken, refreshToken)
 
-    return true
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      photoUrl: user.photoUrl,
+      role: Role[user.role.valueOf() as any] as any,
+      totalCorrect: user.totalCorrect,
+      totalQuestions: user.totalQuestions
+    }
   }
 
   @Mutation(() => Boolean)

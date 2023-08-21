@@ -17,7 +17,7 @@ export const TableCard: FC<TableCardInterface> = ({picture, title, link, descrip
         <Container>
             <h1>{title}</h1>
             <Image src={picture} alt={description}/>
-            <Button link={link}>Acessar</Button>
+            <Button className="w-full" link={link}>Acessar</Button>
         </Container>
     )
 }

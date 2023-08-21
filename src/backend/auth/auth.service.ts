@@ -34,7 +34,7 @@ export class AuthService {
       (_, token) => resolve(token as string)
     ))
 
-    return { accessToken, refreshToken }
+    return { accessToken, refreshToken, user }
   }
 
   async refreshToken(refreshToken: string | null) {

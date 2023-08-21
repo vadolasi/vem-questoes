@@ -29,6 +29,6 @@ export class User {
   @Field()
   totalCorrect: number
 
-  @Field(type => Role)
+  @Field(_type => Role)
   role: Role
 }

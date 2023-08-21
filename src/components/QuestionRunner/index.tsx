@@ -216,7 +216,7 @@ export default function QuestionRunner({
             <Button onClick={answerQuestion} loading={loadingReponse}>Responder</Button>
           )}
         </div>
-        {extras && <Extras active={active} />}
+        {extras && <Extras active={active} questionId={question?.id!} />}
       </QuestionButtons>
     </div>
   )

@@ -13,14 +13,19 @@ import { ButtonText } from '@/components/ButtonText';
 import { useMutation } from 'urql';
 import { graphql } from '@/gql';
 import { toast } from 'react-toastify';
+import useUserStore from '@/store';
 
 const LoginMutation = graphql(/* GraphQL */ `
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+    login(email: $email, password: $password) {
+      id
+      role
+    }
   }
 `);
 
 export default function Login() {
+  const { setId, setIsAdmin, setIsLogged } = useUserStore()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,6 +40,9 @@ export default function Login() {
     setLoading(true)
     executeMutation({ email, password }).then((result): any => {
       if (result.data?.login) {
+        setId(result.data.login.id)
+        setIsAdmin(["ADMIN", "DEVELOPER"].includes(result.data.login.role))
+        setIsLogged(false)
         setLoading(false)
         return router.push('/');
       }
@@ -59,7 +67,7 @@ export default function Login() {
             <Input text="Senha" value={password} type='password' placeholder='Mínimo 8 caracteres' onChange={(e: any) => setPassword(e.target.value)} />
           </div>
 
-          <Button loading={loading} onClick={handleLogin}>Entrar</Button>
+          <Button className="w-full" loading={loading} onClick={handleLogin}>Entrar</Button>
 
           <ButtonText text='Esqueceu sua senha?' />
         </Form>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { QuestionContainer, Content } from "../../components/styles/banco-de-questoes";
+import { QuestionContainer } from "../../components/styles/banco-de-questoes";
 
 import { SearchInput } from "@/components/SearchInput";
 import { Checkbox } from "@/components/Checkbox";
@@ -16,7 +16,6 @@ import {
   ButtonFilter,
 } from "../../components/styles";
 
-import RSelect from "react-select";
 import Layout from "@/components/layout";
 import QuestionRunner from "@/components/QuestionRunner";
 import Select from "@/components/Filter/Select";
@@ -133,15 +132,6 @@ const getQuestionQuery = graphql(/* GraphQL */ `
           id
           text
           letter
-        }
-        comments {
-          id
-          user {
-            id
-            name
-            photoUrl
-          }
-          content
         }
       }
       pagesQuantity

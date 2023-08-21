@@ -10,6 +10,7 @@ import { Subarea } from "./models/subarea.model"
 import { Estado } from "./models/estado.model"
 import { Banca } from "./models/banca.model"
 import { Question } from "./models/question.model"
+import { Comment } from "./models/comment.model"
 import { GetQuestionsInput } from "./inputs/getQuestions.input"
 import { CurrentUserID } from "../auth"
 import type { GraphQLResolveInfo } from "graphql"
@@ -207,6 +208,25 @@ export class QuestionsResolver {
   }
 
   @Authorized()
+  @Mutation(() => Boolean)
+  async deleteComment(
+    @CurrentUserID() userId: string,
+    @Arg("commentId") commentId: string
+  ) {
+    return await this.questionsService.deleteComment(userId, commentId)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async editComment(
+    @CurrentUserID() userId: string,
+    @Arg("commentId") commentId: string,
+    @Arg("content") content: string
+  ) {
+    return await this.questionsService.editComment(userId, commentId, content)
+  }
+
+  @Authorized()
   @Query(() => NotebookModel)
   async notebook(
     @CurrentUserID() userId: string,
@@ -280,6 +300,14 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string
   ) {
     return await this.questionsService.relatorioDeDesempenho(userId)
+  }
+
+  @Authorized()
+  @Query(_returns => [Comment])
+  async comments(
+    @Arg("questionId") questionId: string
+  ) {
+    return await this.questionsService.getComments(questionId)
   }
 
   @Authorized()

@@ -150,10 +150,12 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ id, children }) => {
   return (
     <dialog id={id} className="modal modal-bottom sm:modal-middle">
-      <form method="dialog" className="modal-box">
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <div className="modal-box w-11/12 max-w-5xl">
+        <form method="dialog" className="absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost">✕</button>
+        </form>
         {children}
-      </form>
+      </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
@@ -161,7 +163,7 @@ const Modal: React.FC<ModalProps> = ({ id, children }) => {
   )
 }
 
-export function useModal(element: React.ReactNode) {
+export function useModal(element: React.ReactNode, showClose = true): [() => void, (element: React.ReactNode) => void] {
   const { addModal, removeModal } = useModalsStore()
   const [id] = useState(nanoid())
 
@@ -176,10 +178,17 @@ export function useModal(element: React.ReactNode) {
     return () => removeModal(id)
   }, [])
 
-  return () => {
-    (window as any)[id].showModal()
-    console.log(id)
-  }
+  return [
+    () => (window as any)[id].showModal(),
+    (element: React.ReactNode) => {
+      addModal(
+        id,
+        <Modal id={id}>
+          {element}
+        </Modal>
+      )
+    }
+  ]
 }
 
 export const Modals: React.FC = () => {

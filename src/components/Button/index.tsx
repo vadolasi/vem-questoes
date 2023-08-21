@@ -1,5 +1,5 @@
 import { useEffect, useState, ReactNode, ButtonHTMLAttributes } from "react";
-import { Container, ButtonTT } from "./styles";
+import { Container } from "./styles";
 
 import Link from 'next/link';
 
@@ -22,7 +22,7 @@ export const Button = (props: ButtonInterface) => {
   return (
     <Container>
       <Link href={linkText}>
-        <button className="btn btn-primary flex items-center justify-center text-center" onClick={onClick} {...rest}>{loading ? <span className="loading loading-spinner"></span> : children}</button>
+        <button onClick={onClick} disabled={loading} {...rest} className={`btn btn-primary flex items-center justify-center text-center ${rest.className}`}>{loading ? <span className="loading loading-spinner"></span> : children}</button>
       </Link>
     </Container>
   );

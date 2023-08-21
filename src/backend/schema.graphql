@@ -14,6 +14,7 @@ type Query {
   simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
   simulado(id: String!): Simulado!
   relatorio: [RelatorioResponse!]!
+  comments(questionId: String!): [Comment!]!
   createQuestion(enunciado: String!, alternatives: [String!]!, correct: Float!, processoSeletivoId: String, newProcessoSeletivo: String, anoId: String, newAno: Float, localId: String, newLocal: String, perfilId: String, newPerfil: String, areaId: String, newArea: String, subAreaId: String, newSubArea: String, estadoId: String, newEstado: String, bancaId: String, newBanca: String): CreateQuestionResponse!
   notifications: [Notification!]!
   openedRickets: [Ticket!]
@@ -177,7 +178,7 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  login(email: String!, password: String!): Boolean!
+  login(email: String!, password: String!): User!
   refreshToken: Boolean!
   logout: Boolean!
   addAnswer(notebookId: String, simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
@@ -185,6 +186,8 @@ type Mutation {
   addNotebook(description: String, questions: [String!]!, name: String!): NotebookModel!
   updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
   deleteNotebook(id: String!): Boolean!
+  deleteComment(commentId: String!): Boolean!
+  editComment(content: String!, commentId: String!): Boolean!
   addQuestionToNotebook(questionId: String!, id: String!): NotebookModel!
   removeQuestionFromNotebook(questionId: String!, id: String!): NotebookModel!
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!

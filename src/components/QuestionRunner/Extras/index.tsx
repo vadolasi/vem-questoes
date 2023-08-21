@@ -1,17 +1,23 @@
 import { useModal } from "@/components/Modal";
 import { AiOutlineBook, AiOutlineComment, AiOutlineCompass, AiOutlineProfile } from "react-icons/ai";
 import Explication from "./Explication";
-import React from "react";
+import Comments from "./Comments";
+import React, { useEffect } from "react";
 
 interface IProps {
   active?: boolean
+  questionId: string
 }
 
-const Extras: React.FC<IProps> = ({ active = true }) => {
-  const showExplicationModal = useModal(<Explication />)
-  const showCommentsModal = useModal(<></>)
-  const showNotebooksModal = useModal(<></>)
-  const showXRayModal = useModal(<></>)
+const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
+  const [showExplicationModal] = useModal(<Explication />)
+  const [showCommentsModal, setCommentsModalContent] = useModal(<Comments questionId={questionId} />)
+  const [showNotebooksModal] = useModal(<></>)
+  const [showXRayModal] = useModal(<></>)
+
+  useEffect(() => {
+    setCommentsModalContent(<Comments questionId={questionId} />)
+  }, [questionId])
 
   return (
     <ul className="flex gap-5">
