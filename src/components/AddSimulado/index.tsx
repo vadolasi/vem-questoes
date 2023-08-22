@@ -5,6 +5,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { FiPlus } from "react-icons/fi"
+import { toast } from "react-toastify"
 
 const GetAreasQuery = graphql(/* GraphQL */ `
   query GetAreas {
@@ -43,31 +44,19 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-function deepEqual(x: any, y: any): any {
-  const ok = Object.keys, tx = typeof x, ty = typeof y;
-  return x && y && tx === 'object' && tx === ty ? (
-    ok(x).length === ok(y).length &&
-      ok(x).every(key => deepEqual(x[key], y[key]))
-  ) : (x === y);
+interface Props {
+  onAdd: () => void
 }
 
-const AddSimualdoModal: React.FC = () => {
+const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
   const [newSimiladoType, setNewSimuladoType] = useState<"Aleatório" | "Personalizado" | null>(null)
-  /*
-  const [areas, setAreas] = useState<{ area: string, quantity: number }[]>(() => {
-    const array = Array.from({ length: 100 }, () => ({ area: "", quantity: 1 }))
-    array.length = 1
-    return array
-  });
-  */
-  const [{ data, fetching }] = useQuery({ query: GetAreasQuery })
+  const [{ data }] = useQuery({ query: GetAreasQuery })
   const [, executeMutation] = useMutation(createCustomSimuladoMutation)
 
   const {
     control,
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -81,8 +70,27 @@ const AddSimualdoModal: React.FC = () => {
     name: "areas"
   })
 
+  const onSubmit = handleSubmit(({ name, areas }) => {
+    toast.promise(
+      (async () => {
+        const { error } = await executeMutation({ areas, name })
+
+        onAdd()
+
+        if (error) {
+          throw new Error(error.message)
+        }
+      })(),
+      {
+        error: "Ocorreu um erro ao criar o simulado!",
+        pending: "Criando simulado",
+        success: "Simulado criado com sucesso!"
+      }
+    )
+  })
+
   return (
-    <div>
+    <form onSubmit={onSubmit}>
       <h1 className="font-medium">Novo simulado</h1>
       <div className="flex flex-col">
         <div className="form-control w-full">
@@ -125,7 +133,7 @@ const AddSimualdoModal: React.FC = () => {
         )}
         <button className="btn w-full btn-primary mt-2">Criar</button>
       </div>
-    </div>
+    </form>
   )
 }
 

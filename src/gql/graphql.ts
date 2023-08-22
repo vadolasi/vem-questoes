@@ -276,8 +276,10 @@ export type Query = {
   openedRickets?: Maybe<Array<Ticket>>;
   perfis: Array<Perfil>;
   processosSeletivos: Array<ProcessoSeletivo>;
+  provas: Array<ProcessoSeletivo>;
   question: Array<Question>;
   questions: QuestionsResponse;
+  raioX: Array<RaioX>;
   relatorio: Array<RelatorioResponse>;
   simulado: Simulado;
   simulados: SimuladosResponse;
@@ -343,6 +345,11 @@ export type QueryQuestionsArgs = {
 };
 
 
+export type QueryRaioXArgs = {
+  provaId: Scalars['String'];
+};
+
+
 export type QuerySimuladoArgs = {
   id: Scalars['String'];
 };
@@ -374,6 +381,13 @@ export type QuestionsResponse = {
   pagesQuantity: Scalars['Float'];
   quantity: Scalars['Float'];
   questions: Array<Question>;
+};
+
+export type RaioX = {
+  __typename?: 'RaioX';
+  area: Area;
+  desempenho: Scalars['Float'];
+  relevancia: Scalars['Float'];
 };
 
 export type RelatorioResponse = {

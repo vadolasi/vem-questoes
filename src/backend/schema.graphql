@@ -16,6 +16,8 @@ type Query {
   relatorio: [RelatorioResponse!]!
   comments(questionId: String!): [Comment!]!
   createQuestion(enunciado: String!, alternatives: [String!]!, correct: Float!, processoSeletivoId: String, newProcessoSeletivo: String, anoId: String, newAno: Float, localId: String, newLocal: String, perfilId: String, newPerfil: String, areaId: String, newArea: String, subAreaId: String, newSubArea: String, estadoId: String, newEstado: String, bancaId: String, newBanca: String): CreateQuestionResponse!
+  provas: [ProcessoSeletivo!]!
+  raioX(provaId: String!): [RaioX!]!
   notifications: [Notification!]!
   openedRickets: [Ticket!]
   me: User
@@ -153,6 +155,12 @@ type RelatorioResponse {
 
 type CreateQuestionResponse {
   id: ID!
+}
+
+type RaioX {
+  area: Area!
+  relevancia: Float!
+  desempenho: Float!
 }
 
 type Notification {
