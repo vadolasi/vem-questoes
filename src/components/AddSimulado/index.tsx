@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { graphql } from "@/gql"
 import { useMutation, useQuery } from "urql"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useFieldArray, useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { FiPlus } from "react-icons/fi"
 import { toast } from "react-toastify"
+import Select from "react-select"
 
 const GetAreasQuery = graphql(/* GraphQL */ `
   query GetAreas {
@@ -52,6 +53,7 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
   const [newSimiladoType, setNewSimuladoType] = useState<"Aleatório" | "Personalizado" | null>(null)
   const [{ data }] = useQuery({ query: GetAreasQuery })
   const [, executeMutation] = useMutation(createCustomSimuladoMutation)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
 
   const {
     control,
@@ -89,6 +91,16 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
     )
   })
 
+  const handleSelectChange = (value: string, name: string) => {
+    setSelectedOptions(prev => ({ ...prev, [name]: value }))
+  }
+
+  const getOptions = (name: string) => {
+    return data?.areas.map(area => ({ value: area.id, label: area.name })).filter(
+      option => !Object.values(selectedOptions).includes(option.value) || selectedOptions[name] === option.value
+    )
+  }
+
   return (
     <form onSubmit={onSubmit}>
       <h1 className="font-medium">Novo simulado</h1>
@@ -115,23 +127,30 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
             <div className="flex flex-col gap-2">
               {fields.map(({ id, areaId }, index) => (
                 <div key={id} className="flex justify-between gap-1">
-                  <select className="select select-sm select-bordered w-full" {...register(`areas.${index}.areaId`)}>
-                    {data?.areas.filter(area => !(fields.map(area => area.areaId).includes(area.id === areaId ? "" : area.id))).map(area => (
-                      <option value={area.id} key={area.id}>{area.name}</option>
+                  <select className="select select-sm select-bordered w-full" {...register(`areas.${index}.areaId`, { onChange: ev => handleSelectChange(ev.currentTarget.value, `areas.${index}.areaId`) })}>
+                    {(getOptions(`areas.${index}.areaId`) || []).map(({ label, value }) => (
+                      <option value={value} key={value}>{label}</option>
                     ))}
                   </select>
-                  <input type="number" className="input input-sm input-bordered" {...register(`areas.${index}.quantity`, { max: data?.areas.find(area => area.id === areaId)?.count || 0 })} max={data?.areas.find(area => area.id === areaId)?.count || 0} />
+                  <input type="number" className="input input-sm input-bordered" {...register(`areas.${index}.quantity`, { valueAsNumber: true, max: data?.areas.find(area => area.id === areaId)?.count || 0 })} max={data?.areas.find(area => area.id === areaId)?.count || 0} />
                 </div>
               ))}
             </div>
             {fields.length < (data?.areas.length || 0) && (
-              <button className="btn btn-sm btn-square btn-secondary mt-3" onClick={() => append({ areaId: data?.areas.filter(area => !(fields.map(area => area.areaId).includes(area.id)))[0].id!, quantity: 1 })}>
+              <label
+                className="btn btn-sm btn-square btn-secondary mt-3"
+                onClick={() => {
+                  const areaId = getOptions(`areas.${fields.length}.areaId`)![0].value
+                  handleSelectChange(areaId, `areas.${fields.length}.areaId`)
+                  append({ areaId, quantity: 1 })}
+                }
+              >
                 <FiPlus />
-              </button>
+              </label>
             )}
           </div>
         )}
-        <button className="btn w-full btn-primary mt-2">Criar</button>
+        <button type="submit" className="btn w-full btn-primary mt-2">Criar</button>
       </div>
     </form>
   )

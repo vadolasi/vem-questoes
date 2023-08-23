@@ -173,7 +173,7 @@ const defaultOptions: Required<UseModalOptions> = {
   bottom: true
 }
 
-export function useModal(element: React.ReactNode, options?: UseModalOptions): [() => void, (element: React.ReactNode) => void] {
+export function useModal(element: React.ReactNode, options?: UseModalOptions): [() => void, (element: React.ReactNode) => void, () => void] {
   const {
     bottom
   } = { ...defaultOptions, ...options }
@@ -201,7 +201,8 @@ export function useModal(element: React.ReactNode, options?: UseModalOptions): [
           {element}
         </Modal>
       )
-    }
+    },
+    () => (window as any)[id].close()
   ]
 }
 
