@@ -12,6 +12,7 @@ import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 
 import { toast } from "react-toastify"
+import Layout from '@/components/layout';
 
 const notebooksQuery = graphql(/* GraphQL */ `
   query NotebooksQuery {
@@ -86,10 +87,8 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <Header/>
-      <Menu page=''/>
-      <Content>
+    <Layout page="cadernos">
+      <div className="flex flex-col w-full items-center">
         <Search>
           <SearchInput/>
           <Button onClick={() => addNotebook()}>+ Criar Caderno</Button>
@@ -113,7 +112,7 @@ export default function Home() {
             />
           ))}
         </DefaultSearchPage>
-      </Content>
-    </Container>
+      </div>
+    </Layout>
   )
 }

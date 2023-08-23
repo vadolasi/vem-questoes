@@ -109,7 +109,7 @@ export default function QuestionRunner({
           ]}
         />
       )}
-      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mt-10">
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mt-10 gap-10">
         <span>{totalQuantity} questões</span>
 
         <Pagination currentPage={questionNumber} setCurrentPage={setQuestionNumber} totalPages={totalQuantity} />

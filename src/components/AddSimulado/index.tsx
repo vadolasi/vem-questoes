@@ -1,12 +1,11 @@
 import { useState } from "react"
 import { graphql } from "@/gql"
 import { useMutation, useQuery } from "urql"
-import { useFieldArray, useForm, Controller } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { FiPlus } from "react-icons/fi"
 import { toast } from "react-toastify"
-import Select from "react-select"
 
 const GetAreasQuery = graphql(/* GraphQL */ `
   query GetAreas {

@@ -47,10 +47,11 @@ model NotificationToUser {
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
-  cpf            String
-  phone          String
+  cpf            String?
+  phone          String?
   photoUrl       String   @default("https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg")
   name           String
+  asaasId        String?
   password       String
   role           Role     @default(USER)
   refreshTokens  RefreshToken[]
