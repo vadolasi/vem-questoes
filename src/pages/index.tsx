@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import {AiOutlineRightCircle} from 'react-icons/ai'
+import { AiOutlineRightCircle } from 'react-icons/ai'
 
-import { Container, Content,OfferCard } from '../components/styles/index';
+import { Container, Content, OfferCard } from '../components/styles/index';
 
 import mulherComNotebook from '@/assets/mulherComNotebook.png'
 
@@ -51,54 +51,54 @@ export default function Home() {
   const percentage = 100 * data?.me?.totalCorrect! / data?.me?.totalQuestions! || 0
 
   return (
-      <Layout page="home">
-        <Content>
-          <ContentCard title='Leaderboard'>
+    <Layout page="home">
+      <Content>
+        <ContentCard title='Leaderboard'>
           {fetching ? <span className="loading loading-spinner loading-lg"></span> :
-          <>
-          {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
-              <UserCard key={id} position={index + 1} name={name} goals={totalCorrect} questions={totalQuestions} />
-            ))}
-          </>
-           }
+            <>
+              {data?.leaderBoard?.map(({ id, name, totalQuestions, totalCorrect }, index) => (
+                <UserCard key={id} position={index + 1} name={name} goals={totalCorrect} questions={totalQuestions} />
+              ))}
+            </>
+          }
 
-          </ContentCard>
-          <OfferCard>
-            <div className='Header'>
-                <div>
-                    <h1>Diagnóstico de Desempenho</h1>
-                    <p>Saiba exatamente o que você domina!</p>
-                    <button>Iniciar agora <AiOutlineRightCircle/></button>
-                </div>
-                <Image src={mulherComNotebook} alt="Mulher segurando um notebook"/>
+        </ContentCard>
+        <OfferCard>
+          <div className='Header'>
+            <div>
+              <h1>Diagnóstico de Desempenho</h1>
+              <p>Saiba exatamente o que você domina!</p>
+              <button>Iniciar agora <AiOutlineRightCircle /></button>
             </div>
-
-            {fetching ? <span className="loading loading-spinner loading-lg"></span> :
-          <div className='Content'>
-          <ImageSlider slides={SliderData} />
+            <Image src={mulherComNotebook} alt="Mulher segurando um notebook" />
           </div>
-           }
 
-          </OfferCard>
-          <ContentCard title='Estatísticas'>
           {fetching ? <span className="loading loading-spinner loading-lg"></span> :
-          <div className='box'>
-           <CircularProgressbar value={percentage} text={`${percentage.toFixed(2)}%`} className='circle'/>
-           <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
-           </div>
-           }
+            <div className='Content'>
+              <ImageSlider slides={SliderData} />
+            </div>
+          }
 
-          </ContentCard>
-          <ContentCard title='Simulados'>
+        </OfferCard>
+        <ContentCard title='Estatísticas'>
           {fetching ? <span className="loading loading-spinner loading-lg"></span> :
-          <>
-          {data?.simulados.simulados.map(simulado => (
-              <ExamCard key={simulado.id} id={simulado.id} name={simulado.name} questions={simulado.totalQuestions} />
-            ))}
-          </>}
+            <div className='box'>
+              <CircularProgressbar value={percentage} text={`${percentage.toFixed(2)}%`} className='circle' />
+              <span style={{ textAlign: "center", marginTop: "20px" }}><strong>{data?.me?.totalCorrect || 0}</strong> questões certas de <strong>{data?.me?.totalQuestions || 0}</strong></span>
+            </div>
+          }
 
-          </ContentCard>
-        </Content>
+        </ContentCard>
+        <ContentCard title='Simulados'>
+          {fetching ? <span className="loading loading-spinner loading-lg"></span> :
+            <>
+              {data?.simulados.simulados.map(simulado => (
+                <ExamCard key={simulado.id} id={simulado.id} name={simulado.name} questions={simulado.totalQuestions} />
+              ))}
+            </>}
+
+        </ContentCard>
+      </Content>
     </Layout>
   )
 }
