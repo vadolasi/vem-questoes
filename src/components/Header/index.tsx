@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   AiOutlineDownCircle,
@@ -102,14 +102,14 @@ export const Header = ({ invisible = false }: HeaderProps) => {
                 </p>
               </div>
             )}
-            {data?.notifications.map((notification) => (
-              <>
-                <li key={notification.id}>
+            {data?.notifications.map(notification => (
+              <React.Fragment key={notification.id}>
+                <li>
                   <p className="text-base font-bold">{notification.title}</p>
                   <p className="text-sm">{notification.body}</p>
                 </li>
                 <div className="w-full h-[1px] bg-base-200 mt-3 mb-3" />
-              </>
+              </React.Fragment>
             ))}
           </ul>
         </details>

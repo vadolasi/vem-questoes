@@ -44,12 +44,9 @@ interface IProps {
 
 const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) => {
   const [firstLoad, setFirstLoad] = useState(true)
-  const [notebookToChange, setNotebookToChange] = useState<string | null>(null)
   const [{ fetching, data }, executeQuery] = useQuery({ query: notebooksQuery })
   const [{ fetching: loadingAddingNotebook }, executeAddQuestionToNotebook] = useMutation(addQuestionToNotebookMutation)
   const [{ fetching: loadingRemovingNotebook }, executeRemoveQuestionFromNotebook] = useMutation(removeQuestionFromNotebookMutation)
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState<string | null>(null)
   const [showAddNotebookModal, updateAddNotebookModal, closeAddNotebookModal] = useModal(<></>, { bottom: false })
   const [showEditNotebookModal, updateEditNotebookModal, closeEditNotebookModal] = useModal(<></>, { bottom: false })
 
@@ -65,13 +62,10 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
   const onEdit = () => {
     closeEditNotebookModal()
     executeQuery({ requestPolicy: "network-only" })
-    setNotebookToChange(null)
   }
 
   const handleUpdateButtonClick = (notebookId: string, name: string, description?: string) => {
-    setName(name)
-    setDescription(description!)
-    setNotebookToChange(notebookId)
+    updateEditNotebookModal(<EditNotebookModal description={description || ""} name={name} onAdd={onEdit} notebookId={notebookId} />)
     showEditNotebookModal()
   }
 
@@ -79,23 +73,13 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
 
   const onDelete = () => {
     closeDeleteNotbookModal()
-    setNotebookToChange(null)
-    setName("")
-    setDescription(null)
     executeQuery({ requestPolicy: "network-only" })
   }
 
   const handleDeleteNotebookButton = (notebookId: string) => {
     showDeleteNotebookModal()
-    setNotebookToChange(notebookId)
+    updateDeleteNotebookModal(<DeleteNotebookModal onAdd={onDelete} notebookToDelete={notebookId} />)
   }
-
-  useEffect(() => {
-    if (notebookToChange) {
-      updateDeleteNotebookModal(<DeleteNotebookModal onAdd={onDelete} notebookToDelete={notebookToChange} />)
-      updateEditNotebookModal(<EditNotebookModal description={description} name={name} onAdd={onEdit} notebookId={notebookToChange!} />)
-    }
-  }, [name, description, notebookToChange])
 
   const handleQuestionAdd = async (notebookId: string) => {
     toast.promise(
