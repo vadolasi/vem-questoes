@@ -48,8 +48,8 @@ const documents = {
     "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n": types.InitialPageDocument,
     "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      id\n      role\n    }\n  }\n": types.LoginDocument,
     "\n  query Me3 {\n    me {\n      name\n      email\n      photoUrl\n    }\n  }\n": types.Me3Document,
-    "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(\n      name: $name\n      photoUrl: $photoUrl\n    )\n  }\n": types.UpdateProfileDocument,
-    "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n": types.UpdatePasswordDocument,
+    "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(name: $name, photoUrl: $photoUrl)\n  }\n": types.UpdateProfileDocument,
+    "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n": types.UpdatePasswordDocument,
     "\n  query GetSimulado2($id: String!) {\n    simulado(id: $id) {\n      totalMinutes\n      totalQuestions\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetSimulado2Document,
     "\n  mutation ResolveQuestionOdSimulado2(\n    $questionId: String!\n    $alternativeId: String!\n    $simuladoId: String!\n  ) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      simuladoId: $simuladoId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOdSimulado2Document,
     "\n  query MeusSimulados {\n    simulados {\n      simulados {\n        id\n        totalQuestions\n        name\n      }\n    }\n  }\n": types.MeusSimuladosDocument,
@@ -214,11 +214,11 @@ export function graphql(source: "\n  query Me3 {\n    me {\n      name\n      em
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(\n      name: $name\n      photoUrl: $photoUrl\n    )\n  }\n"): (typeof documents)["\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(\n      name: $name\n      photoUrl: $photoUrl\n    )\n  }\n"];
+export function graphql(source: "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(name: $name, photoUrl: $photoUrl)\n  }\n"): (typeof documents)["\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(name: $name, photoUrl: $photoUrl)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"): (typeof documents)["\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"];
+export function graphql(source: "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n"): (typeof documents)["\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -57,28 +57,49 @@ export const Header = ({ invisible = false }: HeaderProps) => {
   }
 
   return (
-    <div
-      className="navbar w-full sticky top-0 z-40 bg-base-100 border-b h-20 lg:pr-10"
-    >
+    <div className="sticky top-0 z-40 w-full h-20 border-b navbar bg-base-100 lg:pr-10">
       <div className="navbar-start">
         <div className="flex-none lg:hidden">
           <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block w-6 h-6 stroke-current"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
           </label>
         </div>
-        <div className="flex-1 px-2 mx-2 hidden md:block"><Image src={Logo} alt="Logo escrito 'Vem questões'" height={50} className="Logo" /></div>
+        <div className="flex-1 hidden px-2 mx-2 md:block">
+          <Image
+            src={Logo}
+            alt="Logo escrito 'Vem questões'"
+            height={50}
+            className="Logo"
+          />
+        </div>
       </div>
       <div className="navbar-end">
-
         <details className="dropdown dropdown-end lg:mr-4">
-          <summary className="btn btn-ghost rounded-full">
+          <summary className="rounded-full btn btn-ghost">
             <AiOutlineBell size={24} />
             {/* <span className="badge badge-xs badge-primary indicator-item"></span> */}
           </summary>
-          <ul tabIndex={0} className="p-4 w-96 max-h-52 dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box overflow-scroll">
+          <ul
+            tabIndex={0}
+            className="p-4 w-96 max-h-52 dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box overflow-scroll"
+          >
             {data?.notifications.length === 0 && (
-              <div className="flex items-center w-full justify-center">
-                <p className="text-base text-center font-bold">Nenhuma notificação disponível!</p>
+              <div className="flex items-center justify-center w-full">
+                <p className="text-base font-bold text-center">
+                  Nenhuma notificação disponível!
+                </p>
               </div>
             )}
             {data?.notifications.map(notification => (
@@ -94,9 +115,12 @@ export const Header = ({ invisible = false }: HeaderProps) => {
         </details>
 
         <details className="dropdown dropdown-end">
-          <summary tabIndex={0} className="hover:opacity-70 cursor-pointer rounded-full border h-12 flex items-center justify-between p-1 bg-gray-100">
-            <div className="avatar h-full">
-              <div className="h-full rounded-full flex items-center justify-center w-full bg-white">
+          <summary
+            tabIndex={0}
+            className="flex items-center justify-between h-12 p-1 bg-gray-100 border rounded-full cursor-pointer hover:opacity-70"
+          >
+            <div className="h-full avatar">
+              <div className="flex items-center justify-center w-full h-full bg-white rounded-full">
                 {!fetching && (
                   <Image
                     src={data?.me?.photoUrl!}
@@ -107,11 +131,16 @@ export const Header = ({ invisible = false }: HeaderProps) => {
                 )}
               </div>
             </div>
-            <span className="text-center font-bold w-full m-2">{fetching ? 'Carregando...' : data?.me?.name}</span>
+            <span className="w-full m-2 font-bold text-center">
+              {fetching ? "Carregando..." : data?.me?.name}
+            </span>
             <AiOutlineDownCircle size={38} className="mr-4" />
-          </summary >
+          </summary>
 
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
             <li className="font-bold">
               <Link href="/perfil">
                 <AiOutlineUser size={20} />
@@ -131,8 +160,7 @@ export const Header = ({ invisible = false }: HeaderProps) => {
               </Link>
             </li>
           </ul>
-        </details >
-
+        </details>
       </div>
     </div>
   );
