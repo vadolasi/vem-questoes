@@ -2,15 +2,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   AiOutlineDownCircle,
-  AiOutlineUpCircle,
-  AiOutlineLineChart,
   AiOutlineUser,
   AiOutlinePoweroff,
-  AiOutlineHome,
-  AiOutlineRead,
-  AiOutlineForm,
-  AiOutlineKey,
-  AiOutlineBarChart,
   AiOutlineBell,
 } from "react-icons/ai";
 
@@ -18,8 +11,6 @@ import Logo from "../../assets/logo.png";
 import Link from "next/link";
 import { graphql } from "@/gql";
 import { useMutation, useQuery } from "urql";
-
-import NotificacoesCard from "../NotificacoesCard";
 
 const meQuery = graphql(/* GraphQL */ `
   query Me {
@@ -52,10 +43,6 @@ export const Header = ({ invisible = false }: HeaderProps) => {
 
   const { data, fetching } = result;
 
-  function handleChangeMenuState() {
-    setShowMenu(!showMenu);
-  }
-
   return (
     <div className="sticky top-0 z-40 w-full h-20 border-b navbar bg-base-100 lg:pr-10">
       <div className="navbar-start">
@@ -77,12 +64,14 @@ export const Header = ({ invisible = false }: HeaderProps) => {
           </label>
         </div>
         <div className="flex-1 hidden px-2 mx-2 md:block">
-          <Image
-            src={Logo}
-            alt="Logo escrito 'Vem questões'"
-            height={50}
-            className="Logo"
-          />
+          <Link href="/">
+            <Image
+              src={Logo}
+              alt="Logo escrito 'Vem questões'"
+              height={50}
+              className="Logo"
+            />
+          </Link>
         </div>
       </div>
       <div className="navbar-end">

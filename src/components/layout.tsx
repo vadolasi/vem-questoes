@@ -3,6 +3,8 @@ import { Container, Content } from "./styles/index";
 import { ContainerFocus } from "./styles/FocusContainer";
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
+import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip } from 'react-tooltip'
 
 interface Props {
   children: ReactNode;
@@ -55,10 +57,12 @@ export default function Layout({ children, page, visible = false }: Props) {
     <>
       {focus ? (
         <ContainerFocus>
+          <Tooltip id="tooltip" />
           <Content>{children}</Content>
         </ContainerFocus>
       ) : (
         <div className="drawer lg:drawer-open">
+          <Tooltip id="tooltip" />
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             <Container>

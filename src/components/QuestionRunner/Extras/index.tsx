@@ -2,7 +2,7 @@ import { useModal } from "@/components/Modal";
 import { AiOutlineBook, AiOutlineComment, AiOutlineCompass, AiOutlineProfile } from "react-icons/ai";
 import Explication from "./Explication";
 import Comments from "./Comments";
-import Notebooks from "./Notebooks/index";
+import Notebooks from "@/components/Notebooks/index"
 import React, { useEffect } from "react";
 
 interface IProps {

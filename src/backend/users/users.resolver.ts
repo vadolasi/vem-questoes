@@ -29,13 +29,13 @@ export class UserResolver {
     return this.usersService.leaderBoard()
   }
 
-  @Query(returns => [User])
+  @Query(_returns => [User])
   @Authorized()
   async users() {
     return await this.usersService.getUsers()
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(_returns => Boolean)
   @Authorized()
   async deleteUser(
     @Arg("id") userId: string
@@ -43,7 +43,7 @@ export class UserResolver {
     return await this.usersService.deleteUser(userId)
   }
 
-  @Mutation(returns => User)
+  @Mutation(_returns => User)
   @Authorized()
   async inviteUser(
     @Arg("email") email: string,
@@ -90,7 +90,7 @@ export class UserResolver {
     return newUser
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(_returns => Boolean)
   @Authorized()
   async updateProfile(
     @CurrentUserID() userId: string,
@@ -100,12 +100,12 @@ export class UserResolver {
     return await this.usersService.updateUser(userId, name, photoUrl)
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(_returns => Boolean)
   @Authorized()
   async updatePassword(
     @CurrentUserID() userId: string,
     @Arg("oldPassword") oldPassword: string,
-    @Arg("newPassword") newPassword: string,
+    @Arg("newPassword") newPassword: string
   ) {
     return await this.usersService.updatePassword(userId, oldPassword, newPassword)
   }

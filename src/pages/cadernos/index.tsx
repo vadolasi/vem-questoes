@@ -1,18 +1,19 @@
-import { Container, Content, Search } from '../../components/styles/cadernos';
+import { Search } from '../../components/styles/cadernos';
 
-import { Menu } from "@/components/Menu";
-import { Header } from "@/components/Header";
 import { SearchInput } from '@/components/SearchInput';
 import { Button } from '@/components/Button';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 
 import notebook from '@/assets/Notebook.png'
-import { NotebookCard } from '@/components/NotebookCard';
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 
 import { toast } from "react-toastify"
 import Layout from '@/components/layout';
+import Notebooks from '@/components/Notebooks';
+import { useEffect } from 'react';
+import { useModal } from '@/components/Modal';
+import AddNotebookModal from '@/components/Notebooks/AddNotebook';
 
 const notebooksQuery = graphql(/* GraphQL */ `
   query NotebooksQuery {
@@ -27,19 +28,6 @@ const notebooksQuery = graphql(/* GraphQL */ `
   }
 `);
 
-const createNotebookMutation = graphql(/* GraphQL */ `
-  mutation CreateNotebook($name: String!, $description: String) {
-    addNotebook(
-      name: $name
-      description: $description
-    ) {
-      id
-      name
-      description
-    }
-  }
-`);
-
 const deleteNotebookMutation = graphql(/* GraphQL */`
   mutation DeleteNotebook($id: String!) {
     deleteNotebook(id: $id)
@@ -48,26 +36,19 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
 
 export default function Home() {
   const [result, executeQuery] = useQuery({ query: notebooksQuery, requestPolicy: "cache-and-network" })
-  const [, executeCreateNotebook] = useMutation(createNotebookMutation)
   const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
+  const [showAddNotebookModal, updateAddNotebookModal, closeAddNotebookModal] = useModal(<></>, { bottom: false })
 
   const { data, fetching } = result
 
-  const _addNotebook = async () => {
-    await executeCreateNotebook({ name: "Título", description: "Descrição" })
+  const onAdd = () => {
     executeQuery({ requestPolicy: "network-only" })
+    closeAddNotebookModal()
   }
 
-  const addNotebook = async () => {
-    toast.promise(
-      _addNotebook(),
-      {
-        error: "Ocorreu um erro ao criar o caderno",
-        pending: "Criando caderno",
-        success: "Caderno criado com sucesso"
-      }
-    )
-  }
+  useEffect(() => {
+    updateAddNotebookModal(<AddNotebookModal onAdd={onAdd} />)
+  }, [])
 
   const _deleteNotebook = async (id: string) => {
     await executeDeleteNotebook({ id })
@@ -90,7 +71,7 @@ export default function Home() {
       <div className="flex flex-col w-full items-center">
         <Search>
           <SearchInput/>
-          <Button onClick={() => addNotebook()}>+ Criar Caderno</Button>
+          <Button onClick={showAddNotebookModal}>+ Criar Caderno</Button>
         </Search>
         <DefaultSearchPage
           text={(data?.notebooks.length || 0) > 0 ? 'Meus cadernos' : 'Crie um caderno para você!'}
@@ -98,18 +79,7 @@ export default function Home() {
           content={(data?.notebooks!.length || 0) > 0}
           loading={fetching}
         >
-          {data?.notebooks && data.notebooks.map(notebook => (
-            <NotebookCard
-              edit
-              id={notebook.id}
-              key={notebook.id}
-              title={notebook.name}
-              description={notebook.description!}
-              questions={notebook.questions}
-              deleteClick={() => deleteNotebook(notebook.id)}
-              onEdit={() => executeQuery({ requestPolicy: "network-only" })}
-            />
-          ))}
+          <Notebooks />
         </DefaultSearchPage>
       </div>
     </Layout>

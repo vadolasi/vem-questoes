@@ -24,7 +24,11 @@ export const Menu: FC<menuProps> = ({ page, invisible }) => {
     <div className="h-full flex flex-col bg-base-100">
       <div className="border-b md:flex flex-1 hidden">
         <div className="h-20 flex items-center pl-10">
-          <div className="flex-1 px-2 mx-2 hidden md:block"><Image src={Logo} alt="Logo escrito 'Vem questões'" height={50} className="Logo" /></div>
+          <div className="flex-1 px-2 mx-2 hidden md:block">
+            <Link href="/">
+              <Image src={Logo} alt="Logo escrito 'Vem questões'" height={50} className="Logo" />
+            </Link>
+          </div>
         </div>
       </div>
       <Container

@@ -7,6 +7,9 @@ import { useMutation, useQuery } from "urql"
 import AddNotebookModal from "./AddNotebook"
 import DeleteNotebookModal from "./DeleteNotebook"
 import EditNotebookModal from "./EditNotebook"
+import { BsFillPlayFill } from "react-icons/bs"
+import Link from "next/link"
+import clsx from "clsx"
 
 const notebooksQuery = graphql(/* GraphQL */ `
   query Notebooks {
@@ -127,15 +130,22 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
 
   return (
     <div>
-      <div className="flex flex-col divide-y max-h-96 overflow-y-auto">
+      <div className={clsx("flex flex-col divide-y", enableAddQuestion && "max-h-96 overflow-y-auto")}>
         {firstLoad && fetching ? (
           <span className="loading loading-spinner" />
         ) : data?.notebooks.length! < 1 ? (
           <h1>Nenhum notebook!</h1>
         ) : data?.notebooks.map(notebook => (
-          <div className="p-5 flex justify-between" key={notebook.id}>
-            <span>{notebook.name}</span>
-            <div className="flex gap-3 items-center">
+          <div className="p-5 flex justify-between items-center" key={notebook.id}>
+            <div className="flex flex-col overflow-x-hidden">
+              <div className="tooltip" data-tip={notebook.name}>
+                <p className="font-bold truncate text-left">{notebook.name}</p>
+              </div>
+              <div className="tooltip" data-tip={notebook.description}>
+                <p className="truncate text-left">{notebook.description}</p>
+              </div>
+            </div>
+            <div className="flex gap-2 items-center">
               {enableAddQuestion && (
                 <>
                   {notebook.questions.map(question => question.id).includes(questionId!) ? (
@@ -149,18 +159,28 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
                   )}
                 </>
               )}
-              <span>{notebook.questions.length === 0 ? "Nenhuma questão" : notebook.questions.length === 1 ? "1 questão" : `${notebook.questions.length} questões`}</span>
+              <div className="flex flex-col text-center font-bold px-5">
+                <span>Questões</span>
+                <span>{notebook.questions.length}</span>
+              </div>
+              {!enableAddQuestion && (
+                <Link className="btn btn-circle btn-sm btn-outline btn-primary" href={`/cadernos/${notebook.id}`}>
+                  <BsFillPlayFill />
+                </Link>
+              )}
               <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteNotebookButton(notebook.id)}>
                 <AiOutlineDelete />
               </button>
-              <button className="btn btn-circle btn-sm btn-outline btn-primaty" onClick={() => handleUpdateButtonClick(notebook.id, notebook.name, notebook.description!)}>
+              <button className="btn btn-circle btn-sm btn-outline" onClick={() => handleUpdateButtonClick(notebook.id, notebook.name, notebook.description!)}>
                 <AiOutlineEdit />
               </button>
             </div>
           </div>
         ))}
       </div>
-      <button className="btn btn-primary w-full" onClick={showAddNotebookModal}>Adicionar</button>
+      {enableAddQuestion && (
+        <button className="btn btn-primary w-full" onClick={showAddNotebookModal}>Adicionar</button>
+      )}
     </div>
   )
 }

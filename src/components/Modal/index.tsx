@@ -151,8 +151,8 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ id, children, bottom }) => {
   return (
-    <dialog id={id} className={clsx("modal", bottom && "modal-bottom sm:modal-middle")}>
-      <div className={clsx("modal-box w-11/12 md:w-1/2 lg:w-1/4 max-w-5xl", bottom && "sm:w-full")}>
+    <dialog id={id} className={clsx("modal", bottom && "modal-bottom sm:modal-middle sm:w-full")}>
+      <div className={clsx("modal-box w-11/12 md:w-1/2 lg:w-1/3 max-w-full", bottom && "sm:w-full")}>
         <form method="dialog" className="absolute right-2 top-2">
           <button className="btn btn-sm btn-circle btn-ghost">✕</button>
         </form>
