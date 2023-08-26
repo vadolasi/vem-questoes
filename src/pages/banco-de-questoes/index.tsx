@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import { SearchInput } from "@/components/SearchInput";
 import { Checkbox } from "@/components/Checkbox";
 
+import { AiOutlineRight } from "react-icons/ai";
+
 import { graphql } from "@/gql";
 import { useQuery, useMutation } from "urql";
 
 import { AiOutlineFilter, AiOutlineUndo } from "react-icons/ai";
 
-import {
-  ContainerFilter,
-  Fieldset
-} from "../../components/styles";
+import { ContainerFilter, Fieldset } from "../../components/styles";
 
 import Layout from "@/components/layout";
 import QuestionRunner from "@/components/QuestionRunner";
 import Select from "@/components/Filter/Select";
+import { useModal } from "@/components/Modal";
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
   mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
@@ -138,6 +138,7 @@ const getQuestionQuery = graphql(/* GraphQL */ `
 `);
 
 export default function Questoes() {
+  const [showFilterMenu] = useModal(<ModalMenu />);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(
     resolverQuestionMutation
@@ -169,7 +170,7 @@ export default function Questoes() {
   >([]);
 
   const [resultFilter] = useQuery({
-    query: questionsFiltersQuery
+    query: questionsFiltersQuery,
   });
   const { data: filterData } = resultFilter;
 
@@ -199,12 +200,56 @@ export default function Questoes() {
       estadoIds: filterEstado.map((item) => item.value),
       bancaIds: filterBanca.map((item) => item.value),
     });
-    setQuestionNumber(1)
+    setQuestionNumber(1);
   };
+  function ModalMenu() {
+    return (
+      <>
+        <h1 className="text-lg font-bold">Salve seu filtro</h1>
+        <div className="flex flex-col gap-2">
+          <input
+            type="text"
+            placeholder="Digite aqui o nome do seu filtro"
+            className="w-full p-3 border rounded-md outline-none border-primary"
+          />
+          <button className="mb-2 text-white btn-primary btn">Salvar</button>
+        </div>
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl font-bold">Filtros salvos</h1>
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-medium">Filtro 1 </p>
+            <button className="text-lg font-medium duration-300 hover:text-accent">
+              <AiOutlineRight className="h-[25px] w-[25px]" />
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-medium">Filtro 2 </p>
+            <button className="text-lg font-medium duration-300 hover:text-accent">
+              <AiOutlineRight className="h-[25px] w-[25px]" />
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-medium">Filtro 3 </p>
+            <button className="text-lg font-medium duration-300 hover:text-accent">
+              <AiOutlineRight className="h-[25px] w-[25px]" />
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   useEffect(() => {
-    updateFilter()
-  }, [filterProcessoSeletivo, filterAno, filterPerfil, filterArea, filterSubarea, filterEstado, filterBanca])
+    updateFilter();
+  }, [
+    filterProcessoSeletivo,
+    filterAno,
+    filterPerfil,
+    filterArea,
+    filterSubarea,
+    filterEstado,
+    filterBanca,
+  ]);
 
   const clearFilter = () => {
     setFilterProcessoSeletivo([]);
@@ -228,12 +273,25 @@ export default function Questoes() {
       bancaIds: [],
     });
   };
+  const saveFilter = () => {
+    const filterSaved = {
+      ProcessoSeletivo: filterProcessoSeletivo,
+      Ano: filterAno,
+      Local: filterLocal,
+      Perfil: filterPerfil,
+      Area: filterArea,
+      Subarea: filterSubarea,
+      Estado: filterEstado,
+      Banca: filterBanca,
+    };
+    console.log(filterSaved);
+  };
 
   const [resultQuestion] = useQuery({
     query: getQuestionQuery,
     variables: {
       ...filter,
-      page: questionNumber
+      page: questionNumber,
     },
   });
 
@@ -244,10 +302,10 @@ export default function Questoes() {
   async function answerQuestion(id: string): Promise<string> {
     const result = await resolveQuestion({
       questionId: currentQuestion?.id!,
-      alternativeId: id
-    })
+      alternativeId: id,
+    });
 
-    return result.data?.addAnswer.correctAlternative!
+    return result.data?.addAnswer.correctAlternative!;
   }
 
   return (
@@ -260,44 +318,44 @@ export default function Questoes() {
             onChange={(text) => setText(text)}
           />
           */}
-          <div className="inputs flex flex-col md:flex-row">
-            <div className="flex flex-wrap gap-2 h-min w-full">
+          <div className="flex flex-col inputs md:flex-row">
+            <div className="flex flex-wrap w-full gap-2 h-min">
               <Select
                 title="Processos seletivos"
-                setValue={options => setFilterProcessoSeletivo(options)}
+                setValue={(options) => setFilterProcessoSeletivo(options)}
                 options={
                   filterData?.processosSeletivos.map(({ id, name }) => ({
                     value: id,
-                    label: name
+                    label: name,
                   })) || []
                 }
                 value={filterProcessoSeletivo}
               />
               <Select
                 title="Anos"
-                setValue={options => setFilterAno(options)}
+                setValue={(options) => setFilterAno(options)}
                 options={
                   filterData?.anos.map(({ id, ano }) => ({
                     value: id,
-                    label: ano.toString()
+                    label: ano.toString(),
                   })) || []
                 }
                 value={filterAno}
               />
               <Select
                 title="Locais"
-                setValue={options => setFilterLocal(options)}
+                setValue={(options) => setFilterLocal(options)}
                 options={
                   filterData?.locais.map(({ id, name }) => ({
                     value: id,
-                    label: name
+                    label: name,
                   })) || []
                 }
                 value={filterLocal}
               />
               <Select
                 title="Perfis"
-                setValue={options => setFilterPerfil(options)}
+                setValue={(options) => setFilterPerfil(options)}
                 options={
                   filterData?.perfis.map(({ id, name }) => ({
                     value: id,
@@ -308,7 +366,7 @@ export default function Questoes() {
               />
               <Select
                 title="Areas"
-                setValue={options => setFilterArea(options)}
+                setValue={(options) => setFilterArea(options)}
                 options={
                   filterData?.areas.map(({ id, name }) => ({
                     value: id,
@@ -319,7 +377,7 @@ export default function Questoes() {
               />
               <Select
                 title="Subareas"
-                setValue={options => setFilterSubarea(options)}
+                setValue={(options) => setFilterSubarea(options)}
                 options={
                   filterData?.subareas.map(({ id, name }) => ({
                     value: id,
@@ -330,7 +388,7 @@ export default function Questoes() {
               />
               <Select
                 title="Estados"
-                setValue={options => setFilterEstado(options)}
+                setValue={(options) => setFilterEstado(options)}
                 options={
                   filterData?.estados.map(({ id, name }) => ({
                     value: id,
@@ -341,7 +399,7 @@ export default function Questoes() {
               />
               <Select
                 title="Bancas"
-                setValue={options => setFilterBanca(options)}
+                setValue={(options) => setFilterBanca(options)}
                 options={
                   filterData?.bancas.map(({ id, name }) => ({
                     value: id,
@@ -361,12 +419,20 @@ export default function Questoes() {
             </Fieldset>
           </div>
 
-          <div className="flex gap-2 flex-col md:flex-row">
-            <button className="btn btn-sm btn-info btn-outline rounded-full w-full md:w-auto flex-1">
+          <div className="flex flex-col gap-2 md:flex-row">
+            <button
+              className="flex-1 w-full rounded-full btn btn-sm btn-info btn-outline md:w-auto"
+              onClick={() => {
+                showFilterMenu();
+              }}
+            >
               <AiOutlineFilter />
               Salvar Filtro
             </button>
-            <button className="btn btn-sm btn-error btn-outline rounded-full w-full md:w-auto flex-1" onClick={clearFilter}>
+            <button
+              className="flex-1 w-full rounded-full btn btn-sm btn-error btn-outline md:w-auto"
+              onClick={clearFilter}
+            >
               <AiOutlineUndo />
               Limpar Filtro
             </button>
@@ -381,18 +447,23 @@ export default function Questoes() {
           setQuestionNumber={setQuestionNumber}
           resolveQuestion={answerQuestion}
           totalQuantity={data?.questions.quantity || 0}
-          question={currentQuestion ? {
-            id: currentQuestion.id,
-            ano: currentQuestion.ano?.ano!,
-            banca: currentQuestion.banca?.name!,
-            enunciado: currentQuestion.enunciado,
-            processoSeletivo: currentQuestion.processoSeletivo?.name!,
-            alternatives: currentQuestion.alternatives?.map(alternative => ({
-              id: alternative.id,
-              letter: alternative.letter,
-              text: alternative.text
-            })) || []
-          } : undefined}
+          question={
+            currentQuestion
+              ? {
+                  id: currentQuestion.id,
+                  ano: currentQuestion.ano?.ano!,
+                  banca: currentQuestion.banca?.name!,
+                  enunciado: currentQuestion.enunciado,
+                  processoSeletivo: currentQuestion.processoSeletivo?.name!,
+                  alternatives:
+                    currentQuestion.alternatives?.map((alternative) => ({
+                      id: alternative.id,
+                      letter: alternative.letter,
+                      text: alternative.text,
+                    })) || [],
+                }
+              : undefined
+          }
           extras={true}
         />
       </div>
