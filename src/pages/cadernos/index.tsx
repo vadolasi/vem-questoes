@@ -12,6 +12,7 @@ import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 
 import { toast } from "react-toastify"
+import Layout from '@/components/layout';
 
 const notebooksQuery = graphql(/* GraphQL */ `
   query NotebooksQuery {
@@ -27,11 +28,10 @@ const notebooksQuery = graphql(/* GraphQL */ `
 `);
 
 const createNotebookMutation = graphql(/* GraphQL */ `
-  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {
+  mutation CreateNotebook($name: String!, $description: String) {
     addNotebook(
       name: $name
       description: $description
-      questions: $questions
     ) {
       id
       name
@@ -54,7 +54,7 @@ export default function Home() {
   const { data, fetching } = result
 
   const _addNotebook = async () => {
-    await executeCreateNotebook({ name: "Título", description: "Descrição", questions: [] })
+    await executeCreateNotebook({ name: "Título", description: "Descrição" })
     executeQuery({ requestPolicy: "network-only" })
   }
 
@@ -86,10 +86,8 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <Header/>
-      <Menu page=''/>
-      <Content>
+    <Layout page="cadernos">
+      <div className="flex flex-col w-full items-center">
         <Search>
           <SearchInput/>
           <Button onClick={() => addNotebook()}>+ Criar Caderno</Button>
@@ -113,7 +111,7 @@ export default function Home() {
             />
           ))}
         </DefaultSearchPage>
-      </Content>
-    </Container>
+      </div>
+    </Layout>
   )
 }

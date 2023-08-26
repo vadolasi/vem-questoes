@@ -5,6 +5,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { FiPlus } from "react-icons/fi"
+import { toast } from "react-toastify"
 
 const GetAreasQuery = graphql(/* GraphQL */ `
   query GetAreas {
@@ -43,31 +44,20 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-function deepEqual(x: any, y: any): any {
-  const ok = Object.keys, tx = typeof x, ty = typeof y;
-  return x && y && tx === 'object' && tx === ty ? (
-    ok(x).length === ok(y).length &&
-      ok(x).every(key => deepEqual(x[key], y[key]))
-  ) : (x === y);
+interface Props {
+  onAdd: () => void
 }
 
-const AddSimualdoModal: React.FC = () => {
+const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
   const [newSimiladoType, setNewSimuladoType] = useState<"Aleatório" | "Personalizado" | null>(null)
-  /*
-  const [areas, setAreas] = useState<{ area: string, quantity: number }[]>(() => {
-    const array = Array.from({ length: 100 }, () => ({ area: "", quantity: 1 }))
-    array.length = 1
-    return array
-  });
-  */
-  const [{ data, fetching }] = useQuery({ query: GetAreasQuery })
+  const [{ data }] = useQuery({ query: GetAreasQuery })
   const [, executeMutation] = useMutation(createCustomSimuladoMutation)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
 
   const {
     control,
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -81,8 +71,37 @@ const AddSimualdoModal: React.FC = () => {
     name: "areas"
   })
 
+  const onSubmit = handleSubmit(({ name, areas }) => {
+    toast.promise(
+      (async () => {
+        const { error } = await executeMutation({ areas, name })
+
+        onAdd()
+
+        if (error) {
+          throw new Error(error.message)
+        }
+      })(),
+      {
+        error: "Ocorreu um erro ao criar o simulado!",
+        pending: "Criando simulado",
+        success: "Simulado criado com sucesso!"
+      }
+    )
+  })
+
+  const handleSelectChange = (value: string, name: string) => {
+    setSelectedOptions(prev => ({ ...prev, [name]: value }))
+  }
+
+  const getOptions = (name: string) => {
+    return data?.areas.map(area => ({ value: area.id, label: area.name })).filter(
+      option => !Object.values(selectedOptions).includes(option.value) || selectedOptions[name] === option.value
+    )
+  }
+
   return (
-    <div>
+    <form onSubmit={onSubmit}>
       <h1 className="font-medium">Novo simulado</h1>
       <div className="flex flex-col">
         <div className="form-control w-full">
@@ -107,25 +126,32 @@ const AddSimualdoModal: React.FC = () => {
             <div className="flex flex-col gap-2">
               {fields.map(({ id, areaId }, index) => (
                 <div key={id} className="flex justify-between gap-1">
-                  <select className="select select-sm select-bordered w-full" {...register(`areas.${index}.areaId`)}>
-                    {data?.areas.filter(area => !(fields.map(area => area.areaId).includes(area.id === areaId ? "" : area.id))).map(area => (
-                      <option value={area.id} key={area.id}>{area.name}</option>
+                  <select className="select select-sm select-bordered w-full" {...register(`areas.${index}.areaId`, { onChange: ev => handleSelectChange(ev.currentTarget.value, `areas.${index}.areaId`) })}>
+                    {(getOptions(`areas.${index}.areaId`) || []).map(({ label, value }) => (
+                      <option value={value} key={value}>{label}</option>
                     ))}
                   </select>
-                  <input type="number" className="input input-sm input-bordered" {...register(`areas.${index}.quantity`, { max: data?.areas.find(area => area.id === areaId)?.count || 0 })} max={data?.areas.find(area => area.id === areaId)?.count || 0} />
+                  <input type="number" className="input input-sm input-bordered" {...register(`areas.${index}.quantity`, { valueAsNumber: true, max: data?.areas.find(area => area.id === areaId)?.count || 0 })} max={data?.areas.find(area => area.id === areaId)?.count || 0} />
                 </div>
               ))}
             </div>
             {fields.length < (data?.areas.length || 0) && (
-              <button className="btn btn-sm btn-square btn-secondary mt-3" onClick={() => append({ areaId: data?.areas.filter(area => !(fields.map(area => area.areaId).includes(area.id)))[0].id!, quantity: 1 })}>
+              <label
+                className="btn btn-sm btn-square btn-secondary mt-3"
+                onClick={() => {
+                  const areaId = getOptions(`areas.${fields.length}.areaId`)![0].value
+                  handleSelectChange(areaId, `areas.${fields.length}.areaId`)
+                  append({ areaId, quantity: 1 })}
+                }
+              >
                 <FiPlus />
-              </button>
+              </label>
             )}
           </div>
         )}
-        <button className="btn w-full btn-primary mt-2">Criar</button>
+        <button type="submit" className="btn w-full btn-primary mt-2">Criar</button>
       </div>
-    </div>
+    </form>
   )
 }
 

@@ -16,8 +16,8 @@ export const {
             blue_1: '#00CFFF',
             blue_2: '#82E7FF',
             red: '#FF3600',
-            white_1: '#F0F0FC',
-            white_2: '#FFFFFF',
+            white_1: '#FFFFFF',
+            white_2: '#f0f0fc',
             text: '#000000',
             border: '#B2BFBA',
             green: '#68D14F'

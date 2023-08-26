@@ -544,15 +544,12 @@ export class QuestionsService {
     return true
   }
 
-  async addNotebook(userId: string, name: string, questions: string[], description?: string) {
+  async addNotebook(userId: string, name: string, description?: string) {
     return await prisma.notebook.create({
       data: {
         userId,
         name,
-        description,
-        questions: {
-          connect: questions.map(questionId => ({ id: questionId }))
-        }
+        description
       },
       include: { questions: true }
     })
@@ -781,6 +778,58 @@ export class QuestionsService {
     await prisma.simulado.deleteMany({ where: { id, userId } })
 
     return true
+  }
+
+  async raioX(userId: string, provaId: string) {
+    type AreaResponseType = {
+      areaId: number
+      totalQuestions: number
+      totalCorrect: number
+      totalProvaQuestions: number
+      areaName: string
+    }
+
+    const responses: AreaResponseType[] = await prisma.$queryRaw`
+    SELECT
+      "Area"."name" as "areaName",
+      "Area"."id" as "areaId",
+      COUNT("Response"."id") as "totalQuestions",
+      SUM(CASE WHEN "Response"."correct" = TRUE THEN 1 ELSE 0 END) as "totalCorrect",
+      (SELECT COUNT("Question"."id") FROM "Question" WHERE "Question"."areaId" = "Area"."id" AND "Question"."processoSeletivoId" = ${provaId}) as "totalProvaQuestions"
+    FROM "Response"
+    INNER JOIN "Question"
+      ON "Response"."questionId" = "Question"."id"
+    INNER JOIN "Area"
+      ON "Question"."areaId" = "Area"."id"
+    WHERE "Response"."userId" = ${userId}
+      AND "Question"."processoSeletivoId" = ${provaId}
+    GROUP BY "Area"."id", "Area"."name"
+  `;
+
+    const totalSum = Number(responses.map(response => response.totalProvaQuestions).reduce((reducer, current) => reducer + current))
+
+    return responses.map(response => ({
+      area: {
+        id: response.areaId,
+        name: response.areaName
+      },
+      relevancia: (Number(response.totalProvaQuestions) / totalSum) * 100,
+      desempenho: (Number(response.totalCorrect) / Number(response.totalProvaQuestions)) * 100
+    }))
+  }
+
+  async provas(userId: string) {
+    return prisma.processoSeletivo.findMany({
+      where: {
+        questions: {
+          some: {
+            responses: {
+              some: { userId }
+            }
+          }
+        }
+      }
+    })
   }
 
   async relatorioDeDesempenho(userId: string) {

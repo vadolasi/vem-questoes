@@ -63,7 +63,11 @@ export default function Home() {
   const [, execute] = useMutation(createSimuladoMutation)
   const [, executeDelete] = useMutation(deleteSimuladoMutation)
 
-  const [showAddSimulatoModal] = useModal(<AddSimualdoModal />)
+  const [showAddSimulatoModal,, close] = useModal(<AddSimualdoModal onAdd={onAdd} />)
+
+  function onAdd() {
+    close()
+  }
 
   function handleRemoveExam(deleted: any){
     const confirmDelete = confirm(`deseja excluir o simulado ${deleted.name}?`);

@@ -1,19 +1,14 @@
-import {
-  GoTo,
-  Navigation,
-  QuestionStatement,
-  QuestionButtons,
-} from "../styles/banco-de-questoes"
+import { GoTo, QuestionStatement } from "../styles/banco-de-questoes"
 import { toast } from "react-toastify"
 import Confetti from "react-confetti"
 import Pagination from "../Pagination"
-import { AiOutlineBook, AiOutlineComment, AiOutlineCompass, AiOutlineDelete, AiOutlineProfile, AiOutlineRight } from "react-icons/ai"
+import { AiOutlineDelete, AiOutlineRedo, AiOutlineRight } from "react-icons/ai"
 import { useEffect, useState } from "react"
 import Report from "../Report"
-import { Button } from "../Button"
 import { useImmer } from "use-immer"
 import { useWindowDimensions } from "@/hooks/useWindowDimensions"
 import Extras from "./Extras"
+import clsx from "clsx"
 
 interface Props {
   totalQuantity: number
@@ -70,7 +65,7 @@ export default function QuestionRunner({
         setIsConfettiActive(true)
       }
 
-      setSelected(null)
+      setDeletedAlternatives([])
     }
   }
 
@@ -78,12 +73,14 @@ export default function QuestionRunner({
     if (deletedAlternatives.includes(id)) {
       setDeletedAlternatives(alternatives => alternatives.filter(alternative => alternative !== id))
     } else {
-      setDeletedAlternatives(alternatives => alternatives.push(id))
+      setDeletedAlternatives(alternatives => {alternatives.push(id)})
     }
   }
 
   useEffect(() => {
     setQuestionInput(questionNumber)
+    setCorrect(null)
+    setSelected(null)
   }, [questionNumber])
 
   return (
@@ -109,7 +106,7 @@ export default function QuestionRunner({
           ]}
         />
       )}
-      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mt-10">
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mt-10 gap-10">
         <span>{totalQuantity} questões</span>
 
         <Pagination currentPage={questionNumber} setCurrentPage={setQuestionNumber} totalPages={totalQuantity} />
@@ -131,7 +128,7 @@ export default function QuestionRunner({
 
       <QuestionStatement>
         <div className="title">
-          <h1>Questão {questionNumber}</h1>
+          <h1 className="text-3xl font-medium">Questão {questionNumber}</h1>
           <Report questionId={question?.id} />
         </div>
 
@@ -141,16 +138,16 @@ export default function QuestionRunner({
               <p>Carregando...</p>
             </div>
           ) : (
-            <p>{question?.enunciado}</p>
+            <p className="text-lg">{question?.enunciado}</p>
           )}
-          <ul>
-            <li>
-              <strong>Ano:</strong>{" "}
+          <ul className="flex flex-col md:flex-row justify-start">
+            <li className="flex gap-1 justify-start">
+              <strong className="text-left">Ano:</strong>
               {loadingQuestion ? (
                 <span className="loading loading-spinner loading-sm"></span>
               ) : question?.ano}
             </li>
-            <li>
+            <li className="flex gap-1">
               <strong>Banca:</strong>{" "}
               {loadingQuestion ? (
                 <span className="loading loading-spinner loading-sm"></span>
@@ -158,7 +155,7 @@ export default function QuestionRunner({
                 <span>{question?.banca}</span>
               )}
             </li>
-            <li>
+            <li className="flex gap-1">
               <strong>Prova:</strong>{" "}
               {loadingQuestion ? (
                 <span className="loading loading-spinner loading-sm"></span>
@@ -169,42 +166,39 @@ export default function QuestionRunner({
           </ul>
         </div>
 
-        <ul className="questionAlternatives">
+        <ul className="w-full flex flex-col gap-3 mt-5">
           {question?.alternatives &&
             question?.alternatives.map(alternative => (
               <li
-                className={
-                  deletedAlternatives.includes(alternative.id)
-                    ? "deleted"
-                    : ""
-                }
+                className="group w-full relative flex items-center gap-2"
                 key={alternative.id}
               >
                 <button
-                  onClick={() => setSelected(alternative.id)}
-                  className={`${
-                    selected == alternative.id && "selected"
-                  } ${
-                    correct == alternative.id
-                      ? "certo"
-                      : `${
-                          selected === alternative.id &&
-                          correct && "errado"
-                        }`
-                  }`}
-                  disabled={
-                    deletedAlternatives.includes(alternative.id) ||
-                    Boolean(correct)
-                  }
+                  onClick={() => {!(deletedAlternatives.includes(alternative.id) || Boolean(correct)) && setSelected(alternative.id)}}
+                  className={clsx(
+                    "btn btn-circle btn-sm",
+                    selected == alternative.id && "btn-primary",
+                    correct == alternative.id && "btn-success",
+                    selected == alternative.id && correct !== null && correct !== alternative.id && "btn-error",
+                    selected !== alternative.id && correct !== alternative.id && "btn-outline",
+                    selected == alternative.id || correct == alternative.id && "btn-active",
+                    deletedAlternatives.includes(alternative.id) || Boolean(correct) && "no-animation"
+                  )}
+                  disabled={deletedAlternatives.includes(alternative.id)}
                 >
                   {alternative.letter}
                 </button>
-                <p>{loadingQuestion ? "Carregando..." : alternative.text}</p>
+                <p className={clsx(deletedAlternatives.includes(alternative.id) && "line-through")}>{loadingQuestion ? "Carregando..." : alternative.text}</p>
                 <button
-                  className="delete"
-                  onClick={() => deleteAlternative(alternative.id)}
+                  className={clsx("btn btn-sm btn-outline btn-circle sm:hidden sm:group-hover:flex items-center justify-center", deletedAlternatives.includes(alternative.id) ? "btn-primary" : "btn-error")}
+                  onClick={() => {
+                    deleteAlternative(alternative.id)
+                    if (selected === alternative.id) {
+                      setSelected(null)
+                    }
+                  }}
                 >
-                  <AiOutlineDelete />
+                  {deletedAlternatives.includes(alternative.id) ? <AiOutlineRedo /> : <AiOutlineDelete />}
                 </button>
               </li>
             ))}

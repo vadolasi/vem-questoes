@@ -16,6 +16,8 @@ type Query {
   relatorio: [RelatorioResponse!]!
   comments(questionId: String!): [Comment!]!
   createQuestion(enunciado: String!, alternatives: [String!]!, correct: Float!, processoSeletivoId: String, newProcessoSeletivo: String, anoId: String, newAno: Float, localId: String, newLocal: String, perfilId: String, newPerfil: String, areaId: String, newArea: String, subAreaId: String, newSubArea: String, estadoId: String, newEstado: String, bancaId: String, newBanca: String): CreateQuestionResponse!
+  provas: [ProcessoSeletivo!]!
+  raioX(provaId: String!): [RaioX!]!
   notifications: [Notification!]!
   openedRickets: [Ticket!]
   me: User
@@ -155,6 +157,12 @@ type CreateQuestionResponse {
   id: ID!
 }
 
+type RaioX {
+  area: Area!
+  relevancia: Float!
+  desempenho: Float!
+}
+
 type Notification {
   id: ID!
   title: String!
@@ -189,7 +197,7 @@ type Mutation {
   logout: Boolean!
   addAnswer(notebookId: String, simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
   addComment(content: String!, questionId: String!): Boolean!
-  addNotebook(description: String, questions: [String!]!, name: String!): NotebookModel!
+  addNotebook(description: String, name: String!): NotebookModel!
   updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
   deleteNotebook(id: String!): Boolean!
   deleteComment(commentId: String!): Boolean!

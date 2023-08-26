@@ -26,7 +26,6 @@ export const GoTo = styled("div", {
         background: 'none',
         outline: 'none',
         color: '$text',
-        fontSize: '15px',
         border: "none"
     },
 
@@ -41,7 +40,6 @@ export const GoTo = styled("div", {
         backgroundColor:'$white_2',
         padding: '2px',
 
-        fontSize: '12px',
         color: '$text',
         textTransform: 'uppercase',
 
@@ -71,7 +69,6 @@ export const QuestionStatement = styled("div", {
         position: 'relative',
 
         "h1":{
-            fontSize:'24px',
             lineHeight: '33px',
         }
     },
@@ -87,8 +84,6 @@ export const QuestionStatement = styled("div", {
         "p":{
             width: "100%",
 
-            fontWeight: 400,
-            fontSize: '20px',
             lineHeight: '27px',
             textAlign: "justify",
 
@@ -127,53 +122,6 @@ export const QuestionStatement = styled("div", {
             display: "flex",
             alignItems: "center",
             gap: "10px",
-
-            "& button": {
-                fontWeight: 500,
-                fontSize: '16px',
-                lineHeight: '22px',
-                color: "$text",
-
-                padding: "4px 9px",
-                background: "$white_1",
-                border: "1px solid $border",
-                borderRadius: "50%",
-
-                transition: "0.2s",
-
-                cursor: "pointer",
-
-            },
-
-            "& button:hover": {
-                border: "1px solid $blue_1",
-            },
-            ".selected": {
-                border: "1px solid $blue_1",
-                color: "$white_2",
-                background: "$blue_1"
-            },
-            ".certo":{
-                background: "$green"
-            },
-            ".errado":{
-                background: "$red"
-            },
-            ".delete":{
-                display: "none",
-                placeContent: "center",
-
-                padding: "5px",
-            },
-            ".delete:hover":{
-                border: "1px solid $red",
-
-
-                "svg": {
-                    color: "$red"
-                }
-            },
-
         },
 
         "& li:hover .delete":{
@@ -195,18 +143,8 @@ export const QuestionButtons = styled("div", {
         width: "124px",
 
         "button":{
-            width: '100%',
-            height: '36px',
-
-            background: '$blue_1',
-
-            fontSize: '16px',
-            fontWeight: '700',
-
             border: 'none',
             borderRadius: '8px',
-
-            cursor: 'pointer',
 
             transition: 'filter 0.2s',
 
@@ -250,9 +188,6 @@ export const QuestionButtons = styled("div", {
             },
 
             "span": {
-                fontSize: '16px',
-                fontWeight: '700',
-
                 borderLeft: "1px solid $border",
 
                 height: "100%",

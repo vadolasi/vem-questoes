@@ -9,7 +9,6 @@ export const CorrectAnswerContainer = styled("div", {
 })
 
 export const ContainerFilter = styled("div", {
-    width: "100%",
     padding: "16px",
 
     background: "$white_1",
@@ -49,17 +48,7 @@ export const ContainerFilter = styled("div", {
             color: "$red",
             border: "1px solid $red",
         },
-    },
-
-    '@media (max-width: 1200px)': {
-    width: "350px",
-    '.Selects':{
-        display: 'grid',
-        gridTemplateColumns: "150px",
-        gridTemplateRows: "auto auto auto auto",
-        gap: "10px"
-    },
-}
+    }
 });
 
 export const Fieldset = styled("fieldset", {

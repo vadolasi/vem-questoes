@@ -19,7 +19,7 @@ body: {
 'body, input, textarea, button': {
     fontFamily: 'Nunito',
     fontWeight: 400,
-    
+
 },
 
 '*::-webkit-scrollbar': {
@@ -27,7 +27,7 @@ body: {
 },
 
 '*::-webkit-scrollbar-thumb': {
-    backgroundColor: '$blue_1',
+    backgroundColor: '$border',
     borderRadius: '20px',
 },
 

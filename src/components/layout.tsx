@@ -3,7 +3,6 @@ import { Container, Content } from "./styles/index";
 import { ContainerFocus } from "./styles/FocusContainer";
 import { Menu } from "@/components/Menu";
 import { Header } from "@/components/Header";
-import { FocusButton } from "./FocusButton";
 
 interface Props {
   children: ReactNode;

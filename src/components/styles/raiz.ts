@@ -33,7 +33,7 @@ export const GoTo = styled("div", {
         fontSize: '15px',
         border: "none"
     },
-    
+
     '& span': {
         width: "max-content",
 
@@ -41,7 +41,7 @@ export const GoTo = styled("div", {
         left: '50%',
         top: "-0px",
         transform: 'translate(-50%, -50%)',
-       
+
         backgroundColor:'$white_2',
         padding: '2px',
 
@@ -71,7 +71,7 @@ export const QuestionStatement = styled("div", {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        
+
         "h1":{
             fontSize:'24px',
             lineHeight: '33px',
@@ -137,11 +137,6 @@ export const QuestionStatement = styled("div", {
 
             "& button:hover": {
                 border: "1px solid $blue_1",
-            },
-            ".selected": {
-                border: "1px solid $blue_1",
-                color: "$white_2",
-                background: "$blue_1"
             },
             ".delete":{
                 display: "none",
@@ -211,27 +206,27 @@ export const QuestionButtons = styled("div", {
         "button":{
             width: '100%',
             height: '36px',
-        
+
             background: '$blue_1',
-        
+
             fontSize: '16px',
             fontWeight: '700',
-        
+
             border: 'none',
             borderRadius: '8px',
-        
+
             cursor: 'pointer',
-        
+
             transition: 'filter 0.2s',
-          
-            
+
+
             '&:hover': {
                 filter: 'brightness(0.9)'
             }
         }
     },
 
-    
+
     ".actionsButton":{
         display: "flex",
         alignItems: "center",
@@ -246,14 +241,14 @@ export const QuestionButtons = styled("div", {
 
         "button": {
             height: '36px',
-        
+
             background: '$white_1',
-        
+
             border: '1px solid $border',
             borderRadius: '8px',
-        
+
             cursor: 'pointer',
-        
+
             transition: 'filter 0.2s',
 
             display: "flex",
@@ -292,5 +287,5 @@ export const Search = styled('div', {
     gap: "17px",
 
     margin: "0 auto"
-    
+
 })

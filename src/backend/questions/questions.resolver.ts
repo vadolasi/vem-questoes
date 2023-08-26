@@ -23,6 +23,7 @@ import { AddAnswerResponse } from "./responses/addAnswer"
 import { RelatorioResponse } from "./responses/relatorio"
 import { CreateQuestionInput } from "./inputs/createQuestion.input"
 import { CreateQuestionResponse } from "./responses/createQuestion.response"
+import { RaioX } from "./models/raiox.model"
 
 function getRequestedFields(info: GraphQLResolveInfo): string[] {
   const fieldList: string[] = [];
@@ -168,10 +169,9 @@ export class QuestionsResolver {
   async addNotebook(
     @CurrentUserID() userId: string,
     @Arg("name") name: string,
-    @Arg("questions", type => [String]) questions: string[],
     @Arg("description", { nullable: true }) description: string
   ) {
-    return await this.questionsService.addNotebook(userId, name, questions, description)
+    return await this.questionsService.addNotebook(userId, name, description)
   }
 
   @Authorized()
@@ -388,5 +388,22 @@ export class QuestionsResolver {
         } : undefined
       }
     })
+  }
+
+  @Authorized()
+  @Query(_returns => [ProcessoSeletivo])
+  async provas(
+    @CurrentUserID() userId: string
+  ) {
+    return this.questionsService.provas(userId)
+  }
+
+  @Authorized()
+  @Query(_returns => [RaioX])
+  async raioX(
+    @CurrentUserID() userId: string,
+    @Arg("provaId") provaId: string
+  ) {
+    return this.questionsService.raioX(userId, provaId)
   }
 }

@@ -12,6 +12,7 @@ import { XrayButton } from '@/components/XrayButton'
 
 
 import raioX from '@/assets/raiox.png'
+import Layout from '@/components/layout';
 
 export default function Home() {
   const response = [
@@ -48,27 +49,25 @@ export default function Home() {
 ]
 
   return (
-    <Container>
-     <Header/>
-     <Menu page='raio-x'/>
-     <Content>
+    <Layout page="raiox">
+      <div className="flex flex-col w-full items-center">
       <Search>
         <SearchInput/>
         <Select label='Buscar por' options={[{ option: 'banca', value: 'banca' }, { option: 'prova', value: 'prova' }]}/>
         <Button>Buscar</Button>
       </Search>
-        <DefaultSearchPage text='Raio-X completo da sua prova!' picture={raioX} alt='Mulher avaliando informações sobre algo' content={response.length > 0}>
-          {response && response.map(response => (
-            <XrayButton
-            key={String(response)}
-            disciplina={response.disciplina}
-            relevancia={response.relevancia}
-            desempenho={response.desempenho}
-            assuntos={response.assuntos}/>
-          ))}
+      <DefaultSearchPage text='Raio-X completo da sua prova!' picture={raioX} alt='Mulher avaliando informações sobre algo' content={response.length > 0}>
+        {response && response.map(response => (
+          <XrayButton
+          key={String(response)}
+          disciplina={response.disciplina}
+          relevancia={response.relevancia}
+          desempenho={response.desempenho}
+          assuntos={response.assuntos}/>
+        ))}
 
-        </DefaultSearchPage>
-     </Content>
-    </Container>
+      </DefaultSearchPage>
+      </div>
+    </Layout>
   )
 }
