@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   AiOutlineDownCircle,
@@ -82,13 +82,13 @@ export const Header = ({ invisible = false }: HeaderProps) => {
               </div>
             )}
             {data?.notifications.map(notification => (
-              <>
-                <li key={notification.id}>
+              <React.Fragment key={notification.id}>
+                <li>
                   <p className="text-base font-bold">{notification.title}</p>
                   <p className="text-sm">{notification.body}</p>
                 </li>
                 <div className="w-full h-[1px] bg-base-200 mt-3 mb-3" />
-              </>
+              </React.Fragment>
             ))}
           </ul>
         </details>
@@ -103,7 +103,8 @@ export const Header = ({ invisible = false }: HeaderProps) => {
                     width={20}
                     height={20}
                     alt="Foto de perfil do usuário"
-                  />)}
+                  />
+                )}
               </div>
             </div>
             <span className="text-center font-bold w-full m-2">{fetching ? 'Carregando...' : data?.me?.name}</span>

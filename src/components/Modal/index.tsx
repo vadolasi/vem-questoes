@@ -184,7 +184,7 @@ export function useModal(element: React.ReactNode, options?: UseModalOptions): [
   useEffect(() => {
     addModal(
       id,
-      <Modal id={id} bottom={bottom}>
+      <Modal key={id} id={id} bottom={bottom}>
         {element}
       </Modal>
     )
@@ -197,7 +197,7 @@ export function useModal(element: React.ReactNode, options?: UseModalOptions): [
     (element: React.ReactNode) => {
       addModal(
         id,
-        <Modal id={id} bottom={bottom}>
+        <Modal key={id} id={id} bottom={bottom}>
           {element}
         </Modal>
       )
