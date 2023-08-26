@@ -28,11 +28,10 @@ const notebooksQuery = graphql(/* GraphQL */ `
 `);
 
 const createNotebookMutation = graphql(/* GraphQL */ `
-  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {
+  mutation CreateNotebook($name: String!, $description: String) {
     addNotebook(
       name: $name
       description: $description
-      questions: $questions
     ) {
       id
       name
@@ -55,7 +54,7 @@ export default function Home() {
   const { data, fetching } = result
 
   const _addNotebook = async () => {
-    await executeCreateNotebook({ name: "Título", description: "Descrição", questions: [] })
+    await executeCreateNotebook({ name: "Título", description: "Descrição" })
     executeQuery({ requestPolicy: "network-only" })
   }
 

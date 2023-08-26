@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchInput } from "@/components/SearchInput";
 import { Checkbox } from "@/components/Checkbox";
@@ -10,8 +10,7 @@ import { AiOutlineFilter, AiOutlineUndo } from "react-icons/ai";
 
 import {
   ContainerFilter,
-  Fieldset,
-  ButtonFilter,
+  Fieldset
 } from "../../components/styles";
 
 import Layout from "@/components/layout";
@@ -170,7 +169,7 @@ export default function Questoes() {
   >([]);
 
   const [resultFilter] = useQuery({
-    query: questionsFiltersQuery,
+    query: questionsFiltersQuery
   });
   const { data: filterData } = resultFilter;
 
@@ -200,7 +199,12 @@ export default function Questoes() {
       estadoIds: filterEstado.map((item) => item.value),
       bancaIds: filterBanca.map((item) => item.value),
     });
+    setQuestionNumber(1)
   };
+
+  useEffect(() => {
+    updateFilter()
+  }, [filterProcessoSeletivo, filterAno, filterPerfil, filterArea, filterSubarea, filterEstado, filterBanca])
 
   const clearFilter = () => {
     setFilterProcessoSeletivo([]);
@@ -229,7 +233,7 @@ export default function Questoes() {
     query: getQuestionQuery,
     variables: {
       ...filter,
-      page: questionNumber,
+      page: questionNumber
     },
   });
 
@@ -250,12 +254,14 @@ export default function Questoes() {
     <Layout page="banco-de-questoes" visible={true}>
       <div className="w-full">
         <ContainerFilter className="w-full">
+          {/*
           <SearchInput
             placeholder="Pesquisar"
             onChange={(text) => setText(text)}
           />
-          <div className="inputs">
-            <div className="flex flex-wrap gap-2 h-min">
+          */}
+          <div className="inputs flex flex-col md:flex-row">
+            <div className="flex flex-wrap gap-2 h-min w-full">
               <Select
                 title="Processos seletivos"
                 setValue={options => setFilterProcessoSeletivo(options)}
@@ -355,12 +361,12 @@ export default function Questoes() {
             </Fieldset>
           </div>
 
-          <div className="flex gap-2">
-            <button className="btn btn-sm btn-info btn-outline rounded-full w-1/2 md:w-auto flex-1" onClick={updateFilter}>
+          <div className="flex gap-2 flex-col md:flex-row">
+            <button className="btn btn-sm btn-info btn-outline rounded-full w-full md:w-auto flex-1">
               <AiOutlineFilter />
               Salvar Filtro
             </button>
-            <button className="btn btn-sm btn-error btn-outline rounded-full w-1/2 md:w-auto flex-1" onClick={clearFilter}>
+            <button className="btn btn-sm btn-error btn-outline rounded-full w-full md:w-auto flex-1" onClick={clearFilter}>
               <AiOutlineUndo />
               Limpar Filtro
             </button>

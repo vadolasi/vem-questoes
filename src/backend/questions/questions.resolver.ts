@@ -169,10 +169,9 @@ export class QuestionsResolver {
   async addNotebook(
     @CurrentUserID() userId: string,
     @Arg("name") name: string,
-    @Arg("questions", type => [String]) questions: string[],
     @Arg("description", { nullable: true }) description: string
   ) {
-    return await this.questionsService.addNotebook(userId, name, questions, description)
+    return await this.questionsService.addNotebook(userId, name, description)
   }
 
   @Authorized()

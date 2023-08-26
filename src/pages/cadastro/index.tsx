@@ -26,9 +26,7 @@ const Page: NextPage = () => {
     mode: "onBlur"
   })
 
-  const onSubmit = handleSubmit(({}) => {
-    console.log("Teste")
-  })
+  const onSubmit = handleSubmit(({}) => {})
 
   return (
     <div>

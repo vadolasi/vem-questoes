@@ -11,8 +11,9 @@ const Select: React.FC<IProps> = ({ title, value, setValue, options }) => {
   return (
     <div>
       <RSelect
+        className="w-full md:w-52"
         classNames={{
-          control: () => "w-52 text-sm",
+          control: () => "w-full md:w-52 text-sm",
           menu: () => "text-sm"
         }}
         placeholder={title}

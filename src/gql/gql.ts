@@ -27,6 +27,12 @@ const documents = {
     "\n  mutation AddComment($questionId: String!, $content: String!) {\n    addComment(questionId: $questionId, content: $content)\n  }\n": types.AddCommentDocument,
     "\n  mutation DeleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n": types.DeleteCommentDocument,
     "\n  mutation EditComment($commentId: String!, $content: String!) {\n    editComment(commentId: $commentId, content: $content)\n  }\n": types.EditCommentDocument,
+    "\n  mutation addNotebook($name: String!, $description: String) {\n    addNotebook(name: $name, description: $description) {\n      id\n    }\n  }\n": types.AddNotebookDocument,
+    "\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n": types.DeleteNotebookDocument,
+    "\n  mutation UpdateNotebook2($notebookId: String!, $name: String!, $description: String) {\n    updateNotebook(notebookId: $notebookId, name: $name, description: $description)\n  }\n": types.UpdateNotebook2Document,
+    "\n  query Notebooks {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksDocument,
+    "\n  mutation AddQuestionToNotebook($notebookId: String!, $questionId: String!) {\n    addQuestionToNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n": types.AddQuestionToNotebookDocument,
+    "\n  mutation RemoveQuestionFromNotebook($notebookId: String!, $questionId: String!) {\n    removeQuestionFromNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n": types.RemoveQuestionFromNotebookDocument,
     "\n  mutation CreateReport($content: String!, $type: TicketType!, $questionId: String) {\n    addTicket(\n      content: $content\n      type: $type\n      questionId: $questionId\n    ) {\n      id\n    }\n  }\n": types.CreateReportDocument,
     "\n  mutation CreateReport2($content: String!, $type: TicketType!) {\n    addTicket(\n      content: $content\n      type: $type\n    ) {\n      id\n    }\n  }\n": types.CreateReport2Document,
     "\n  mutation InviteUser(\n    $name: String!\n    $email: String!\n    $role: Role!\n  ) {\n    inviteUser(\n      name: $name\n      email: $email\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.InviteUserDocument,
@@ -37,8 +43,7 @@ const documents = {
     "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetNotebookDocument,
     "\n  mutation ResolveQuestionOnNotebook(\n    $questionId: String!\n    $alternativeId: String!\n    $notebookId: String!\n  ) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      notebookId: $notebookId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOnNotebookDocument,
     "\n  query NotebooksQuery {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksQueryDocument,
-    "\n  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n      questions: $questions\n    ) {\n      id\n      name\n      description\n    }\n  }\n": types.CreateNotebookDocument,
-    "\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n": types.DeleteNotebookDocument,
+    "\n  mutation CreateNotebook($name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n    ) {\n      id\n      name\n      description\n    }\n  }\n": types.CreateNotebookDocument,
     "\n  query Chart {\n    relatorio {\n      date\n      total\n      totalCorrect\n    }\n    me {\n      totalQuestions\n      totalCorrect\n    }\n  }\n": types.ChartDocument,
     "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n": types.InitialPageDocument,
     "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      id\n      role\n    }\n  }\n": types.LoginDocument,
@@ -125,6 +130,30 @@ export function graphql(source: "\n  mutation EditComment($commentId: String!, $
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation addNotebook($name: String!, $description: String) {\n    addNotebook(name: $name, description: $description) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation addNotebook($name: String!, $description: String) {\n    addNotebook(name: $name, description: $description) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateNotebook2($notebookId: String!, $name: String!, $description: String) {\n    updateNotebook(notebookId: $notebookId, name: $name, description: $description)\n  }\n"): (typeof documents)["\n  mutation UpdateNotebook2($notebookId: String!, $name: String!, $description: String) {\n    updateNotebook(notebookId: $notebookId, name: $name, description: $description)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Notebooks {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  query Notebooks {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation AddQuestionToNotebook($notebookId: String!, $questionId: String!) {\n    addQuestionToNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation AddQuestionToNotebook($notebookId: String!, $questionId: String!) {\n    addQuestionToNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveQuestionFromNotebook($notebookId: String!, $questionId: String!) {\n    removeQuestionFromNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveQuestionFromNotebook($notebookId: String!, $questionId: String!) {\n    removeQuestionFromNotebook(id: $notebookId, questionId: $questionId) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation CreateReport($content: String!, $type: TicketType!, $questionId: String) {\n    addTicket(\n      content: $content\n      type: $type\n      questionId: $questionId\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateReport($content: String!, $type: TicketType!, $questionId: String) {\n    addTicket(\n      content: $content\n      type: $type\n      questionId: $questionId\n    ) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -165,11 +194,7 @@ export function graphql(source: "\n  query NotebooksQuery {\n    notebooks {\n  
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n      questions: $questions\n    ) {\n      id\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  mutation CreateNotebook($questions: [String!]!, $name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n      questions: $questions\n    ) {\n      id\n      name\n      description\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteNotebook($id: String!) {\n    deleteNotebook(id: $id)\n  }\n"];
+export function graphql(source: "\n  mutation CreateNotebook($name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n    ) {\n      id\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  mutation CreateNotebook($name: String!, $description: String) {\n    addNotebook(\n      name: $name\n      description: $description\n    ) {\n      id\n      name\n      description\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

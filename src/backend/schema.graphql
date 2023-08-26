@@ -197,7 +197,7 @@ type Mutation {
   logout: Boolean!
   addAnswer(notebookId: String, simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
   addComment(content: String!, questionId: String!): Boolean!
-  addNotebook(description: String, questions: [String!]!, name: String!): NotebookModel!
+  addNotebook(description: String, name: String!): NotebookModel!
   updateNotebook(questions: [String!], description: String, name: String, notebookId: String!): Boolean!
   deleteNotebook(id: String!): Boolean!
   deleteComment(commentId: String!): Boolean!

@@ -544,15 +544,12 @@ export class QuestionsService {
     return true
   }
 
-  async addNotebook(userId: string, name: string, questions: string[], description?: string) {
+  async addNotebook(userId: string, name: string, description?: string) {
     return await prisma.notebook.create({
       data: {
         userId,
         name,
-        description,
-        questions: {
-          connect: questions.map(questionId => ({ id: questionId }))
-        }
+        description
       },
       include: { questions: true }
     })

@@ -26,11 +26,10 @@ export default function Pagination({ setCurrentPage, currentPage, totalPages }: 
   }
 
   const { breakpoint } = useBreakpoint(BREAKPOINTS)
-  console.log(breakpoint)
 
   return (
     <ReactPaginate
-      breakLabel={<span className="btn btn-square text-sm join-item">...</span>}
+      breakLabel={<span className="btn btn-square text-sm join-item tetx-xs">...</span>}
       nextLabel={
         showNextButton ? (
           <span className="btn btn-square text-sm join-item">
@@ -45,12 +44,12 @@ export default function Pagination({ setCurrentPage, currentPage, totalPages }: 
       pageCount={totalPages}
       previousLabel={
         showPrevButton ? (
-          <span className="btn btn-squaretext-sm join-item">
+          <span className="btn btn-squaretext-sm join-item text-xs">
             <BsChevronLeft />
           </span>
         ) : null
       }
-      containerClassName="join order-last md:order-none w-full flex justify-center"
+      containerClassName="join order-last md:order-none w-full flex justify-center text-xs"
       pageClassName="btn btn-square text-sm join-item"
       activeClassName="btn-primary"
     />
