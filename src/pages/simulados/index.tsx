@@ -1,24 +1,19 @@
-import Image from 'next/image';
 import { useState } from 'react';
 
-import { Content, Search } from '../../components/styles/simulados';
+import { Search } from '../../components/styles/cadernos';
 
-import { Menu } from "@/components/Menu";
-import { Header } from "@/components/Header";
 import { SearchInput } from '@/components/SearchInput';
-import { Select } from '@/components/Select';
-import { Button } from '@/components/Button';
-import { DefaultSearchPage } from '@/components/DefaultSearchPage';
-import { ExamBar } from '@/components/ExamBar';
 import { useModal } from '@/components/Modal';
 
 import simulado from '@/assets/Test.png'
 
 import { graphql } from '@/gql';
-import { useMutation, useQuery } from 'urql';
-import { toast } from 'react-toastify';
+import { useQuery } from 'urql';
 import Layout from '@/components/layout';
 import AddSimualdoModal from '@/components/AddSimulado';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import clsx from 'clsx';
+import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -32,95 +27,58 @@ const simuladosQuery = graphql(/* GraphQL */ `
   }
 `)
 
-const createSimuladoMutation = graphql(/* GraphQL */`
-  mutation CreateRandomSimualdo($name: String!) {
-    createSimulado(
-      type: Random
-      name: $name
-      areas: []
-    ) {
-      id
-    }
-  }
-`)
-
-const deleteSimuladoMutation = graphql(/* GraphQL */`
-  mutation DeleteSimulado($id: String!) {
-    deleteSimulado(
-      id: $id
-    )
-  }
-`)
-
-export default function Home() {
+export default function Simulados() {
   const [result, executeQuery] = useQuery({ query: simuladosQuery })
 
   const { data, fetching } = result
-
-  const [showExamModal, setShowExamModal] = useState(false);
-  const [showSimuladoModal, setShowSimuladoModal] = useState(false);
-  const [value, setValue] = useState('')
-  const [, execute] = useMutation(createSimuladoMutation)
-  const [, executeDelete] = useMutation(deleteSimuladoMutation)
+  const [firstLoad, setFirstLoad] = useState(true)
 
   const [showAddSimulatoModal,, close] = useModal(<AddSimualdoModal onAdd={onAdd} />)
 
   function onAdd() {
     close()
-  }
-
-  function handleRemoveExam(deleted: any){
-    const confirmDelete = confirm(`deseja excluir o simulado ${deleted.name}?`);
-    if (confirmDelete) {
-      toast.promise(
-        async () => {
-          await executeDelete({ id: deleted.id })
-          executeQuery({ requestPolicy: "network-only" })
-        },
-        {
-          error: "Erro ao excluir simulado",
-          pending: "Excluindo simulado",
-          success: "Simulado excluido com sucesso"
-        }
-      )
-    }
-  }
-
-  async function createSimulado(){
-    if(!value){
-      return alert('Selecione um tipo de simulado.')
-    }
-
-    if (value == 'Personalizado') {
-      setShowExamModal(!showExamModal)
-    } else {
-      toast.promise(
-        async () => {
-          await execute({ name: `Simulado aleatório ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().split(" ")[0]}` })
-          executeQuery()
-        },
-        {
-          error: "Erro ao criar simulado",
-          pending: "Criando simulado",
-          success: "Simulado criado com sucesso"
-        }
-      )
-    }
+    executeQuery({ requestPolicy: "network-only" })
   }
 
   return (
     <Layout page="mesa-de-estudos">
-      <div className="w-full">
+      <div className="flex flex-col w-full items-center">
         <Search className="w-full flex items-center">
           <SearchInput onChange={() => {}} />
           <button className="btn btn-primary" onClick={showAddSimulatoModal}>Criar</button>
         </Search>
-        <DefaultSearchPage loading={fetching} text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Você não possui simulados'} picture={simulado} alt='Mulher resolvendo uma prova' content={(data?.simulados.simulados.length || 0) > 0}>
-          {data?.simulados && data.simulados.simulados.map((exam) => (
-            <>
-              <ExamBar key={exam.id} title={exam.name} questions={exam.totalQuestions} deleteClick={() => handleRemoveExam(exam)} onClick={() => setShowSimuladoModal(!showSimuladoModal)}/>
-            </>
-          ))}
+        <DefaultSearchPage
+          text={(data?.simulados.simulados.length || 0) > 0 ? 'Meus simulados' : 'Crie um simulado para você!'}
+          picture={simulado}
+          alt='Mulher escrevendo informações em um carderno'
+          content={(data?.simulados.simulados!.length || 0) > 0}
+          loading={fetching}
+        >
+          <div className={clsx("flex flex-col divide-y")}>
+            {firstLoad && fetching ? (
+              <span className="loading loading-spinner" />
+            ) : data?.simulados.simulados.length! < 1 ? (
+              <h1>Nenhum simulado!</h1>
+            ) : data?.simulados.simulados.map(simulado => (
+              <div className="p-5 flex justify-between items-center" key={simulado.id}>
+                <div className="tooltip" data-tip={simulado.name}>
+                  <p className="font-bold truncate text-left">{simulado.name}</p>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <div className="flex flex-col text-center font-bold px-5">
+                    <span>Questões</span>
+                    <span>{simulado.totalQuestions}</span>
+                  </div>
+                  <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteNotebookButton(notebook.id)}>
+                    <AiOutlineDelete />
+                  </button>
+                  <button className="btn btn-circle btn-sm btn-outline" onClick={() => handleUpdateButtonClick(notebook.id, notebook.name, notebook.description!)}>
+                    <AiOutlineEdit />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </DefaultSearchPage>
       </div>
     </Layout>

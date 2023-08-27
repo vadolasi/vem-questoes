@@ -52,8 +52,6 @@ const documents = {
     "\n  query GetSimulado2($id: String!) {\n    simulado(id: $id) {\n      totalMinutes\n      totalQuestions\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetSimulado2Document,
     "\n  mutation ResolveQuestionOdSimulado2(\n    $questionId: String!\n    $alternativeId: String!\n    $simuladoId: String!\n  ) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      simuladoId: $simuladoId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOdSimulado2Document,
     "\n  query MeusSimulados {\n    simulados {\n      simulados {\n        id\n        totalQuestions\n        name\n      }\n    }\n  }\n": types.MeusSimuladosDocument,
-    "\n  mutation CreateRandomSimualdo($name: String!) {\n    createSimulado(\n      type: Random\n      name: $name\n      areas: []\n    ) {\n      id\n    }\n  }\n": types.CreateRandomSimualdoDocument,
-    "\n  mutation DeleteSimulado($id: String!) {\n    deleteSimulado(\n      id: $id\n    )\n  }\n": types.DeleteSimuladoDocument,
 };
 
 /**
@@ -226,14 +224,6 @@ export function graphql(source: "\n  mutation ResolveQuestionOdSimulado2(\n    $
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query MeusSimulados {\n    simulados {\n      simulados {\n        id\n        totalQuestions\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query MeusSimulados {\n    simulados {\n      simulados {\n        id\n        totalQuestions\n        name\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation CreateRandomSimualdo($name: String!) {\n    createSimulado(\n      type: Random\n      name: $name\n      areas: []\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateRandomSimualdo($name: String!) {\n    createSimulado(\n      type: Random\n      name: $name\n      areas: []\n    ) {\n      id\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation DeleteSimulado($id: String!) {\n    deleteSimulado(\n      id: $id\n    )\n  }\n"): (typeof documents)["\n  mutation DeleteSimulado($id: String!) {\n    deleteSimulado(\n      id: $id\n    )\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

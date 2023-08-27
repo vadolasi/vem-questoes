@@ -14,7 +14,7 @@ const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
   const [showExplicationModal] = useModal(<Explication />)
   const [showCommentsModal, setCommentsModalContent] = useModal(<Comments questionId={questionId} />)
   const [showNotebooksModal, setNotebooksModalContent] = useModal(<Notebooks questionId={questionId} enableAddQuestion={true} />)
-  const [showXRayModal] = useModal(<></>)
+  const [showXRayModal] = useModal(<p>Essa questão não possui raio-x</p>)
 
   useEffect(() => {
     setCommentsModalContent(<Comments questionId={questionId} />)
