@@ -40,6 +40,14 @@ export default function Simulados() {
     executeQuery({ requestPolicy: "network-only" })
   }
 
+  const handleDeleteSimuladoButton = (notebookId: string) => {
+
+  }
+
+  const handleUpdateButtonClick = (notebookId: string, name: string, description: string) => {
+
+  }
+
   return (
     <Layout page="mesa-de-estudos">
       <div className="flex flex-col w-full items-center">
