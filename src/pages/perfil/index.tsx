@@ -18,6 +18,7 @@ import { useMutation, useQuery } from "urql";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "@/components/layout";
+import { Select } from "@/components/Select";
 
 const meQuery = graphql(/* GraphQL */ `
   query Me3 {
@@ -47,7 +48,15 @@ export default function Home() {
   const [, executeUpdatePassword] = useMutation(updatePassowordMutation);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [number, setNumber] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [role, setRole] = useState("");
+
+  const [instituicao, setInstituicao] = useState("");
+  const [processos, setProcessos] = useState("");
+  const [prevGraduacao, setPrevGraduacao] = useState("");
+  const [tempo, setTempo] = useState("");
+  const [provas, setProvas] = useState("");
 
   useEffect(() => {
     setName(data?.me?.name!);
@@ -115,42 +124,128 @@ export default function Home() {
             </label>
           </Avatar>
 
+          <div className="flex flex-col w-full gap-2 md:grid md:grid-cols-2">
+            <Input
+              text="Nome"
+              placeholder="Nome"
+              type="text"
+              value={name}
+              onChange={(ev) => setName(ev.currentTarget.value)}
+              disabled={fetching}
+            />
+
+            <Input
+              text="E-Mail"
+              placeholder="E-Mail"
+              type="text"
+              value={data?.me?.email}
+              style={{ color: "rgb(200, 200, 200)" }}
+              disabled={true}
+            />
+          </div>
+
           <Input
-            text="Nome"
-            placeholder="Nome"
+            text="Telefone"
+            placeholder="ex: 123456789"
             type="text"
-            value={name}
-            onChange={(ev) => setName(ev.currentTarget.value)}
+            value={number}
+            onChange={(ev) => setNumber(ev.currentTarget.value)}
             disabled={fetching}
           />
+          <Select
+            label="Área de interesse"
+            options={[
+              {
+                value: "residenciaProfissional",
+                option: "Residência Profissional",
+              },
+              { value: "concursosPublico", option: "Concursos Público" },
+              {
+                value: "whatever",
+                option: "Estou me aperfeiçoando, por enquanto.",
+              },
+            ]}
+            onChange={(e) => setRole(e.target.value)}
+            value={role}
+          />
 
+          {role == "residenciaProfissional" && (
+            <>
+              <div className="flex flex-col w-full gap-2 md:grid md:grid-cols-2">
+                <Input
+                  text="Instituição"
+                  placeholder="Para qual instituição vai prestar a residência?"
+                  type="text"
+                  value={instituicao}
+                  onChange={(ev) => setInstituicao(ev.currentTarget.value)}
+                  disabled={fetching}
+                />
+                <Input
+                  text="Processos"
+                  placeholder="Qual ou quais processos seletivos irá fazer?"
+                  type="text"
+                  value={processos}
+                  onChange={(ev) => setProcessos(ev.currentTarget.value)}
+                  disabled={fetching}
+                />
+              </div>
+              <Input
+                text="Previsão de Formação"
+                placeholder="Apenas mês e ano. EX.: 09/30"
+                type="text"
+                value={prevGraduacao}
+                onChange={(ev) => setPrevGraduacao(ev.currentTarget.value)}
+                disabled={fetching}
+              />
+            </>
+          )}
+          {role == "concursosPublico" && (
+            <div className="flex flex-col w-full gap-2 md:grid md:grid-cols-2">
+              <Input
+                text="Processos"
+                placeholder="Qual ou quais processos seletivos irá fazer?"
+                type="text"
+                value={processos}
+                onChange={(ev) => setProcessos(ev.currentTarget.value)}
+                disabled={fetching}
+              />
+              <Input
+                text="Tempo de Estudo"
+                placeholder="Quanto tempo de estudo você possui ate á prova?"
+                type="text"
+                value={tempo}
+                onChange={(ev) => setTempo(ev.currentTarget.value)}
+                disabled={fetching}
+              />
+            </div>
+          )}
           <Input
-            text="E-Mail"
-            placeholder="E-Mail"
+            text="Provas"
+            placeholder="Quantas provas de concurso ou residência você já fez até hoje?"
             type="text"
-            value={data?.me?.email}
-            style={{ color: "rgb(200, 200, 200)" }}
-            disabled={true}
-          />
-
-          <Input
-            text="Senha atual"
-            placeholder="Senha atual"
-            type="password"
-            value={password}
-            onChange={(ev) => setPassword(ev.currentTarget.value)}
+            value={provas}
+            onChange={(ev) => setProvas(ev.currentTarget.value)}
             disabled={fetching}
           />
+          <div className="flex flex-col w-full gap-2 md:grid md:grid-cols-2">
+            <Input
+              text="Senha atual"
+              placeholder="Senha atual"
+              type="password"
+              value={password}
+              onChange={(ev) => setPassword(ev.currentTarget.value)}
+              disabled={fetching}
+            />
 
-          <Input
-            text="Nova senha"
-            placeholder="Nova senha"
-            type="password"
-            value={newPassword}
-            onChange={(ev) => setNewPassword(ev.currentTarget.value)}
-            disabled={fetching}
-          />
-
+            <Input
+              text="Nova senha"
+              placeholder="Nova senha"
+              type="password"
+              value={newPassword}
+              onChange={(ev) => setNewPassword(ev.currentTarget.value)}
+              disabled={fetching}
+            />
+          </div>
           <Button onClick={applyChanges}>Salvar</Button>
         </Form>
       </Content>
