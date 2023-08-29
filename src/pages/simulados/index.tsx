@@ -27,6 +27,12 @@ const simuladosQuery = graphql(/* GraphQL */ `
   }
 `)
 
+const deleteSimuladoMutation = graphql(/* GraphQL */ `
+  mutation DeleteSimulado {
+
+  }
+`)
+
 export default function Simulados() {
   const [result, executeQuery] = useQuery({ query: simuladosQuery })
 
@@ -44,7 +50,7 @@ export default function Simulados() {
 
   }
 
-  const handleUpdateButtonClick = (notebookId: string, name: string, description: string) => {
+  const handleUpdateButtonClick = (notebookId: string, name: string) => {
 
   }
 
@@ -77,10 +83,10 @@ export default function Simulados() {
                     <span>Questões</span>
                     <span>{simulado.totalQuestions}</span>
                   </div>
-                  <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteNotebookButton(notebook.id)}>
+                  <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteSimuladoButton(simulado.id)}>
                     <AiOutlineDelete />
                   </button>
-                  <button className="btn btn-circle btn-sm btn-outline" onClick={() => handleUpdateButtonClick(notebook.id, notebook.name, notebook.description!)}>
+                  <button className="btn btn-circle btn-sm btn-outline" onClick={() => handleUpdateButtonClick(simulado.id, simulado.name)}>
                     <AiOutlineEdit />
                   </button>
                 </div>
