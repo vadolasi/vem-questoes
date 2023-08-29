@@ -34,13 +34,11 @@ export const Content = styled('div', {
 
 
 export const Form = styled('form', {
-        maxWidth: '350px',
+        maxWidth: '600px',
+        minWidth: '350px',
 
         margin: "-104px auto 0",
 
-        '>div:nth-child(4)': {
-                marginTop: '24px',
-        },
 
         'div span':{
               background: "$white_2"  
