@@ -1,10 +1,8 @@
-import { Container, Content } from '../../components/styles/estatisticas';
+import { Content } from '../../components/styles/estatisticas';
 
 import {useState} from 'react'
 
 
-import { Menu } from "@/components/Menu";
-import { Header } from "@/components/Header";
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';

@@ -1,15 +1,19 @@
-import { Container, Content } from "../../components/styles/ofertas"
-import { Menu } from "@/components/Menu"
-import { Header } from "@/components/Header"
+import { Content } from "../../components/styles/ofertas"
+import Layout from "@/components/layout"
 
+function PromoCard({title, beneficios}){
+return(
+  <div>
+    <h1>{title}</h1>
+  </div>
+)
+}
 export default function Table() {
   return (
-    <Container>
-      <Header/>
-      <Menu page="" />
-      <Content>
-        <h1>Em breve novas ofertas!</h1>
-      </Content>
-    </Container>
+    <Layout page="">
+      <div>
+        
+      </div>
+    </Layout>
   )
 }
