@@ -14,7 +14,6 @@ export const Page = styled("div", {
 
 
     header: {
-        marginTop: '140px',
         width: '417px',
         color: "$blue_1",
         h1:{
@@ -61,8 +60,6 @@ export const Page = styled("div", {
 
         minHeight: '300px',
         borderRadius: '20px',
-
-        padding: '64px',
 
         gap: '30px',
         

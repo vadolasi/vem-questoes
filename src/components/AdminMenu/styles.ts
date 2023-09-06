@@ -1,6 +1,6 @@
-import { styled } from "@/styles"
+import { styled } from "@/styles";
 
-export const MenuContainer = styled("ul", {
+export const Container = styled('ul', {
     gridArea: 'menu',
     padding: "32px 25px",
 
@@ -11,7 +11,6 @@ export const MenuContainer = styled("ul", {
     flexDirection: "column",
     boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.05);',
     clipPath: 'inset(0px -15px 0px 0px)',
-    height: '100%',
 
     gap: '13px',
 
@@ -59,7 +58,4 @@ export const MenuContainer = styled("ul", {
         fontSize: '20px',
     },
 
-    '@media (max-width: 1200px)': {
-        display: 'none'
-      }
 })

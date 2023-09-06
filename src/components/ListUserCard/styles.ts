@@ -7,8 +7,12 @@ export const Container = styled("div", {
 
     '.profile':{
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'start',
         gap: '10px',
+        width: '100%',
+        borderBottom: '2px solid $border',
+        marginBottom: '2px',
 
         img:{
             width: '36px',
