@@ -13,6 +13,7 @@ type Query {
   notebook(notebookId: String!): NotebookModel!
   simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
   simulado(id: String!): Simulado!
+  mostWrong: MostWrong!
   relatorio: [RelatorioResponse!]!
   comments(questionId: String!): [Comment!]!
   createQuestion(enunciado: String!, alternatives: [String!]!, correct: Float!, processoSeletivoId: String, newProcessoSeletivo: String, anoId: String, newAno: Float, localId: String, newLocal: String, perfilId: String, newPerfil: String, areaId: String, newArea: String, subAreaId: String, newSubArea: String, estadoId: String, newEstado: String, bancaId: String, newBanca: String): CreateQuestionResponse!
@@ -147,6 +148,19 @@ enum SimuladoType {
   Custom
 }
 
+type MostWrong {
+  questionId: ID!
+  questionText: String!
+  alternatives: [MostWrongAlternative!]!
+  wrongQuantity: Float!
+}
+
+type MostWrongAlternative {
+  alternativeId: ID!
+  alternativeText: String!
+  wrongQuantity: Float!
+}
+
 type RelatorioResponse {
   date: String!
   total: Float!
@@ -206,6 +220,7 @@ type Mutation {
   removeQuestionFromNotebook(questionId: String!, id: String!): NotebookModel!
   createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
   deleteSimulado(id: String!): Boolean!
+  updateSimulado(name: String!, id: String!): Boolean!
   createNotification(body: String!, title: String!): Notification!
   readNotifications(notificationIds: [String!]!): Boolean!
   addTicket(questionId: String, type: TicketType!, content: String!): Ticket!

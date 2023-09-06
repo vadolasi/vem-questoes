@@ -780,6 +780,73 @@ export class QuestionsService {
     return true
   }
 
+  async updateSimulado(id: string, userId: string, name: string) {
+    await prisma.simulado.update({ where: { userId, id }, data: { name } })
+
+    return true
+  }
+
+  async mostWrong() {
+    const questionsWithAlternatives = await prisma.question.findMany({
+      include: {
+        alternatives: true
+      },
+      take: 25
+    })
+
+    const dateToFilter = new Date()
+    dateToFilter.setMonth(dateToFilter.getMonth() - 1)
+
+    const wrongResponsesCount = await prisma.response.groupBy({
+      by: ["questionId", "alternativeId"],
+      where: {
+        correct: false,
+        date: {
+          gte: dateToFilter
+        }
+      },
+      _count: {
+        _all: true
+      }
+    })
+
+    const res = questionsWithAlternatives.map(question => {
+      let wrongQuantity = 0
+
+      const alternatives = question.alternatives.map(alternative => {
+        const alternativeId = alternative.id
+        const responseCount = wrongResponsesCount.find(
+          (count) =>
+            count.questionId === question.id &&
+            count.alternativeId === alternativeId
+        )
+        const wrongResponses =
+          responseCount && responseCount._count ? responseCount._count : 0
+
+        const wrong = wrongResponses === 0 ? 0 : wrongResponses._all
+
+        wrongQuantity += wrong
+
+        return {
+          alternativeId,
+          alternativeText: alternative.text,
+          wrongQuantity: wrong
+        }
+      })
+
+      return {
+        questionId: question.id,
+        questionText: question.enunciado,
+        alternatives,
+        wrongQuantity
+      }
+    })
+
+    console.log(JSON.stringify(res, null, 2))
+
+    return res
+  }
+
   async raioX(userId: string, provaId: string) {
     type AreaResponseType = {
       areaId: number
@@ -790,21 +857,21 @@ export class QuestionsService {
     }
 
     const responses: AreaResponseType[] = await prisma.$queryRaw`
-    SELECT
-      "Area"."name" as "areaName",
-      "Area"."id" as "areaId",
-      COUNT("Response"."id") as "totalQuestions",
-      SUM(CASE WHEN "Response"."correct" = TRUE THEN 1 ELSE 0 END) as "totalCorrect",
-      (SELECT COUNT("Question"."id") FROM "Question" WHERE "Question"."areaId" = "Area"."id" AND "Question"."processoSeletivoId" = ${provaId}) as "totalProvaQuestions"
-    FROM "Response"
-    INNER JOIN "Question"
-      ON "Response"."questionId" = "Question"."id"
-    INNER JOIN "Area"
-      ON "Question"."areaId" = "Area"."id"
-    WHERE "Response"."userId" = ${userId}
-      AND "Question"."processoSeletivoId" = ${provaId}
-    GROUP BY "Area"."id", "Area"."name"
-  `;
+      SELECT
+        "Area"."name" as "areaName",
+        "Area"."id" as "areaId",
+        COUNT("Response"."id") as "totalQuestions",
+        SUM(CASE WHEN "Response"."correct" = TRUE THEN 1 ELSE 0 END) as "totalCorrect",
+        (SELECT COUNT("Question"."id") FROM "Question" WHERE "Question"."areaId" = "Area"."id" AND "Question"."processoSeletivoId" = ${provaId}) as "totalProvaQuestions"
+      FROM "Response"
+      INNER JOIN "Question"
+        ON "Response"."questionId" = "Question"."id"
+      INNER JOIN "Area"
+        ON "Question"."areaId" = "Area"."id"
+      WHERE "Response"."userId" = ${userId}
+        AND "Question"."processoSeletivoId" = ${provaId}
+      GROUP BY "Area"."id", "Area"."name"
+    `;
 
     const totalSum = Number(responses.map(response => response.totalProvaQuestions).reduce((reducer, current) => reducer + current))
 

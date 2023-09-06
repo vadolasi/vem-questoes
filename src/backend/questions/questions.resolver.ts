@@ -24,6 +24,7 @@ import { RelatorioResponse } from "./responses/relatorio"
 import { CreateQuestionInput } from "./inputs/createQuestion.input"
 import { CreateQuestionResponse } from "./responses/createQuestion.response"
 import { RaioX } from "./models/raiox.model"
+import { MostWrong } from "./models/mostWrong.model"
 
 function getRequestedFields(info: GraphQLResolveInfo): string[] {
   const fieldList: string[] = [];
@@ -292,6 +293,22 @@ export class QuestionsResolver {
     @Arg("id") id: string
   ) {
     return await this.questionsService.deleteSimulado(userId, id)
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async updateSimulado(
+    @CurrentUserID() userId: string,
+    @Arg("id") id: string,
+    @Arg("name") name: string
+  ) {
+    return await this.questionsService.updateSimulado(userId, id, name)
+  }
+
+  @Authorized()
+  @Query(() => MostWrong)
+  async mostWrong() {
+    return await this.questionsService.mostWrong()
   }
 
   @Authorized()

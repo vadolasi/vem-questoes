@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { FiPlus } from "react-icons/fi"
 import { toast } from "react-toastify"
+import { AiOutlineDelete } from "react-icons/ai"
 
 const GetAreasQuery = graphql(/* GraphQL */ `
   query GetAreas {
@@ -66,7 +67,7 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
     }
   })
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "areas"
   })
@@ -132,6 +133,13 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
                     ))}
                   </select>
                   <input type="number" className="input input-sm input-bordered" {...register(`areas.${index}.quantity`, { valueAsNumber: true, max: data?.areas.find(area => area.id === areaId)?.count || 0 })} max={data?.areas.find(area => area.id === areaId)?.count || 0} />
+                  {fields.length - 1 === index ? (
+                    <button className="btn btn-outline btn-error btn-square btn-sm" onClick={() => remove(index)}>
+                      <AiOutlineDelete />
+                    </button>
+                  ) : (
+                    <div className="w-20 opacity-0" />
+                  )}
                 </div>
               ))}
             </div>

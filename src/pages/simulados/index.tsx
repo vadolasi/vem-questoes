@@ -8,12 +8,13 @@ import { useModal } from '@/components/Modal';
 import simulado from '@/assets/Test.png'
 
 import { graphql } from '@/gql';
-import { useQuery } from 'urql';
+import { useMutation, useQuery } from 'urql';
 import Layout from '@/components/layout';
 import AddSimualdoModal from '@/components/AddSimulado';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import clsx from 'clsx';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
+import { toast } from 'react-toastify';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -28,15 +29,15 @@ const simuladosQuery = graphql(/* GraphQL */ `
 `)
 
 const deleteSimuladoMutation = graphql(/* GraphQL */ `
-  mutation DeleteSimulado {
-
+  mutation DeleteSimulado($id: String!) {
+    deleteSimulado(id: $id)
   }
 `)
 
 export default function Simulados() {
-  const [result, executeQuery] = useQuery({ query: simuladosQuery })
+  const [{ data, fetching }, executeQuery] = useQuery({ query: simuladosQuery })
+  const [, executeDeleteMutation] = useMutation(deleteSimuladoMutation)
 
-  const { data, fetching } = result
   const [firstLoad, setFirstLoad] = useState(true)
 
   const [showAddSimulatoModal,, close] = useModal(<AddSimualdoModal onAdd={onAdd} />)
@@ -47,7 +48,22 @@ export default function Simulados() {
   }
 
   const handleDeleteSimuladoButton = (notebookId: string) => {
+    toast.promise(
+      (async () => {
+        const result = await executeDeleteMutation({ id: notebookId })
 
+        if (result.error) {
+          throw new Error(result.error.message)
+        }
+
+        executeQuery({ requestPolicy: "network-only" })
+      })(),
+      {
+        error: "Ocorreu um erro ao deleta o simulado",
+        pending: "Deletando o caderno",
+        success: "Caderno deletado com sucesso"
+      }
+    )
   }
 
   const handleUpdateButtonClick = (notebookId: string, name: string) => {
