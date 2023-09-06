@@ -48,4 +48,4 @@ export const Content = styled("div", {
 
                 padding: "40px 29px"
         },
-})
+});
