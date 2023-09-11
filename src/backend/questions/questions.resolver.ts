@@ -306,7 +306,7 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Query(() => MostWrong)
+  @Query(() => [MostWrong])
   async mostWrong() {
     return await this.questionsService.mostWrong()
   }

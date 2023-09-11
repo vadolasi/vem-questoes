@@ -87,15 +87,17 @@ export type Local = {
 export type MostWrong = {
   __typename?: 'MostWrong';
   alternatives: Array<MostWrongAlternative>;
-  questionId: Scalars['ID'];
-  questionText: Scalars['String'];
+  id: Scalars['ID'];
+  text: Scalars['String'];
   wrongQuantity: Scalars['Float'];
 };
 
 export type MostWrongAlternative = {
   __typename?: 'MostWrongAlternative';
-  alternativeId: Scalars['ID'];
-  alternativeText: Scalars['String'];
+  correct: Scalars['Boolean'];
+  id: Scalars['ID'];
+  letter: Scalars['String'];
+  text: Scalars['String'];
   wrongQuantity: Scalars['Float'];
 };
 
@@ -291,7 +293,7 @@ export type Query = {
   leaderBoard?: Maybe<Array<User>>;
   locais: Array<Local>;
   me?: Maybe<User>;
-  mostWrong: MostWrong;
+  mostWrong: Array<MostWrong>;
   notebook: NotebookModel;
   notebooks: Array<NotebookModel>;
   notifications: Array<Notification>;

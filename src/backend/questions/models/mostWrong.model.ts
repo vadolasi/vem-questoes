@@ -3,10 +3,16 @@ import { Field, ID, ObjectType } from "type-graphql"
 @ObjectType()
 class MostWrongAlternative {
   @Field(_type => ID)
-  alternativeId: string
+  id: string
 
   @Field()
-  alternativeText: string
+  letter: string
+
+  @Field()
+  text: string
+
+  @Field()
+  correct: boolean
 
   @Field()
   wrongQuantity: number
@@ -15,10 +21,10 @@ class MostWrongAlternative {
 @ObjectType()
 export class MostWrong {
   @Field(_type => ID)
-  questionId: string
+  id: string
 
   @Field()
-  questionText: string
+  text: string
 
   @Field(_type => [MostWrongAlternative])
   alternatives: MostWrongAlternative[]

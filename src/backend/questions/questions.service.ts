@@ -828,21 +828,21 @@ export class QuestionsService {
         wrongQuantity += wrong
 
         return {
-          alternativeId,
-          alternativeText: alternative.text,
+          id: alternativeId,
+          text: alternative.text,
+          letter: alternative.letter,
+          correct: alternative.correct,
           wrongQuantity: wrong
         }
       })
 
       return {
-        questionId: question.id,
-        questionText: question.enunciado,
+        id: question.id,
+        text: question.enunciado,
         alternatives,
         wrongQuantity
       }
     })
-
-    console.log(JSON.stringify(res, null, 2))
 
     return res
   }
