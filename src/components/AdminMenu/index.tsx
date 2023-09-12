@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {AiOutlineHome, AiOutlineRead, AiOutlineExclamation, AiOutlineUserAdd, AiOutlineUser} from 'react-icons/ai'
+import { VscGraph } from 'react-icons/vsc'
 import { FC } from 'react';
 import Logo from "../../assets/logo.png";
 import { Container } from "./styles";
@@ -47,6 +48,12 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
                 <Link href="/admin/listarUsuarios" className={page == 'userList' ? 'page' : ''}>
                     <AiOutlineUser/>
                     Listar Usuários
+                </Link>
+            </li>
+            <li>
+                <Link href="/admin/estatisticas" className={page == 'estatisticas' ? 'page' : ''}>
+                    <VscGraph/>
+                    Estatísticas
                 </Link>
             </li>
       </Container>

@@ -36,6 +36,7 @@ const documents = {
     "\n  mutation CreateReport($content: String!, $type: TicketType!, $questionId: String) {\n    addTicket(\n      content: $content\n      type: $type\n      questionId: $questionId\n    ) {\n      id\n    }\n  }\n": types.CreateReportDocument,
     "\n  mutation CreateReport2($content: String!, $type: TicketType!) {\n    addTicket(\n      content: $content\n      type: $type\n    ) {\n      id\n    }\n  }\n": types.CreateReport2Document,
     "\n  mutation InviteUser($name: String!, $email: String!, $role: Role!) {\n    inviteUser(name: $name, email: $email, role: $role) {\n      id\n    }\n  }\n": types.InviteUserDocument,
+    "\n  query MostWrong {\n    mostWrong {\n      id\n      text\n      wrongQuantity\n      alternatives {\n        id\n        text\n        letter\n        correct\n        wrongQuantity\n      }\n    }\n  }\n": types.MostWrongDocument,
     "\n  query Users {\n    users {\n      id\n      photoUrl\n      name\n      email\n      role\n    }\n  }\n": types.UsersDocument,
     "\n  mutation CreateNotification($title: String!, $body: String!) {\n    createNotification(title: $title, body: $body) {\n      id\n    }\n  }\n": types.CreateNotificationDocument,
     "\n  mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {\n    addAnswer(questionId: $questionId, alternativeId: $alternativeId) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionDocument,
@@ -163,6 +164,10 @@ export function graphql(source: "\n  mutation CreateReport2($content: String!, $
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation InviteUser($name: String!, $email: String!, $role: Role!) {\n    inviteUser(name: $name, email: $email, role: $role) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation InviteUser($name: String!, $email: String!, $role: Role!) {\n    inviteUser(name: $name, email: $email, role: $role) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query MostWrong {\n    mostWrong {\n      id\n      text\n      wrongQuantity\n      alternatives {\n        id\n        text\n        letter\n        correct\n        wrongQuantity\n      }\n    }\n  }\n"): (typeof documents)["\n  query MostWrong {\n    mostWrong {\n      id\n      text\n      wrongQuantity\n      alternatives {\n        id\n        text\n        letter\n        correct\n        wrongQuantity\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
