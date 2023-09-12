@@ -8,7 +8,7 @@ import AddNotebookModal from "./AddNotebook"
 import DeleteNotebookModal from "./DeleteNotebook"
 import EditNotebookModal from "./EditNotebook"
 import { BsFillPlayFill } from "react-icons/bs"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import clsx from "clsx"
 
 const notebooksQuery = graphql(/* GraphQL */ `
@@ -52,6 +52,7 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
   const [{ fetching: loadingRemovingNotebook }, executeRemoveQuestionFromNotebook] = useMutation(removeQuestionFromNotebookMutation)
   const [showAddNotebookModal, updateAddNotebookModal, closeAddNotebookModal] = useModal(<></>, { bottom: false })
   const [showEditNotebookModal, updateEditNotebookModal, closeEditNotebookModal] = useModal(<></>, { bottom: false })
+  const router = useRouter()
 
   const onAdd = () => {
     executeQuery({ requestPolicy: "network-only" })
@@ -164,9 +165,9 @@ const Notebooks: React.FC<IProps> = ({ questionId, enableAddQuestion = false }) 
                 <span>{notebook.questions.length}</span>
               </div>
               {!enableAddQuestion && (
-                <Link className="btn btn-circle btn-sm btn-outline btn-primary" href={`/cadernos/${notebook.id}`}>
+                <button className="btn btn-circle btn-sm btn-outline btn-primary" disabled={notebook.questions.length === 0} onClick={() => router.push(`/cadernos/${notebook.id}`)}>
                   <BsFillPlayFill />
-                </Link>
+                </button>
               )}
               <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteNotebookButton(notebook.id)}>
                 <AiOutlineDelete />

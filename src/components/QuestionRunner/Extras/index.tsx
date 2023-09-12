@@ -8,9 +8,10 @@ import React, { useEffect } from "react";
 interface IProps {
   active?: boolean
   questionId: string
+  notebooksOnly?: boolean
 }
 
-const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
+const Extras: React.FC<IProps> = ({ active = true, notebooksOnly = false, questionId }) => {
   const [showExplicationModal] = useModal(<Explication />)
   const [showCommentsModal, setCommentsModalContent] = useModal(<Comments questionId={questionId} />)
   const [showNotebooksModal, setNotebooksModalContent] = useModal(<Notebooks questionId={questionId} enableAddQuestion={true} />)
@@ -23,22 +24,26 @@ const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
 
   return (
     <div className="flex gap-5 flex-wrap md:flex-nowrap">
-      <button
-        onClick={showExplicationModal}
-        disabled={!active}
-        className="btn w-full md:w-auto"
-      >
-        <AiOutlineCompass />
-        <span>Explicação</span>
-      </button>
-      <button
-        onClick={showCommentsModal}
-        disabled={!active}
-        className="btn w-full md:w-auto"
-      >
-        <AiOutlineComment />
-        <span>Comentários</span>
-      </button>
+      {!notebooksOnly && (
+        <>
+          <button
+            onClick={showExplicationModal}
+            disabled={!active}
+            className="btn w-full md:w-auto"
+          >
+            <AiOutlineCompass />
+            <span>Explicação</span>
+          </button>
+          <button
+            onClick={showCommentsModal}
+            disabled={!active}
+            className="btn w-full md:w-auto"
+          >
+            <AiOutlineComment />
+            <span>Comentários</span>
+          </button>
+        </>
+      )}
       <button
         onClick={showNotebooksModal}
         disabled={!active}
@@ -47,14 +52,16 @@ const Extras: React.FC<IProps> = ({ active = true, questionId }) => {
         <AiOutlineBook />
         <span>Cadernos</span>
       </button>
-      <button
-        onClick={showXRayModal}
-        disabled={!active}
-        className="btn w-full md:w-auto"
-      >
-        <AiOutlineProfile />
-        <span>Raio-X</span>
-      </button>
+      {!notebooksOnly && (
+        <button
+          onClick={showXRayModal}
+          disabled={!active}
+          className="btn w-full md:w-auto"
+        >
+          <AiOutlineProfile />
+          <span>Raio-X</span>
+        </button>
+      )}
     </div>
   )
 }

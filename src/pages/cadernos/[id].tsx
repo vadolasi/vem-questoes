@@ -97,6 +97,8 @@ export default function Questoes() {
             setQuestionNumber={setQuestionNumber}
             resolveQuestion={answerQuestion}
             totalQuantity={data?.notebook.questions.length || 0}
+            extras={true}
+            notebooksOnly={true}
             question={currentQuestion ? {
               id: currentQuestion.id,
               ano: currentQuestion.ano?.ano!,

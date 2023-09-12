@@ -31,6 +31,7 @@ interface Props {
   resolveQuestion: (altervative: string) => Promise<string>
   confetti?: boolean
   extras?: boolean
+  notebooksOnly?: boolean
   active?: boolean
 }
 
@@ -44,7 +45,8 @@ export default function QuestionRunner({
   resolveQuestion,
   confetti = false,
   extras = false,
-  active = true
+  active = true,
+  notebooksOnly = false
 }: Props) {
   const [questionInput, setQuestionInput] = useState(questionNumber)
   const [deletedAlternatives, setDeletedAlternatives] = useImmer<string[]>([])
@@ -212,7 +214,7 @@ export default function QuestionRunner({
             {loadingReponse ? <span className="loading loading-spinner" /> : "Responder"}
           </button>
         )}
-        {extras && <Extras active={active} questionId={question?.id!} />}
+        {extras && <Extras active={active} questionId={question?.id!} notebooksOnly={notebooksOnly} />}
       </div>
     </div>
   )
