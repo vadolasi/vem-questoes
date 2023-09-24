@@ -148,15 +148,18 @@ model Perfil {
 }
 
 model Area {
-  id   String @id @default(cuid())
-  name String @unique
+  id        String @id @default(cuid())
+  name      String @unique
   questions Question[]
+  subareas  Subarea[]
 }
 
 model Subarea {
   id        String @id @default(cuid())
   name      String @unique
   questions Question[]
+  area      Area?  @relation(fields: [areaId], references: [id])
+  areaId    String?
 }
 
 model Estado {

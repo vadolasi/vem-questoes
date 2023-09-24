@@ -899,10 +899,65 @@ export class QuestionsService {
     })
   }
 
-  async relatorioDeDesempenho(userId: string) {
+  calcularDataCorrespondente(unidadeTempo: "dia" | "semana" | "mes" | "trimestre" | "ano"): Date {
+    const dataAtual = new Date();
+
+    switch (unidadeTempo) {
+      case "dia":
+        return dataAtual;
+      case "semana":
+        const umaSemanaEmMillisegundos = 7 * 24 * 60 * 60 * 1000;
+        return new Date(dataAtual.getTime() - umaSemanaEmMillisegundos);
+      case "mes":
+        const umMesEmMillisegundos = 30 * 24 * 60 * 60 * 1000;
+        return new Date(dataAtual.getTime() - umMesEmMillisegundos);
+      case "trimestre":
+        const umTrimestreEmMillisegundos = 3 * 30 * 24 * 60 * 60 * 1000;
+        return new Date(dataAtual.getTime() - umTrimestreEmMillisegundos);
+      case "ano":
+        const umAnoEmMillisegundos = 365 * 24 * 60 * 60 * 1000;
+        return new Date(dataAtual.getTime() - umAnoEmMillisegundos);
+      default:
+        throw new Error("Unidade de tempo inválida")
+    }
+  }
+
+  formatDateToYYYYMMDDHHMMSS(date: Date) {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+
+    return `${year}-${month}-${day} 00:00:00`
+  }
+
+  async relatorioDeDesempenho(userId: string, lte: "dia" | "semana" | "mes" | "trimestre" | "ano") {
+    const date = this.calcularDataCorrespondente(lte)
+    const dataFormatada = this.formatDateToYYYYMMDDHHMMSS(date)
+
     const responses = await prisma.response.findMany({
-      where: { userId }
+      where: { userId, date: { gte: date } }
     })
+    const totalN = responses.length
+    const totalC = responses.filter(response => response.correct).length
+
+    const materias = await prisma.$queryRaw`
+      SELECT
+        a.name AS nome,
+        COUNT(r.id) AS total,
+        SUM(CASE WHEN r.correct = TRUE THEN 1 ELSE 0 END) AS correto
+      FROM
+        "Area" a
+      LEFT JOIN
+        "Question" q ON q."areaId" = a.id
+      LEFT JOIN
+        "Response" r ON r."userId" = ${userId} AND r."questionId" = q.id
+      WHERE
+        r."date" >= ${dataFormatada}::timestamp
+      GROUP BY
+        a.name
+      HAVING
+        COUNT(r.id) > 0
+  ` as { nome: string, total: number, correto: number }[]
 
     const total: { [key: string]: number } = {}
     const corrects: { [key: string]: number } = {}
@@ -928,6 +983,6 @@ export class QuestionsService {
       result.push({ date: key, total: total[key], totalCorrect: corrects[key] })
     }
 
-    return result
+    return { total: totalN, correto: totalC, questions: result, materias: materias.map(materia => ({ nome: materia.nome, total: Number(materia.total), correto: Number(materia.correto) })) }
   }
 }

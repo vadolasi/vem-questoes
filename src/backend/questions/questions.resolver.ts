@@ -1,4 +1,4 @@
-import { Arg, Args, Authorized, Info, Mutation, Query, Resolver } from "type-graphql"
+import { Arg, Args, Authorized, Info, Mutation, Query, Resolver, registerEnumType } from "type-graphql"
 import { Service } from "typedi"
 import { QuestionsService } from "./questions.service"
 import { ProcessoSeletivo } from "./models/processoSeletico.model"
@@ -46,6 +46,18 @@ function getRequestedFields(info: GraphQLResolveInfo): string[] {
 
   return fieldList;
 }
+
+enum LTE {
+  dia = "dia",
+  semana = "semana",
+  mes = "mes",
+  trimestre = "trimestre",
+  ano = "ano"
+}
+
+registerEnumType(LTE, {
+  name: "LTE"
+})
 
 @Service()
 @Resolver()
@@ -312,11 +324,12 @@ export class QuestionsResolver {
   }
 
   @Authorized()
-  @Query(returns => [RelatorioResponse])
+  @Query(returns => RelatorioResponse)
   async relatorio(
-    @CurrentUserID() userId: string
+    @CurrentUserID() userId: string,
+    @Arg("lte", type => LTE) lte: LTE
   ) {
-    return await this.questionsService.relatorioDeDesempenho(userId)
+    return await this.questionsService.relatorioDeDesempenho(userId, lte)
   }
 
   @Authorized()

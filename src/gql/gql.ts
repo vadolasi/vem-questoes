@@ -44,7 +44,7 @@ const documents = {
     "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetNotebookDocument,
     "\n  mutation ResolveQuestionOnNotebook(\n    $questionId: String!\n    $alternativeId: String!\n    $notebookId: String!\n  ) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      notebookId: $notebookId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOnNotebookDocument,
     "\n  query NotebooksQuery {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksQueryDocument,
-    "\n  query Chart {\n    relatorio {\n      date\n      total\n      totalCorrect\n    }\n    me {\n      totalQuestions\n      totalCorrect\n    }\n  }\n": types.ChartDocument,
+    "\n  query Chart($lte: LTE!) {\n    relatorio(lte: $lte) {\n      questions {\n        date\n        total\n        totalCorrect\n      }\n      materias {\n        nome\n        total\n        correto\n      }\n      total\n      correto\n    }\n  }\n": types.ChartDocument,
     "\n  query InitialPage {\n    me {\n      totalQuestions\n      totalCorrect\n    }\n    leaderBoard {\n      id\n      name\n      totalQuestions\n      totalCorrect\n    }\n    simulados {\n      simulados {\n        id\n        name\n        totalQuestions\n      }\n    }\n  }\n": types.InitialPageDocument,
     "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      id\n      role\n    }\n  }\n": types.LoginDocument,
     "\n  query Me3 {\n    me {\n      name\n      email\n      photoUrl\n    }\n  }\n": types.Me3Document,
@@ -199,7 +199,7 @@ export function graphql(source: "\n  query NotebooksQuery {\n    notebooks {\n  
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Chart {\n    relatorio {\n      date\n      total\n      totalCorrect\n    }\n    me {\n      totalQuestions\n      totalCorrect\n    }\n  }\n"): (typeof documents)["\n  query Chart {\n    relatorio {\n      date\n      total\n      totalCorrect\n    }\n    me {\n      totalQuestions\n      totalCorrect\n    }\n  }\n"];
+export function graphql(source: "\n  query Chart($lte: LTE!) {\n    relatorio(lte: $lte) {\n      questions {\n        date\n        total\n        totalCorrect\n      }\n      materias {\n        nome\n        total\n        correto\n      }\n      total\n      correto\n    }\n  }\n"): (typeof documents)["\n  query Chart($lte: LTE!) {\n    relatorio(lte: $lte) {\n      questions {\n        date\n        total\n        totalCorrect\n      }\n      materias {\n        nome\n        total\n        correto\n      }\n      total\n      correto\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
