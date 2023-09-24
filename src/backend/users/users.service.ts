@@ -49,7 +49,7 @@ export class UsersService {
       name: user.name,
       totalQuestions: user.totalQuestions,
       totalCorrect: user.totalCorrect,
-      role: Role[user.role]
+      role: Role[user.role as any]
     }))
   }
 
@@ -93,5 +93,40 @@ export class UsersService {
     })
 
     return true
+  }
+
+  async createFiltro(userId: string, name: string, busca: string) {
+    const filtro = await prisma.busca.create({
+      data: {
+        name,
+        userId,
+        busca: JSON.parse(busca)
+      }
+    })
+
+    return filtro.id
+  }
+
+  async deleteFiltro(userId: string, id: string) {
+    await prisma.busca.delete({
+      where: {
+        id,
+        userId
+      }
+    })
+
+    return true
+  }
+
+  async buscas(userId: string) {
+    const buscas = await prisma.busca.findMany({
+      where: { userId }
+    })
+
+    return buscas.map(busca => ({
+      id: busca.id,
+      name: busca.name,
+      busca: JSON.stringify(busca.busca)
+    }))
   }
 }

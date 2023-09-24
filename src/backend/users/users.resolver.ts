@@ -7,6 +7,7 @@ import { CurrentUserID } from "../auth"
 import { nanoid } from "nanoid/async"
 import mjml2html from "mjml"
 import ejs from "ejs"
+import { Filter } from "./models/filtro.model"
 
 const resend = new Resend(process.env.RESEND_TOKEN)
 
@@ -108,5 +109,32 @@ export class UserResolver {
     @Arg("newPassword") newPassword: string
   ) {
     return await this.usersService.updatePassword(userId, oldPassword, newPassword)
+  }
+
+  @Mutation(_returns => String)
+  @Authorized()
+  async createFiltro(
+    @CurrentUserID() userId: string,
+    @Arg("name") name: string,
+    @Arg("busca") busca: string
+  ) {
+    return await this.usersService.createFiltro(userId, name, busca)
+  }
+
+  @Mutation(_returns => Boolean)
+  @Authorized()
+  async deleteFiltro(
+    @CurrentUserID() userId: string,
+    @Arg("id") busca: string
+  ) {
+    return await this.usersService.deleteFiltro(userId, busca)
+  }
+
+  @Query(_returns => [Filter])
+  @Authorized()
+  async filtros(
+    @CurrentUserID() userId: string
+  ) {
+    return await this.usersService.buscas(userId)
   }
 }

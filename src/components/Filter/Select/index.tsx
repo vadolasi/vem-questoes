@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import RSelect from "react-select";
 
 interface IProps {
@@ -5,15 +6,16 @@ interface IProps {
   options: { value: string, label: string }[]
   value: { value: string, label: string }[]
   setValue: (value: { value: string, label: string }[]) => void
+  fullWitdh?: boolean
 }
 
-const Select: React.FC<IProps> = ({ title, value, setValue, options }) => {
+const Select: React.FC<IProps> = ({ title, value, setValue, options, fullWitdh = false }) => {
   return (
     <div>
       <RSelect
-        className="w-full md:w-52"
+        className={clsx("w-full", !fullWitdh && "md:w-52")}
         classNames={{
-          control: () => "w-full md:w-52 text-sm",
+          control: () => clsx("w-full text-sm", !fullWitdh && "md:w-52"),
           menu: () => "text-sm"
         }}
         placeholder={title}

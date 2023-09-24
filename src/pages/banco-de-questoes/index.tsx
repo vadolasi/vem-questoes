@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { SearchInput } from "@/components/SearchInput";
 import { Checkbox } from "@/components/Checkbox";
 
-import { AiOutlineRight } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 
 import { graphql } from "@/gql";
 import { useQuery, useMutation } from "urql";
@@ -16,6 +15,9 @@ import Layout from "@/components/layout";
 import QuestionRunner from "@/components/QuestionRunner";
 import Select from "@/components/Filter/Select";
 import { useModal } from "@/components/Modal";
+import { toast } from "react-toastify";
+import { Button } from "@/components/Button";
+import { BsFillPlayFill } from "react-icons/bs";
 
 const resolverQuestionMutation = graphql(/* GraphQL */ `
   mutation ResolveQuestion($questionId: String!, $alternativeId: String!) {
@@ -137,13 +139,34 @@ const getQuestionQuery = graphql(/* GraphQL */ `
   }
 `);
 
+const getFiltersQuery = graphql(/* GraphQL */ `
+  query GetFilters {
+    filtros {
+      id
+      name
+      busca
+    }
+  }
+`);
+
+const addFilterMutation = graphql(/* GraphQL */ `
+  mutation AddFilter($name: String!, $filter: String!) {
+    createFiltro(name: $name, busca: $filter)
+  }
+`);
+
+const deleteFilterMutation = graphql(/* GraphQL */ `
+  mutation DeleteFilter($id: String!) {
+    deleteFiltro(id: $id)
+  }
+`);
+
 export default function Questoes() {
-  const [showFilterMenu] = useModal(<ModalMenu />);
+  const [showFilterMenu, updateFilterMenu, close] = useModal(<ModalMenu />);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(
     resolverQuestionMutation
   );
-  const [text, setText] = useState<string | undefined>(undefined);
   const [filterProcessoSeletivo, setFilterProcessoSeletivo] = useState<
     { value: string; label: string }[]
   >([]);
@@ -175,8 +198,6 @@ export default function Questoes() {
   const { data: filterData } = resultFilter;
 
   const [filter, setFilter] = useState({
-    itemsPerPage: 1,
-    text,
     processoSeletivoIds: filterProcessoSeletivo.map((item) => item.value),
     anoIds: filterAno.map((item) => item.value),
     localIds: filterLocal.map((item) => item.value),
@@ -189,8 +210,6 @@ export default function Questoes() {
 
   const updateFilter = () => {
     setFilter({
-      itemsPerPage: 1,
-      text,
       processoSeletivoIds: filterProcessoSeletivo.map((item) => item.value),
       anoIds: filterAno.map((item) => item.value),
       localIds: filterLocal.map((item) => item.value),
@@ -202,7 +221,73 @@ export default function Questoes() {
     });
     setQuestionNumber(1);
   };
+
+  function loadFilter(filter: string) {
+    const newFilterData = JSON.parse(filter)
+    setFilterProcessoSeletivo(newFilterData.processoSeletivoIds.map((id: string) => ({ value: id, label: (filterData?.processosSeletivos || []).find((processo: any) => processo.id === id)?.name || "" })))
+    setFilterAno(newFilterData.anoIds.map((id: string) => ({ value: id, label: (filterData?.anos || []).find((ano: any) => ano.id === id)?.ano.toString() || "" })))
+    setFilterLocal(newFilterData.localIds.map((id: string) => ({ value: id, label: (filterData?.locais || []).find((local: any) => local.id === id)?.name || "" })))
+    setFilterPerfil(newFilterData.perilIds.map((id: string) => ({ value: id, label: (filterData?.perfis || []).find((perfil: any) => perfil.id === id)?.name || "" })))
+    setFilterArea(newFilterData.areaIds.map((id: string) => ({ value: id, label: (filterData?.areas || []).find((area: any) => area.id === id)?.name || "" })))
+    setFilterSubarea(newFilterData.subareaIds.map((id: string) => ({ value: id, label: (filterData?.subareas || []).find((subarea: any) => subarea.id === id)?.name || "" })))
+    setFilterEstado(newFilterData.estadoIds.map((id: string) => ({ value: id, label: (filterData?.estados || []).find((estado: any) => estado.id === id)?.name || "" })))
+    setFilterBanca(newFilterData.bancaIds.map((id: string) => ({ value: id, label: (filterData?.bancas || []).find((banca: any) => banca.id === id)?.name || "" })))
+
+    setFilter(newFilterData)
+    close()
+  }
+
+  useEffect(() => {
+    updateFilterMenu(<ModalMenu />)
+  }, [filter, filterAno, filterLocal, filterPerfil, filterArea, filterSubarea, filterEstado, filterBanca])
+
   function ModalMenu() {
+    const [resultFilters, executeGetResultFilters] = useQuery({
+      query: getFiltersQuery,
+    });
+    const { data: filtersData } = resultFilters;
+
+    const [filterName, setFilterName] = useState<string>("")
+
+    const [{ fetching: loadingAddFilter }, executeAddFilter] = useMutation(addFilterMutation);
+    const [{ fetching: loadingDeleteFilter }, executeDeleteFilter] = useMutation(deleteFilterMutation);
+
+    async function addFilter() {
+      toast.promise(
+        (async () => {
+          const { error } = await executeAddFilter({ name: filterName, filter: JSON.stringify(filter) })
+          if (error) {
+            throw new Error(error.message)
+          }
+          executeGetResultFilters({ requestPolicy: "network-only" })
+          setFilterName("")
+        })(),
+        {
+          pending: "Salvando filtro...",
+          success: "Filtro salvo com sucesso!",
+          error: "Erro ao salvar filtro"
+        }
+      )
+    }
+
+    async function deleteFilter(id: string) {
+      toast.promise(
+        (async () => {
+          const { error } = await executeDeleteFilter({ id })
+          if (error) {
+            throw new Error(error.message)
+          }
+          executeGetResultFilters({ requestPolicy: "network-only" })
+        }
+        )(),
+        {
+          pending: "Deletando filtro...",
+          success: "Filtro deletado com sucesso!",
+          error: "Erro ao deletar filtro"
+        }
+      )
+    }
+
     return (
       <>
         <h1 className="text-lg font-bold">Salve seu filtro</h1>
@@ -211,30 +296,30 @@ export default function Questoes() {
             type="text"
             placeholder="Digite aqui o nome do seu filtro"
             className="w-full p-3 border rounded-md outline-none border-primary"
+            value={filterName}
+            onChange={(e) => setFilterName(e.target.value)}
+            disabled={loadingAddFilter}
+            key="filterName"
+            autoFocus={true}
           />
-          <button className="mb-2 text-white btn-primary btn">Salvar</button>
+          <Button className="mb-2 text-white btn-primary btn" onClick={addFilter} loading={loadingAddFilter}>Salvar</Button>
         </div>
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold">Filtros salvos</h1>
-          <div className="flex items-center gap-2">
-            <p className="text-lg font-medium">Filtro 1 </p>
-            <button className="text-lg font-medium duration-300 hover:text-accent">
-              <AiOutlineRight className="h-[25px] w-[25px]" />
-            </button>
+        {(filtersData?.filtros?.length || 0) > 0 && (
+          <div className="flex flex-col gap-1">
+            <h1 className="text-xl font-bold">Filtros salvos</h1>
+            {filtersData?.filtros.map(filtro => (
+              <div className="flex items-center gap-2" key={filtro.id}>
+                <p className="text-lg font-medium">{filtro.name}</p>
+                <button className="btn btn-circle btn-sm btn-outline btn-primary" onClick={() => loadFilter(filtro.busca)}>
+                  <BsFillPlayFill />
+                </button>
+                <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => deleteFilter(filtro.id)}>
+                  <AiOutlineDelete />
+                </button>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-2">
-            <p className="text-lg font-medium">Filtro 2 </p>
-            <button className="text-lg font-medium duration-300 hover:text-accent">
-              <AiOutlineRight className="h-[25px] w-[25px]" />
-            </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="text-lg font-medium">Filtro 3 </p>
-            <button className="text-lg font-medium duration-300 hover:text-accent">
-              <AiOutlineRight className="h-[25px] w-[25px]" />
-            </button>
-          </div>
-        </div>
+        )}
       </>
     );
   }
@@ -261,8 +346,6 @@ export default function Questoes() {
     setFilterEstado([]);
     setFilterBanca([]);
     setFilter({
-      itemsPerPage: 1,
-      text: undefined,
       processoSeletivoIds: [],
       anoIds: [],
       localIds: [],
@@ -272,19 +355,6 @@ export default function Questoes() {
       estadoIds: [],
       bancaIds: [],
     });
-  };
-  const saveFilter = () => {
-    const filterSaved = {
-      ProcessoSeletivo: filterProcessoSeletivo,
-      Ano: filterAno,
-      Local: filterLocal,
-      Perfil: filterPerfil,
-      Area: filterArea,
-      Subarea: filterSubarea,
-      Estado: filterEstado,
-      Banca: filterBanca,
-    };
-    console.log(filterSaved);
   };
 
   const [resultQuestion] = useQuery({
@@ -312,12 +382,6 @@ export default function Questoes() {
     <Layout page="banco-de-questoes" visible={true}>
       <div className="w-full">
         <ContainerFilter className="w-full">
-          {/*
-          <SearchInput
-            placeholder="Pesquisar"
-            onChange={(text) => setText(text)}
-          />
-          */}
           <div className="flex flex-col inputs md:flex-row">
             <div className="flex flex-wrap w-full gap-2 h-min">
               <Select
@@ -427,7 +491,7 @@ export default function Questoes() {
               }}
             >
               <AiOutlineFilter />
-              Salvar Filtro
+              Meus filtros
             </button>
             <button
               className="flex-1 w-full rounded-full btn btn-sm btn-error btn-outline md:w-auto"
