@@ -1,15 +1,13 @@
 import Image from 'next/image';
 import { AiOutlineRightCircle } from 'react-icons/ai'
 
-import { Container, Content, OfferCard } from '../components/styles/index';
+import { Content, OfferCard } from '../components/styles/index';
 
 import mulherComNotebook from '@/assets/mulherComNotebook.png'
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-import { Menu } from "@/components/Menu";
-import { Header } from "@/components/Header";
 import { ContentCard } from '@/components/ContentCard';
 import { UserCard } from '@/components/UserCard';
 import { ExamCard } from '@/components/ExamCard';

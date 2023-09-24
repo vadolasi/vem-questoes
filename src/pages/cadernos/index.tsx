@@ -8,7 +8,6 @@ import notebook from '@/assets/Notebook.png'
 import { graphql } from '@/gql';
 import { useMutation, useQuery } from 'urql';
 
-import { toast } from "react-toastify"
 import Layout from '@/components/layout';
 import Notebooks from '@/components/Notebooks';
 import { useEffect } from 'react';
@@ -36,7 +35,6 @@ const deleteNotebookMutation = graphql(/* GraphQL */`
 
 export default function Home() {
   const [result, executeQuery] = useQuery({ query: notebooksQuery, requestPolicy: "cache-and-network" })
-  const [, executeDeleteNotebook] = useMutation(deleteNotebookMutation)
   const [showAddNotebookModal, updateAddNotebookModal, closeAddNotebookModal] = useModal(<></>, { bottom: false })
 
   const { data, fetching } = result
@@ -49,22 +47,6 @@ export default function Home() {
   useEffect(() => {
     updateAddNotebookModal(<AddNotebookModal onAdd={onAdd} />)
   }, [])
-
-  const _deleteNotebook = async (id: string) => {
-    await executeDeleteNotebook({ id })
-    executeQuery({ requestPolicy: "network-only" })
-  }
-
-  const deleteNotebook = async (id: string) => {
-    toast.promise(
-      _deleteNotebook(id),
-      {
-        error: "Ocorreu um erro ao deleta o caderno",
-        pending: "Deletando caderno",
-        success: "Caderno deletado com sucesso"
-      }
-    )
-  }
 
   return (
     <Layout page="cadernos">

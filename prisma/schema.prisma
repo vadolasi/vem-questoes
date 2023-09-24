@@ -44,6 +44,14 @@ model NotificationToUser {
   userId         String
 }
 
+model Busca {
+  id     String @id @default(cuid())
+  name   String
+  busca  Json
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
@@ -64,6 +72,7 @@ model User {
   comments       Comment[]
   notebooks      Notebook[]
   notifications  NotificationToUser[]
+  buscas         Busca[]
 }
 
 model Alternative {

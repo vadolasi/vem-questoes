@@ -880,8 +880,8 @@ export class QuestionsService {
         id: response.areaId,
         name: response.areaName
       },
-      relevancia: (Number(response.totalProvaQuestions) / totalSum) * 100,
-      desempenho: (Number(response.totalCorrect) / Number(response.totalProvaQuestions)) * 100
+      relevancia: Number(((Number(response.totalProvaQuestions) / totalSum) * 100).toFixed(2)),
+      desempenho: Number(((Number(response.totalCorrect) / Number(response.totalProvaQuestions)) * 100).toFixed(2))
     }))
   }
 
@@ -957,7 +957,7 @@ export class QuestionsService {
         a.name
       HAVING
         COUNT(r.id) > 0
-  ` as { nome: string, total: number, correto: number }[]
+    ` as { nome: string, total: number, correto: number }[]
 
     const total: { [key: string]: number } = {}
     const corrects: { [key: string]: number } = {}

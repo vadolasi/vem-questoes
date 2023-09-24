@@ -24,6 +24,7 @@ type Query {
   me: User
   leaderBoard: [User!]
   users: [User!]!
+  filtros: [Filter!]!
 }
 
 type ProcessoSeletivo {
@@ -228,6 +229,12 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type Filter {
+  id: ID!
+  name: String!
+  busca: String!
+}
+
 type Mutation {
   login(email: String!, password: String!): User!
   refreshToken: Boolean!
@@ -252,6 +259,8 @@ type Mutation {
   inviteUser(role: Role!, name: String!, email: String!): User!
   updateProfile(photoUrl: String, name: String): Boolean!
   updatePassword(newPassword: String!, oldPassword: String!): Boolean!
+  createFiltro(busca: String!, name: String!): String!
+  deleteFiltro(id: String!): Boolean!
 }
 
 type AddAnswerResponse {
