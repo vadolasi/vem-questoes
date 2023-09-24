@@ -14,7 +14,7 @@ type Query {
   simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
   simulado(id: String!): Simulado!
   mostWrong: [MostWrong!]!
-  relatorio: [RelatorioResponse!]!
+  relatorio(lte: LTE!): RelatorioResponse!
   comments(questionId: String!): [Comment!]!
   createQuestion(enunciado: String!, alternatives: [String!]!, correct: Float!, processoSeletivoId: String, newProcessoSeletivo: String, anoId: String, newAno: Float, localId: String, newLocal: String, perfilId: String, newPerfil: String, areaId: String, newArea: String, subAreaId: String, newSubArea: String, estadoId: String, newEstado: String, bancaId: String, newBanca: String): CreateQuestionResponse!
   provas: [ProcessoSeletivo!]!
@@ -164,9 +164,30 @@ type MostWrongAlternative {
 }
 
 type RelatorioResponse {
+  questions: [Questions!]!
+  materias: [Materias!]!
+  total: Float!
+  correto: Float!
+}
+
+type Questions {
   date: String!
   total: Float!
   totalCorrect: Float!
+}
+
+type Materias {
+  nome: String!
+  total: Float!
+  correto: Float!
+}
+
+enum LTE {
+  dia
+  semana
+  mes
+  trimestre
+  ano
 }
 
 type CreateQuestionResponse {
