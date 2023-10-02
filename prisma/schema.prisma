@@ -280,3 +280,8 @@ model Diagnostico {
   name      String @unique
   questions Diagnostico_Question[]
 }
+
+model Imagem {
+  id       String @id @default(cuid())
+  imageUrl String
+}
