@@ -9,6 +9,7 @@ import {
 } from "react-icons/ai";
 import { VscGraph } from "react-icons/vsc";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
+import { GoReport } from "react-icons/go";
 import { FC } from "react";
 import Logo from "../../assets/logo.png";
 import { Container } from "./styles";
@@ -94,6 +95,15 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
           >
             <MdOutlineCreateNewFolder />
             Criar simulado
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/analisarSimulado"
+            className={page == "analisarSimulado" ? "page" : ""}
+          >
+            <GoReport />
+            Analisar simulado
           </Link>
         </li>
       </Container>
