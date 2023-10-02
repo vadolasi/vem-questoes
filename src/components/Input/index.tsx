@@ -5,11 +5,11 @@ interface InputInterface extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
 }
 
-export const Input = ({ text, ...rest }: InputInterface) => {
+export const Input = ({ text, className, ...rest }: InputInterface) => {
   return (
     <Container>
       <input {...rest} />
-      <span>{text}</span>
+      <span className={`${className}`}>{text}</span>
     </Container>
   );
-}
+};

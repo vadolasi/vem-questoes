@@ -8,6 +8,7 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import { VscGraph } from "react-icons/vsc";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { FC } from "react";
 import Logo from "../../assets/logo.png";
 import { Container } from "./styles";
@@ -87,6 +88,15 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
           >
             <VscGraph />
             Estatísticas
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/analises"
+            className={page == "analises" ? "page" : ""}
+          >
+            <MdOutlineCreateNewFolder />
+            Criar simulado
           </Link>
         </li>
       </Container>
