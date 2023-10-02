@@ -72,7 +72,7 @@ export default function Analises() {
         </div>
         {alunos.map((aluno) => {
           <div
-            className="grid items-center justify-between grid-flow-row grid-cols-2"
+            className="grid items-center justify-between grid-flow-row grid-cols-2 border-b border-b-black/30"
             key={aluno.nome}
           >
             <p>{aluno.nome}</p>
