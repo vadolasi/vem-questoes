@@ -21,19 +21,22 @@ interface menuProps {
 
 export const Menu: FC<menuProps> = ({ page, invisible }) => {
   return (
-    <div className="h-full flex flex-col bg-base-100">
-      <div className="border-b md:flex flex-1 hidden">
-        <div className="h-20 flex items-center pl-10">
-          <div className="flex-1 px-2 mx-2 hidden md:block">
+    <div className="flex flex-col h-full bg-base-100">
+      <div className="flex-1 hidden border-b md:flex">
+        <div className="flex items-center h-20 pl-10">
+          <div className="flex-1 hidden px-2 mx-2 md:block">
             <Link href="/">
-              <Image src={Logo} alt="Logo escrito 'Vem questões'" height={50} className="Logo" />
+              <Image
+                src={Logo}
+                alt="Logo escrito 'Vem questões'"
+                height={50}
+                className="Logo"
+              />
             </Link>
           </div>
         </div>
       </div>
-      <Container
-        className={`${invisible ? "hidden" : ""} border-r h-full`}
-      >
+      <Container className={`${invisible ? "hidden" : ""} border-r h-full`}>
         <li>
           <Link href="/" className={page == "home" ? "page" : ""}>
             <AiOutlineHome />
@@ -59,7 +62,7 @@ export const Menu: FC<menuProps> = ({ page, invisible }) => {
           </Link>
         </li>
         <li>
-          <Link href="/raio-x" className={page == "raio-x" ? "page" : ""}>
+          <Link href="/raio-x" className={page == "raiox" ? "page" : ""}>
             <AiOutlineKey />
             Raio-X
           </Link>

@@ -37,6 +37,21 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
       </div>
       <Container className={`${invisible ? "hidden" : ""} border-r h-full`}>
         <li>
+          <Link href="/admin" className={page == "userAdd" ? "page" : ""}>
+            <AiOutlineUserAdd />
+            Criar Usuários
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/listarUsuarios"
+            className={page == "userList" ? "page" : ""}
+          >
+            <AiOutlineUser />
+            Listar Usuários
+          </Link>
+        </li>
+        <li>
           <Link
             href="/admin/questao"
             className={page == "AddQuestao" ? "page" : ""}
@@ -61,24 +76,6 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
           >
             <AiOutlineExclamation />
             Listar notificações
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/admin/criarUsuario"
-            className={page == "userAdd" ? "page" : ""}
-          >
-            <AiOutlineUserAdd />
-            Criar Usuários
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/admin/listarUsuarios"
-            className={page == "userList" ? "page" : ""}
-          >
-            <AiOutlineUser />
-            Listar Usuários
           </Link>
         </li>
         <li>
