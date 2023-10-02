@@ -50,7 +50,7 @@ const Extras: React.FC<IProps> = ({ active = true, notebooksOnly = false, questi
         className="btn w-full md:w-auto"
       >
         <AiOutlineBook />
-        <span>Cadernos</span>
+        <span>{notebooksOnly ? "Correção de erros" : "Cardernos"}</span>
       </button>
       {!notebooksOnly && (
         <button

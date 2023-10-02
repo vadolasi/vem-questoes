@@ -1,22 +1,21 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Container, Content } from "./styles/index";
-import { ContainerFocus } from "./styles/FocusContainer";
-import { Menu } from "@/components/Menu";
-import { Header } from "@/components/Header";
-import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip } from "react-tooltip";
-
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { ReactNode, useEffect, useState } from "react"
+import { Container, Content } from "./styles/index"
+import { ContainerFocus } from "./styles/FocusContainer"
+import { Menu } from "@/components/Menu"
+import { Header } from "@/components/Header"
+import "react-tooltip/dist/react-tooltip.css"
+import { Tooltip } from "react-tooltip"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 
 interface Props {
-  children: ReactNode;
-  page: string;
-  visible?: boolean;
+  children: ReactNode
+  page: string
+  visible?: boolean
 }
 
 export default function Layout({ children, page, visible = false }: Props) {
-  const [focus, setFocus] = useState(false);
-  const focusPages = ["banco-de-questoes", "cadernos", "simulados"];
+  const [focus, setFocus] = useState(false)
+  const focusPages = ["banco-de-questoes", "cadernos", "simulados"]
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -31,13 +30,13 @@ export default function Layout({ children, page, visible = false }: Props) {
 
     const handleFullScreen = () => {
       if (document.fullscreenElement) {
-        setFocus(true);
+        setFocus(true)
       } else {
-        setFocus(false);
+        setFocus(false)
       }
-    };
+    }
 
-    document.addEventListener("fullscreenchange", handleFullScreen);
+    document.addEventListener("fullscreenchange", handleFullScreen)
 
     const handleSize = () => {
       if (
@@ -50,14 +49,14 @@ export default function Layout({ children, page, visible = false }: Props) {
       }
     };
 
-    window.addEventListener("resize", handleSize);
+    window.addEventListener("resize", handleSize)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("fullscreenchange", handleFullScreen);
-      window.removeEventListener("resize", handleSize);
-    };
-  }, [focus]);
+      window.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener("fullscreenchange", handleFullScreen)
+      window.removeEventListener("resize", handleSize)
+    }
+  }, [focus])
 
   return (
     <>

@@ -60,8 +60,9 @@ export default function Questoes() {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const [questionNumber, setQuestionNumber] = useState(1);
-  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation);
+  const [questionNumber, setQuestionNumber] = useState(1)
+  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
+  const [isRunning, setIsRunning] = useState(false)
 
   const [expiresAt, setExpiresAt] = useState<Date | null>(null)
 
@@ -97,7 +98,7 @@ export default function Questoes() {
   return (
     <Layout page="simulados" visible={true}>
       <Content>
-        <Timer mode={mode as "raiz" | "nutella"} expiresAt={expiresAt} title={`Simulado modo ${mode}`} />
+        <Timer mode={mode as "raiz" | "nutella"} expiresAt={expiresAt} title={`Simulado modo ${mode}`} setIsRunning={setIsRunning} />
         <QuestionContainer>
           <QuestionRunner
             confetti={false}
@@ -107,6 +108,7 @@ export default function Questoes() {
             setQuestionNumber={setQuestionNumber}
             resolveQuestion={answerQuestion}
             totalQuantity={data?.simulado.questions.length!}
+            active={isRunning}
             question={currentQuestion ? {
               id: currentQuestion.id,
               ano: currentQuestion.ano?.ano!,

@@ -261,6 +261,7 @@ type Mutation {
   updatePassword(newPassword: String!, oldPassword: String!): Boolean!
   createFiltro(busca: String!, name: String!): String!
   deleteFiltro(id: String!): Boolean!
+  updateProfilePicture(photoUrl: String!): Boolean!
 }
 
 type AddAnswerResponse {

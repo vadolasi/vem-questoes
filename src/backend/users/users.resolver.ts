@@ -137,4 +137,13 @@ export class UserResolver {
   ) {
     return await this.usersService.buscas(userId)
   }
+
+  @Mutation(_returns => Boolean)
+  @Authorized()
+  async updateProfilePicture(
+    @CurrentUserID() userId: string,
+    @Arg("photoUrl") photoUrl: string
+  ) {
+    return await this.usersService.updateProfilePicture(userId, photoUrl)
+  }
 }

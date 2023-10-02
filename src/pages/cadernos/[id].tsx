@@ -16,6 +16,7 @@ import QuestionRunner from "@/components/QuestionRunner";
 const getQuestionQuery = graphql(/* GraphQL */ `
   query GetNotebook($id: String!) {
     notebook(notebookId: $id) {
+      name
       questions {
         id
         enunciado
@@ -56,8 +57,9 @@ const resolverQuestionMutation = graphql(/* GraphQL */ `
 `);
 
 export default function Questoes() {
-  const [questionNumber, setQuestionNumber] = useState(1);
-  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation);
+  const [questionNumber, setQuestionNumber] = useState(1)
+  const [{ fetching: loadingReponse }, resolveQuestion] = useMutation(resolverQuestionMutation)
+  const [isRunning, setIsRunning] = useState(false)
 
   const params = useSearchParams();
 
@@ -87,7 +89,7 @@ export default function Questoes() {
   return (
     <Layout page="cadernos" visible={true}>
       <Content>
-        <Timer mode="nutella" title="Caderno de erros" />
+        <Timer mode="nutella" title={data?.notebook?.name || "Caderno de erros"} setIsRunning={setIsRunning} />
         <QuestionContainer>
           <QuestionRunner
             confetti={true}
@@ -99,6 +101,7 @@ export default function Questoes() {
             totalQuantity={data?.notebook.questions.length || 0}
             extras={true}
             notebooksOnly={true}
+            active={isRunning}
             question={currentQuestion ? {
               id: currentQuestion.id,
               ano: currentQuestion.ano?.ano!,

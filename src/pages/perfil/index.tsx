@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "@/components/layout";
 import { Select } from "@/components/Select";
+import { nanoid } from "nanoid/async";
 
 const meQuery = graphql(/* GraphQL */ `
   query Me3 {
@@ -42,10 +43,17 @@ const updatePassowordMutation = graphql(/* GraphQL */ `
   }
 `);
 
+const updateProfilePhotoMutation = graphql(/* GraphQL */ `
+  mutation UpdateProfilePhoto($photoUrl: String!) {
+    updateProfilePicture(photoUrl: $photoUrl)
+  }
+`);
+
 export default function Home() {
   const [{ data, fetching }, re] = useQuery({ query: meQuery });
   const [, executeUpdateProfile] = useMutation(updateProfileMutation);
   const [, executeUpdatePassword] = useMutation(updatePassowordMutation);
+  const [, executeUpdateProfilePhoto] = useMutation(updateProfilePhotoMutation);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState("");
@@ -57,6 +65,42 @@ export default function Home() {
   const [prevGraduacao, setPrevGraduacao] = useState("");
   const [tempo, setTempo] = useState("");
   const [provas, setProvas] = useState("");
+
+  const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0]) {
+      return
+    }
+
+    toast.promise(
+      (async () => {
+        const file = e.target.files?.[0]!
+        const fileType = file.type
+        const filename = `${await nanoid()}.${fileType.split("/")[1]}`
+
+        const res = await fetch(`/api/upload?file=${filename}&fileType=${fileType}`)
+        const { url } = await res.json()
+
+        const upload = await fetch(url, {
+          method: "PUT",
+          body: file,
+          headers: { "Content-Type": fileType }
+        })
+
+        if (!upload.ok) {
+          throw new Error()
+        }
+
+        const s3FileUrl = `https://vem-asdf.s3.sa-east-1.amazonaws.com/${filename}`
+        await executeUpdateProfilePhoto({ photoUrl: s3FileUrl })
+        re({ requestPolicy: "network-only" })
+      })(),
+      {
+        pending: "Atualizando foto de perfil",
+        error: "Ocorreu um erro ao atualizar a foto de perfil",
+        success: "Foto de perfil atualizada com sucesso!"
+      }
+    )
+  }
 
   useEffect(() => {
     setName(data?.me?.name!);
@@ -109,18 +153,14 @@ export default function Home() {
         <Form>
           <Avatar>
             <Image
-              src={
-                data?.me?.photoUrl ||
-                "https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
-              }
+              src={data?.me?.photoUrl!}
               width={100}
               height={100}
               alt="Foto do usuário"
             />
-
             <label htmlFor="avatar">
               <FiCamera />
-              <input type="file" id="avatar" disabled={fetching} />
+              <input id="avatar" type="file" accept="image/png, image/jpeg" hidden onChange={uploadPhoto} disabled={fetching} />
             </label>
           </Avatar>
 

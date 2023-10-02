@@ -129,4 +129,15 @@ export class UsersService {
       busca: JSON.stringify(busca.busca)
     }))
   }
+
+  async updateProfilePicture(userId: string, photoUrl: string) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        photoUrl
+      }
+    })
+
+    return true
+  }
 }

@@ -186,7 +186,7 @@ export default function QuestionRunner({
                     selected == alternative.id || correct == alternative.id && "btn-active",
                     deletedAlternatives.includes(alternative.id) || Boolean(correct) && "no-animation"
                   )}
-                  disabled={deletedAlternatives.includes(alternative.id)}
+                  disabled={deletedAlternatives.includes(alternative.id) || !active}
                 >
                   {alternative.letter}
                 </button>
@@ -210,7 +210,7 @@ export default function QuestionRunner({
         {correct ? (
           <button className="btn btn-primary w-full md:w-auto" onClick={() => setQuestionNumber(questionNumber + 1)}>Próximo</button>
         ) : (
-          <button className="btn btn-primary w-full md:w-auto" disabled={loadingReponse} onClick={answerQuestion}>
+          <button className="btn btn-primary w-full md:w-auto" disabled={loadingReponse || !active} onClick={answerQuestion}>
             {loadingReponse ? <span className="loading loading-spinner" /> : "Responder"}
           </button>
         )}

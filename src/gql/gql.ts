@@ -19,6 +19,7 @@ const documents = {
     "\n  query QuestionsFilters {\n    processosSeletivos {\n      id\n      name\n    }\n    anos {\n      id\n      ano\n    }\n    locais {\n      id\n      name\n    }\n    perfis {\n      id\n      name\n    }\n    areas {\n      id\n      name\n    }\n    subareas {\n      id\n      name\n    }\n    estados {\n      id\n      name\n    }\n    bancas {\n      id\n      name\n    }\n  }\n": types.QuestionsFiltersDocument,
     "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n": types.MeDocument,
     "\n  mutation Logout {\n    logout\n  }\n": types.LogoutDocument,
+    "\n  mutation ReadNotification($id: String!) {\n    readNotifications(notificationIds: [$id])\n  }\n": types.ReadNotificationDocument,
     "\n  mutation DeleteUser($id: String!) {\n    deleteUser(id: $id)\n  }\n": types.DeleteUserDocument,
     "\n  query GetAreas2 {\n    areas {\n      id\n      name\n    }\n  }\n": types.GetAreas2Document,
     "\n  mutation CreateSimulado2($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimulado2Document,
@@ -44,7 +45,7 @@ const documents = {
     "\n  query GetFilters {\n    filtros {\n      id\n      name\n      busca\n    }\n  }\n": types.GetFiltersDocument,
     "\n  mutation AddFilter($name: String!, $filter: String!) {\n    createFiltro(name: $name, busca: $filter)\n  }\n": types.AddFilterDocument,
     "\n  mutation DeleteFilter($id: String!) {\n    deleteFiltro(id: $id)\n  }\n": types.DeleteFilterDocument,
-    "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetNotebookDocument,
+    "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      name\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetNotebookDocument,
     "\n  mutation ResolveQuestionOnNotebook(\n    $questionId: String!\n    $alternativeId: String!\n    $notebookId: String!\n  ) {\n    addAnswer(\n      questionId: $questionId\n      alternativeId: $alternativeId\n      notebookId: $notebookId\n    ) {\n      correct\n      correctAlternative\n    }\n  }\n": types.ResolveQuestionOnNotebookDocument,
     "\n  query NotebooksQuery {\n    notebooks {\n      id\n      name\n      description\n      questions {\n        id\n      }\n    }\n  }\n": types.NotebooksQueryDocument,
     "\n  query Chart($lte: LTE!) {\n    relatorio(lte: $lte) {\n      questions {\n        date\n        total\n        totalCorrect\n      }\n      materias {\n        nome\n        total\n        correto\n      }\n      total\n      correto\n    }\n  }\n": types.ChartDocument,
@@ -53,6 +54,7 @@ const documents = {
     "\n  query Me3 {\n    me {\n      name\n      email\n      photoUrl\n    }\n  }\n": types.Me3Document,
     "\n  mutation UpdateProfile($name: String, $photoUrl: String) {\n    updateProfile(name: $name, photoUrl: $photoUrl)\n  }\n": types.UpdateProfileDocument,
     "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n": types.UpdatePasswordDocument,
+    "\n  mutation UpdateProfilePhoto($photoUrl: String!) {\n    updateProfilePicture(photoUrl: $photoUrl)\n  }\n": types.UpdateProfilePhotoDocument,
     "\n  query RaioX($provaId: String!) {\n    raioX(provaId: $provaId) {\n      area {\n        id\n        name\n      }\n      relevancia\n      desempenho\n    }\n  }\n": types.RaioXDocument,
     "\n  query ProcessosSeletivos {\n    processosSeletivos {\n      id\n      name\n    }\n  }\n": types.ProcessosSeletivosDocument,
     "\n  query GetSimulado2($id: String!) {\n    simulado(id: $id) {\n      totalMinutes\n      totalQuestions\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n": types.GetSimulado2Document,
@@ -99,6 +101,10 @@ export function graphql(source: "\n  query Me {\n    me {\n      name\n      pho
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation Logout {\n    logout\n  }\n"): (typeof documents)["\n  mutation Logout {\n    logout\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation ReadNotification($id: String!) {\n    readNotifications(notificationIds: [$id])\n  }\n"): (typeof documents)["\n  mutation ReadNotification($id: String!) {\n    readNotifications(notificationIds: [$id])\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -202,7 +208,7 @@ export function graphql(source: "\n  mutation DeleteFilter($id: String!) {\n    
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      name\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetNotebook($id: String!) {\n    notebook(notebookId: $id) {\n      name\n      questions {\n        id\n        enunciado\n        alternatives {\n          id\n          letter\n          text\n        }\n        ano {\n          ano\n        }\n        banca {\n          name\n        }\n        processoSeletivo {\n          name\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -235,6 +241,10 @@ export function graphql(source: "\n  mutation UpdateProfile($name: String, $phot
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n"): (typeof documents)["\n  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {\n    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateProfilePhoto($photoUrl: String!) {\n    updateProfilePicture(photoUrl: $photoUrl)\n  }\n"): (typeof documents)["\n  mutation UpdateProfilePhoto($photoUrl: String!) {\n    updateProfilePicture(photoUrl: $photoUrl)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

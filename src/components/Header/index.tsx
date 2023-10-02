@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import {
   AiOutlineDownCircle,
   AiOutlineUser,
   AiOutlinePoweroff,
-  AiOutlineBell,
-} from "react-icons/ai";
-
-import Logo from "../../assets/logo.png";
-import Link from "next/link";
-import { graphql } from "@/gql";
-import { useMutation, useQuery } from "urql";
+  AiOutlineBell
+} from "react-icons/ai"
+import Logo from "../../assets/logo.png"
+import Link from "next/link"
+import { graphql } from "@/gql"
+import { useMutation, useQuery } from "urql"
 
 const meQuery = graphql(/* GraphQL */ `
   query Me {
@@ -32,16 +31,31 @@ const logoutMutation = graphql(/* GraphQL */ `
   }
 `);
 
+const readNotificationMutation = graphql(/* GraphQL */ `
+  mutation ReadNotification($id: String!) {
+    readNotifications(notificationIds: [$id])
+  }
+`)
+
 type HeaderProps = {
-  invisible?: boolean;
-};
+  invisible?: boolean
+}
 
 export const Header = ({ invisible = false }: HeaderProps) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [result] = useQuery({ query: meQuery });
-  const [, execute] = useMutation(logoutMutation);
+  const [result, reloadNotifications] = useQuery({ query: meQuery })
+  const [, execute] = useMutation(logoutMutation)
+  const [, executeReadNotification] = useMutation(readNotificationMutation)
 
-  const { data, fetching } = result;
+  const { data, fetching: fetching2 } = result
+  const fetching = fetching2 && !data
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      reloadNotifications({ requestPolicy: "network-only" })
+    }, 10000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <div className="sticky top-0 z-40 w-full h-20 border-b navbar bg-base-100 lg:pr-10">
@@ -76,9 +90,13 @@ export const Header = ({ invisible = false }: HeaderProps) => {
       </div>
       <div className="navbar-end">
         <details className="dropdown dropdown-end lg:mr-4">
-          <summary className="rounded-full btn btn-ghost">
+          <summary className="rounded-full btn btn-ghost h-10 w-12">
+          <div className="indicator">
+            {(data?.notifications?.length || 0) > 0 && (
+              <span className="indicator-item badge badge-error h-5 w-5 flex items-center justify-center rounded-full border-0 text-white">{data?.notifications?.length}</span>
+            )}
             <AiOutlineBell size={24} />
-            {/* <span className="badge badge-xs badge-primary indicator-item"></span> */}
+          </div>
           </summary>
           <ul
             tabIndex={0}
@@ -96,7 +114,17 @@ export const Header = ({ invisible = false }: HeaderProps) => {
                 <li>
                   <p className="text-base font-bold">{notification.title}</p>
                   <p className="text-sm">{notification.body}</p>
-                  <button className="font-bold duration-200 hover:text-primary">
+                  <button
+                    className="font-bold duration-200 hover:text-primary"
+                    onClick={() => {
+                      executeReadNotification({ id: notification.id })
+                        .then(data => {
+                          if (data.data?.readNotifications) {
+                            reloadNotifications({ requestPolicy: "network-only" })
+                          }
+                        })
+                    }}
+                  >
                     Marcar como lida
                   </button>
                 </li>
