@@ -29,4 +29,4 @@ export const Input = ({ text, ...rest }: InputInterface) => {
       <span>{text}</span>
     </Container>
   );
-}
+};
