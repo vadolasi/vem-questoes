@@ -13,6 +13,7 @@ import { GoReport } from "react-icons/go";
 import { FC } from "react";
 import Logo from "../../assets/logo.png";
 import { Container } from "./styles";
+import { HiTicket } from "react-icons/hi"
 
 interface menuProps {
   page: string;
@@ -104,6 +105,15 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
           >
             <GoReport />
             Analisar simulado
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/analisarSimulado"
+            className={page == "analisarSimulado" ? "page" : ""}
+          >
+            <HiTicket />
+            Tickets
           </Link>
         </li>
       </Container>
