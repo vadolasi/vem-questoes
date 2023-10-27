@@ -134,6 +134,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
+  mercadopago:
+    specifier: ^2.0.3
+    version: 2.0.3
   mjml:
     specifier: ^4.14.1
     version: 4.14.1
@@ -8421,6 +8424,15 @@ packages:
     resolution: {integrity: sha512-IAeFvcOnV9V0Yk+bFhYR07O3yNina9ANIN5MoXBKYJ/RLYPurd2d0yw14MDhpr9/momp0WofT1bPUh3hkzdi/g==}
     dev: false
 
+  /mercadopago@2.0.3:
+    resolution: {integrity: sha512-4aYlKSZxw6WrLFeJ8OKR+CW0GNwzmEfyoiyqY6aEt/BQDwKp0QCwcL7pGrNIXrR6Gjj+N1XeUv7ZaI5SmN8RTg==}
+    dependencies:
+      node-fetch: 2.7.0
+      uuid: 9.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
 
@@ -11386,7 +11398,6 @@ packages:
   /uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
-    dev: true
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

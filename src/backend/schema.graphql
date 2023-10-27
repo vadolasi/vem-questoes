@@ -248,7 +248,7 @@ type Mutation {
   editComment(content: String!, commentId: String!): Boolean!
   addQuestionToNotebook(questionId: String!, id: String!): NotebookModel!
   removeQuestionFromNotebook(questionId: String!, id: String!): NotebookModel!
-  createSimulado(areas: [AreaToSimuladoInput!]!, type: SimuladoType!, name: String!): Simulado!
+  createSimulado(quantity: Float, areas: [AreaToSimuladoInput!], type: SimuladoType!, name: String!): Simulado!
   deleteSimulado(id: String!): Boolean!
   updateSimulado(name: String!, id: String!): Boolean!
   createNotification(body: String!, title: String!): Notification!

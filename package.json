@@ -53,6 +53,7 @@
     "graphql-yoga": "^3.9.1",
     "immer": "^10.0.2",
     "jsonwebtoken": "^9.0.2",
+    "mercadopago": "^2.0.3",
     "mjml": "^4.14.1",
     "nanoid": "^4.0.2",
     "next": "13.2.4",

@@ -293,9 +293,10 @@ export class QuestionsResolver {
     @CurrentUserID() userId: string,
     @Arg("name") name: string,
     @Arg("type") type: SimuladoType,
-    @Arg("areas", type => [AreaToSimuladoInput]) areas: AreaToSimuladoInput[]
+    @Arg("areas", type => [AreaToSimuladoInput], { nullable: true }) areas?: AreaToSimuladoInput[],
+    @Arg("quantity", { nullable: true }) quantity?: number
   ) {
-    return await this.questionsService.createSimulado(userId, name, type, areas)
+    return await this.questionsService.createSimulado(userId, name, type, quantity, areas)
   }
 
   @Authorized()

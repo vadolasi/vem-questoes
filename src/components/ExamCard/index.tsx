@@ -1,9 +1,11 @@
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import {AiOutlineHourglass, AiOutlineQuestionCircle} from 'react-icons/ai'
 
 import { Container } from "./styles"
+import { useModal } from "../Modal"
+import OpenSimulado from "../OpenSimulado"
 
 interface ExamCardInterface{
     id: string,
@@ -25,8 +27,19 @@ export const ExamCard: FC<ExamCardInterface> = ({id, name, questions}) => {
         return `${textHours}:${textMinutes}`;
     }
 
+    const [simuladoId, setSimuladoId] = useState("")
+
+    const [openSimuladoModal, setOpenSimuladoModal] = useModal(<OpenSimulado simuladoId={simuladoId} />)
+
+    useEffect(() => {
+      setOpenSimuladoModal(<OpenSimulado simuladoId={simuladoId} />)
+    }, [simuladoId])
+
     return(
-        <Container onClick={() => router.push(`/simulados/${id}`)}>
+        <Container onClick={() => {
+          setSimuladoId(id)
+          openSimuladoModal()
+        }}>
             <div className="examInfo">
             <p>{name}</p>
             </div>

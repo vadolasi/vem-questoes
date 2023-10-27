@@ -678,7 +678,7 @@ export class QuestionsService {
     return simulado
   }
 
-  async createSimulado(userId: string, name: string, type: SimuladoType, areas?: { areaId: string, quantity: number }[]) {
+  async createSimulado(userId: string, name: string, type: SimuladoType, quantity?: number, areas?: { areaId: string, quantity: number }[]) {
     if (type === SimuladoType.Custom && areas) {
       const totalQuestions = areas?.reduce((counter, area) => area.quantity + counter, 0)!
       const totalMinutes = totalQuestions * 3
@@ -726,7 +726,7 @@ export class QuestionsService {
         },
         include: { questions: { include: { alternatives: true } } }
       })
-    } else {
+    } else if (quantity) {
       const questions = await prisma.question.findMany({
         where: {
           enunciado: {
@@ -755,8 +755,6 @@ export class QuestionsService {
         select: { id: true }
       })
 
-      const quantites = [10, 15, 20, 25, 30]
-      const quantity = getRandomItem(quantites)
       const totalMinutes = quantity * 3
 
       return await prisma.simulado.create({

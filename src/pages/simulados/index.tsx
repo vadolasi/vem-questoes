@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useEffect, useState } from 'react';
 
 import { Search } from '../../components/styles/cadernos';
 
@@ -15,6 +15,9 @@ import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import clsx from 'clsx';
 import { DefaultSearchPage } from '@/components/DefaultSearchPage';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
+import { BsFillPlayFill } from 'react-icons/bs';
+import OpenSimulado from '@/components/OpenSimulado';
 
 const simuladosQuery = graphql(/* GraphQL */ `
   query MeusSimulados {
@@ -37,10 +40,14 @@ const deleteSimuladoMutation = graphql(/* GraphQL */ `
 export default function Simulados() {
   const [{ data, fetching }, executeQuery] = useQuery({ query: simuladosQuery })
   const [, executeDeleteMutation] = useMutation(deleteSimuladoMutation)
+  const [simuladoId, setSimuladoId] = useState("")
 
-  const [firstLoad, setFirstLoad] = useState(true)
+  const [showAddSimulatoModal, , close] = useModal(<AddSimualdoModal onAdd={onAdd} />)
+  const [openSimuladoModal, setOpenSimuladoModal] = useModal(<OpenSimulado simuladoId={simuladoId} />)
 
-  const [showAddSimulatoModal,, close] = useModal(<AddSimualdoModal onAdd={onAdd} />)
+  useEffect(() => {
+    setOpenSimuladoModal(<OpenSimulado simuladoId={simuladoId} />)
+  }, [simuladoId])
 
   function onAdd() {
     close()
@@ -85,7 +92,7 @@ export default function Simulados() {
           loading={fetching}
         >
           <div className={clsx("flex flex-col divide-y")}>
-            {firstLoad && fetching ? (
+            {fetching ? (
               <span className="loading loading-spinner" />
             ) : data?.simulados.simulados.length! < 1 ? (
               <h1>Nenhum simulado!</h1>
@@ -99,6 +106,12 @@ export default function Simulados() {
                     <span>Questões</span>
                     <span>{simulado.totalQuestions}</span>
                   </div>
+                  <button className="btn btn-circle btn-sm btn-outline btn-info" onClick={() => {
+                    setSimuladoId(simulado.id)
+                    openSimuladoModal()
+                  }}>
+                    <BsFillPlayFill />
+                  </button>
                   <button className="btn btn-circle btn-sm btn-outline btn-error" onClick={() => handleDeleteSimuladoButton(simulado.id)}>
                     <AiOutlineDelete />
                   </button>

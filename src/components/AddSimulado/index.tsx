@@ -33,6 +33,21 @@ const createCustomSimuladoMutation = graphql(/* GraphQL */ `
   }
 `)
 
+const createRandomSimuladoMutation = graphql(/* GraphQL */ `
+  mutation CreateRandomSimulado($name: String!, $quantity: Float!) {
+    createSimulado(
+      name: $name
+      type: Random
+      quantity: $quantity
+    ) {
+      id
+      questions {
+        id
+      }
+    }
+  }
+`)
+
 const schema = z.object({
   name: z.string(),
   areas: z.array(
@@ -40,7 +55,8 @@ const schema = z.object({
       areaId: z.string(),
       quantity: z.number()
     })
-  )
+  ),
+  quantity: z.number()
 })
 
 type FormData = z.infer<typeof schema>
@@ -53,6 +69,7 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
   const [newSimiladoType, setNewSimuladoType] = useState<"Aleatório" | "Personalizado" | null>(null)
   const [{ data }] = useQuery({ query: GetAreasQuery })
   const [, executeMutation] = useMutation(createCustomSimuladoMutation)
+  const [, executeRandomMutation] = useMutation(createRandomSimuladoMutation)
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
 
   const {
@@ -63,7 +80,8 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      areas: []
+      areas: [],
+      quantity: 10
     }
   })
 
@@ -72,9 +90,20 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
     name: "areas"
   })
 
-  const onSubmit = handleSubmit(({ name, areas }) => {
+  const onSubmit = handleSubmit(({ name, areas, quantity }) => {
     toast.promise(
       (async () => {
+        if (newSimiladoType === "Aleatório") {
+          const { error } = await executeRandomMutation({ name, quantity: quantity! })
+
+          onAdd()
+
+          if (error) {
+            throw new Error(error.message)
+          }
+
+          return
+        }
         const { error } = await executeMutation({ areas, name })
 
         onAdd()
@@ -121,6 +150,15 @@ const AddSimualdoModal: React.FC<Props> = ({ onAdd }) => {
             <option>Personalizado</option>
           </select>
         </div>
+        {newSimiladoType === "Aleatório" && (
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Quantidade de questões</span>
+            </label>
+            <input type="number" min={1} step={1} max={100} className="input input-sm input-bordered w-full" {...register("quantity", { valueAsNumber: true })} />
+            {errors.quantity && <span className="text-error">{errors.quantity.message}</span>}
+          </div>
+        )}
         {newSimiladoType === "Personalizado" && (
           <div className="my-3 max-h-96 overflow-y-auto">
             <h2>Áreas</h2>

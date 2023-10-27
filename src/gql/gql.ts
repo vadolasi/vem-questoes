@@ -16,6 +16,7 @@ const documents = {
     "\n  mutation RefreshToken {\n    refreshToken\n  }\n": types.RefreshTokenDocument,
     "\n  query GetAreas {\n    areas {\n      id\n      name\n      count\n    }\n  }\n": types.GetAreasDocument,
     "\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
+    "\n  mutation CreateRandomSimulado($name: String!, $quantity: Float!) {\n    createSimulado(\n      name: $name\n      type: Random\n      quantity: $quantity\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateRandomSimuladoDocument,
     "\n  query QuestionsFilters {\n    processosSeletivos {\n      id\n      name\n    }\n    anos {\n      id\n      ano\n    }\n    locais {\n      id\n      name\n    }\n    perfis {\n      id\n      name\n    }\n    areas {\n      id\n      name\n    }\n    subareas {\n      id\n      name\n    }\n    estados {\n      id\n      name\n    }\n    bancas {\n      id\n      name\n    }\n  }\n": types.QuestionsFiltersDocument,
     "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n": types.MeDocument,
     "\n  mutation Logout {\n    logout\n  }\n": types.LogoutDocument,
@@ -89,6 +90,10 @@ export function graphql(source: "\n  query GetAreas {\n    areas {\n      id\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateRandomSimulado($name: String!, $quantity: Float!) {\n    createSimulado(\n      name: $name\n      type: Random\n      quantity: $quantity\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateRandomSimulado($name: String!, $quantity: Float!) {\n    createSimulado(\n      name: $name\n      type: Random\n      quantity: $quantity\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
