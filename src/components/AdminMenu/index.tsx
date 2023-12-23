@@ -116,6 +116,15 @@ export const AdminMenu: FC<menuProps> = ({ page, invisible }) => {
             Tickets
           </Link>
         </li>
+        <li>
+          <Link
+            href="/admin/ofertas"
+            className={page == "analisarSimulado" ? "page" : ""}
+          >
+            <HiTicket />
+            Ofertas
+          </Link>
+        </li>
       </Container>
     </div>
   );

@@ -1,12 +1,13 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { withAuth } from "next-auth/middleware"
 
-export function middleware(request: NextRequest) {
-  if (!request.cookies.has("refreshToken")) {
-    return NextResponse.redirect(new URL("/login", request.url))
+export default withAuth({
+  callbacks: {
+    authorized: async ({ token }) => {
+      return true
+    }
   }
-}
+})
 
 export const config = {
-  matcher: "/((?!api|_next/static|_next/image|favicon.ico|login).*)"
+  matcher: ["/((?!api|login|_next/static|_next/image|favicon.ico).*)"]
 }

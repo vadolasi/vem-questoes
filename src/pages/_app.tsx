@@ -1,25 +1,21 @@
 import type { AppProps } from "next/app"
-import Head from "next/head";
-import { Provider } from 'urql';
-
+import Head from "next/head"
+import { Provider } from "urql"
 import { globalStyles } from "@/styles/global"
-
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { client } from "@/client";
-import { useEffect } from "react";
-
-import Script from 'next/script';
-import { Tooltip } from 'react-tooltip'
-
-import 'react-tooltip/dist/react-tooltip.css'
-
-import '../styles/index.css'
-import { Modals } from "@/components/Modal";
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { client } from "@/client"
+import { useEffect } from "react"
+import Script from "next/script"
+import { Tooltip } from "react-tooltip"
+import "react-tooltip/dist/react-tooltip.css"
+import "../styles/index.css"
+import { Modals } from "@/components/Modal"
+import { SessionProvider } from "next-auth/react"
 
 globalStyles();
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   useEffect(() => {
     // @ts-ignore
     window.OneSignal = window.OneSignal || []
@@ -43,16 +39,18 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <Provider value={client}>
-      <Head>
-        <title>Vem Questões</title>
-        <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async={true} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <ToastContainer style={{ zIndex: 200000 }} />
-      <Tooltip id="tooltip" />
-      <Component {...pageProps} />
-      <Modals />
-    </Provider>
+    <SessionProvider session={session}>
+      <Provider value={client}>
+        <Head>
+          <title>Vem Questões</title>
+          <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async={true} />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        </Head>
+        <ToastContainer style={{ zIndex: 200000 }} />
+        <Tooltip id="tooltip" />
+        <Component {...pageProps} />
+        <Modals />
+      </Provider>
+    </SessionProvider>
   )
 }

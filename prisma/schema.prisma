@@ -258,13 +258,16 @@ model Ticket {
 }
 
 model Oferta {
-  id           String @id @default(cuid())
-  name         String @unique
-  imageUrl     String?
-  preco        Float
-  text         String?
-  features     String[]
-  unvavailable String[]
+  id            String @id @default(cuid())
+  name          String @unique
+  imageUrl      String?
+  preco         Float
+  text          String?
+  features      String[]
+  unvavailable  String[]
+  frequancy     Int
+  frequencyType String
+  mercadoPagoId String
 }
 
 model Diagnostico_Question {

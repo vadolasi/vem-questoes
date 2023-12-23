@@ -4,10 +4,10 @@ import Image from "next/image"
 import { useMutation, useQuery } from "urql"
 import { toast } from "react-toastify"
 import { useEffect, useState } from "react"
-import useUserStore from "@/store"
 import clsx from "clsx"
 import { FiEdit, FiTrash } from "react-icons/fi"
 import { useModal } from "@/components/Modal"
+import { useSession } from "next-auth/react"
 
 interface IProps {
   questionId: string | undefined
@@ -46,7 +46,8 @@ const editCommentMutation = graphql(/* GraphQL */ `
 `)
 
 const Comments: React.FC<IProps> = ({ questionId }) => {
-  const { id: userId, isAdmin } = useUserStore()
+  const session = useSession()
+  const user = session.data?.user as { id: string, isAdmin: boolean }
   const [content, setContent] = useState("")
   const [newContent, setNewContent] = useState("")
   const [{ fetching: loadingComments, data: commentsQueryData }, executeQuery] = useQuery({ query: commentsQuery, variables: { questionId: questionId || "" }, pause: questionId === undefined })
@@ -164,7 +165,7 @@ const Comments: React.FC<IProps> = ({ questionId }) => {
                   <span className="font-medium tetx-sm">{comment.user.name}</span>
                   <p className="text-sm break-words">{comment.content}</p>
                 </div>
-                <div className={clsx("absolute right-5 h-full group-hover:flex items-center gap-2 hidden", (comment.user.id === userId || isAdmin) && "group-hover:flex")}>
+                <div className={clsx("absolute right-5 h-full group-hover:flex items-center gap-2 hidden", (comment.user.id === user?.id || user?.isAdmin) && "group-hover:flex")}>
                   <button
                     className="btn btn-xs btn-circle btn-outline"
                     onClick={() => {
