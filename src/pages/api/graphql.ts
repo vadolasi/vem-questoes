@@ -7,7 +7,6 @@ import { UserResolver } from "../../backend/users/users.resolver"
 import { renderGraphiQL } from "@graphql-yoga/render-graphiql"
 import { useGraphQlJit } from "@envelop/graphql-jit"
 import { authChecker } from "../../backend/auth"
-import { AuthResolver } from "@/backend/auth/auth.resolver"
 import { printSchema } from "graphql"
 import { writeFile } from "fs/promises"
 import { GqlContext } from "@/backend/gqlContext"
@@ -24,7 +23,7 @@ export const config = {
 }
 
 const schema = await buildSchema({
-  resolvers: [UserResolver, AuthResolver, QuestionsResolver, NotificationsResolver, TicketsResolver],
+  resolvers: [UserResolver, QuestionsResolver, NotificationsResolver, TicketsResolver],
   container: Container,
   authChecker,
   validate: { forbidUnknownValues: false }
