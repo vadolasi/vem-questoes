@@ -1,4 +1,4 @@
-import { AuthChecker, createParamDecorator } from "type-graphql"
+import { AuthChecker, createParameterDecorator } from "type-graphql"
 import prisma from "../lib/prisma"
 
 export interface ContextType {
@@ -33,5 +33,5 @@ export const authChecker: AuthChecker<ContextType> = async (
 }
 
 export function CurrentUserID() {
-  return createParamDecorator<ContextType>(({ context }) => context.getUserId())
+  return createParameterDecorator<ContextType>(({ context }) => context.getUserId())
 }
