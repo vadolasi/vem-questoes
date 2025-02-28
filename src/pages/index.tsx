@@ -54,11 +54,7 @@ export default function Home() {
   const { data, fetching } = result;
 
   const percentage =
-    (100 * data?.me?.totalCorrect!) / data?.me?.totalQuestions! || 0;
-
-  if (!fetching && !data) {
-    router.push("/login");
-  }
+    (100 * data?.me?.totalCorrect!) / data?.me?.totalQuestions! || 0
 
   return (
     <Layout page="home">
