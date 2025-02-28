@@ -1,8 +1,4 @@
 type Query {
-  me: User
-  leaderBoard: [User!]
-  users: [User!]!
-  filtros: [Filter!]!
   processosSeletivos: [ProcessoSeletivo!]!
   anos: [Ano!]!
   locais: [Local!]!
@@ -25,28 +21,10 @@ type Query {
   raioX(provaId: String!): [RaioX!]!
   notifications: [Notification!]!
   openedRickets: [Ticket!]
-}
-
-type User {
-  id: ID!
-  photoUrl: String!
-  email: String!
-  name: String!
-  totalQuestions: Float!
-  totalCorrect: Float!
-  role: Role!
-}
-
-enum Role {
-  USER
-  ADMIN
-  DEVELOPER
-}
-
-type Filter {
-  id: ID!
-  name: String!
-  busca: String!
+  me: User
+  leaderBoard: [User!]
+  users: [User!]!
+  filtros: [Filter!]!
 }
 
 type ProcessoSeletivo {
@@ -127,6 +105,22 @@ type Comment {
   id: ID!
   content: String!
   user: User!
+}
+
+type User {
+  id: ID!
+  photoUrl: String!
+  email: String!
+  name: String!
+  totalQuestions: Float!
+  totalCorrect: Float!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
 }
 
 type NotebookModel {
@@ -235,14 +229,13 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTimeISO
 
+type Filter {
+  id: ID!
+  name: String!
+  busca: String!
+}
+
 type Mutation {
-  deleteUser(id: String!): Boolean!
-  inviteUser(role: Role!, name: String!, email: String!): User!
-  updateProfile(photoUrl: String, name: String): Boolean!
-  updatePassword(newPassword: String!, oldPassword: String!): Boolean!
-  createFiltro(busca: String!, name: String!): String!
-  deleteFiltro(id: String!): Boolean!
-  updateProfilePicture(photoUrl: String!): Boolean!
   addAnswer(notebookId: String, simuladoId: String, alternativeId: String!, questionId: String!): AddAnswerResponse!
   addComment(content: String!, questionId: String!): Boolean!
   addNotebook(description: String, name: String!): NotebookModel!
@@ -259,6 +252,13 @@ type Mutation {
   readNotifications(notificationIds: [String!]!): Boolean!
   addTicket(questionId: String, type: TicketType!, content: String!): Ticket!
   resolveTicket(id: String!): Boolean!
+  deleteUser(id: String!): Boolean!
+  inviteUser(role: Role!, name: String!, email: String!): User!
+  updateProfile(photoUrl: String, name: String): Boolean!
+  updatePassword(newPassword: String!, oldPassword: String!): Boolean!
+  createFiltro(busca: String!, name: String!): String!
+  deleteFiltro(id: String!): Boolean!
+  updateProfilePicture(photoUrl: String!): Boolean!
 }
 
 type AddAnswerResponse {
