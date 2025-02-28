@@ -2,37 +2,33 @@ import prisma from "../src/lib/prisma"
 import { join } from "path"
 import * as xlsx from "xlsx"
 
-function extractQuestions(text: string) {
-  const matchesRegex = new RegExp("(?:^|\\n)([A-E])\\)\\s*(.*?)(?=\\n[A-E]\\)|\\n*$)", "gms")
-  const matches = text.matchAll(matchesRegex)
+function nextOption(option: string): string {
+  return String.fromCharCode(option.charCodeAt(0) + 1);
+}
 
-  const questions: { [key: string]: string } = {}
-  let previousOption = "a"
+function extractQuestions(text: string) {
+  const matchesRegex = new RegExp("(?:^|\\n)([A-E])\\)\\s*(.*?)(?=\\n[A-E]\\)|\\n*$)", "gms");
+  const matches = text.matchAll(matchesRegex);
+
+  const questions: { [key: string]: string } = {};
+  let expectedOption = "A";
 
   for (const match of matches) {
-    const option = match[1]
-    const question = match[2].replace(/_x000D_/g, "").trim()
+    const option = match[1].toUpperCase();
+    const question = match[2].replace(/_x000D_/g, "").trim();
 
-    if (!isNextOption(previousOption, option)) {
-      previousOption = nextOption(previousOption)
+    if (option !== expectedOption) {
+      console.warn(`Unexpected option found: ${option}. Expected: ${expectedOption}`);
     }
 
-    questions[previousOption] = question
-    previousOption = nextOption(previousOption)
+    questions[expectedOption] = question;
+    expectedOption = nextOption(expectedOption);
   }
 
   return {
     text: text.replace(/_x000D_/g, ""),
-    questions: questions
-  }
-}
-
-function isNextOption(previous: string, current: string): boolean {
-  return current.charCodeAt(0) === previous.charCodeAt(0) + 1
-}
-
-function nextOption(option: string): string {
-  return String.fromCharCode(option.charCodeAt(0) + 1)
+    questions,
+  };
 }
 
 async function main() {

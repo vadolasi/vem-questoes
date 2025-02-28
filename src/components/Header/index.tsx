@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Image from "next/image"
 import {
   AiOutlineDownCircle,
@@ -25,12 +25,6 @@ const meQuery = graphql(/* GraphQL */ `
   }
 `);
 
-const logoutMutation = graphql(/* GraphQL */ `
-  mutation Logout {
-    logout
-  }
-`);
-
 const readNotificationMutation = graphql(/* GraphQL */ `
   mutation ReadNotification($id: String!) {
     readNotifications(notificationIds: [$id])
@@ -43,7 +37,6 @@ type HeaderProps = {
 
 export const Header = ({ invisible = false }: HeaderProps) => {
   const [result, reloadNotifications] = useQuery({ query: meQuery })
-  const [, execute] = useMutation(logoutMutation)
   const [, executeReadNotification] = useMutation(readNotificationMutation)
 
   const { data, fetching: fetching2 } = result
@@ -174,7 +167,7 @@ export const Header = ({ invisible = false }: HeaderProps) => {
               </Link>
             </li>
             <li className="font-bold">
-              <Link href="/login" onClick={() => execute({})}>
+              <Link href="/login" onClick={() => {/* TODO */}}>
                 <AiOutlinePoweroff size={20} />
                 Sair
               </Link>

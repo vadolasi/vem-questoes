@@ -7,13 +7,26 @@ CREATE TYPE "TicketType" AS ENUM ('BUG', 'FEATURE', 'QUESTION', 'OTHER');
 -- CreateEnum
 CREATE TYPE "TicketStatus" AS ENUM ('OPEN', 'IN_PROGRESS', 'DONE');
 
+-- CreateEnum
+CREATE TYPE "ErrorClassification" AS ENUM ('CERTEZA', 'ATENCAO', 'INCERTEZA');
+
 -- CreateTable
 CREATE TABLE "Notification" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "body" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdById" TEXT,
 
     CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DashboardImage" (
+    "id" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+
+    CONSTRAINT "DashboardImage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -26,11 +39,24 @@ CREATE TABLE "NotificationToUser" (
 );
 
 -- CreateTable
+CREATE TABLE "Busca" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "busca" JSONB NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Busca_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "cpf" TEXT,
+    "phone" TEXT,
     "photoUrl" TEXT NOT NULL DEFAULT 'https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg',
     "name" TEXT NOT NULL,
+    "asaasId" TEXT,
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "totalQuestions" INTEGER NOT NULL,
@@ -129,6 +155,15 @@ CREATE TABLE "Area" (
 );
 
 -- CreateTable
+CREATE TABLE "Area_Subarea" (
+    "id" TEXT NOT NULL,
+    "areaId" TEXT NOT NULL,
+    "subareaId" TEXT NOT NULL,
+
+    CONSTRAINT "Area_Subarea_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Subarea" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -173,6 +208,7 @@ CREATE TABLE "Response" (
     "notebookId" TEXT,
     "correct" BOOLEAN NOT NULL,
     "userId" TEXT NOT NULL,
+    "motivo" "ErrorClassification",
 
     CONSTRAINT "Response_pkey" PRIMARY KEY ("id")
 );
@@ -185,6 +221,7 @@ CREATE TABLE "Simulado" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "totalQuestions" INTEGER NOT NULL,
     "totalMinutes" INTEGER NOT NULL,
+    "sequence" TEXT,
 
     CONSTRAINT "Simulado_pkey" PRIMARY KEY ("id")
 );
@@ -208,8 +245,39 @@ CREATE TABLE "Oferta" (
     "name" TEXT NOT NULL,
     "imageUrl" TEXT,
     "preco" DOUBLE PRECISION NOT NULL,
+    "text" TEXT,
+    "features" TEXT[],
+    "unvavailable" TEXT[],
+    "frequancy" INTEGER NOT NULL,
+    "frequencyType" TEXT NOT NULL,
+    "mercadoPagoId" TEXT NOT NULL,
 
     CONSTRAINT "Oferta_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Diagnostico_Question" (
+    "id" TEXT NOT NULL,
+    "questionId" TEXT NOT NULL,
+    "diagnosticoId" TEXT NOT NULL,
+
+    CONSTRAINT "Diagnostico_Question_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Diagnostico" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Diagnostico_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Imagem" (
+    "id" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+
+    CONSTRAINT "Imagem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -255,6 +323,9 @@ CREATE UNIQUE INDEX "Banca_name_key" ON "Banca"("name");
 CREATE UNIQUE INDEX "Oferta_name_key" ON "Oferta"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Diagnostico_name_key" ON "Diagnostico"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_QuestionToSimulado_AB_unique" ON "_QuestionToSimulado"("A", "B");
 
 -- CreateIndex
@@ -267,40 +338,46 @@ CREATE UNIQUE INDEX "_NotebookToQuestion_AB_unique" ON "_NotebookToQuestion"("A"
 CREATE INDEX "_NotebookToQuestion_B_index" ON "_NotebookToQuestion"("B");
 
 -- AddForeignKey
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "NotificationToUser" ADD CONSTRAINT "NotificationToUser_notificationId_fkey" FOREIGN KEY ("notificationId") REFERENCES "Notification"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "NotificationToUser" ADD CONSTRAINT "NotificationToUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Alternative" ADD CONSTRAINT "Alternative_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Busca" ADD CONSTRAINT "Busca_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_processoSeletivoId_fkey" FOREIGN KEY ("processoSeletivoId") REFERENCES "ProcessoSeletivo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Alternative" ADD CONSTRAINT "Alternative_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_anoId_fkey" FOREIGN KEY ("anoId") REFERENCES "Ano"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_processoSeletivoId_fkey" FOREIGN KEY ("processoSeletivoId") REFERENCES "ProcessoSeletivo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_localId_fkey" FOREIGN KEY ("localId") REFERENCES "Local"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_anoId_fkey" FOREIGN KEY ("anoId") REFERENCES "Ano"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_perfilId_fkey" FOREIGN KEY ("perfilId") REFERENCES "Perfil"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_localId_fkey" FOREIGN KEY ("localId") REFERENCES "Local"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_perfilId_fkey" FOREIGN KEY ("perfilId") REFERENCES "Perfil"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_subareaId_fkey" FOREIGN KEY ("subareaId") REFERENCES "Subarea"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_estadoId_fkey" FOREIGN KEY ("estadoId") REFERENCES "Estado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_subareaId_fkey" FOREIGN KEY ("subareaId") REFERENCES "Subarea"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_bancaId_fkey" FOREIGN KEY ("bancaId") REFERENCES "Banca"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_estadoId_fkey" FOREIGN KEY ("estadoId") REFERENCES "Estado"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_bancaId_fkey" FOREIGN KEY ("bancaId") REFERENCES "Banca"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -309,19 +386,25 @@ ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Notebook" ADD CONSTRAINT "Notebook_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Area_Subarea" ADD CONSTRAINT "Area_Subarea_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Area_Subarea" ADD CONSTRAINT "Area_Subarea_subareaId_fkey" FOREIGN KEY ("subareaId") REFERENCES "Subarea"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_alternativeId_fkey" FOREIGN KEY ("alternativeId") REFERENCES "Alternative"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_alternativeId_fkey" FOREIGN KEY ("alternativeId") REFERENCES "Alternative"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_simuladoId_fkey" FOREIGN KEY ("simuladoId") REFERENCES "Simulado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_simuladoId_fkey" FOREIGN KEY ("simuladoId") REFERENCES "Simulado"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_notebookId_fkey" FOREIGN KEY ("notebookId") REFERENCES "Notebook"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Response" ADD CONSTRAINT "Response_notebookId_fkey" FOREIGN KEY ("notebookId") REFERENCES "Notebook"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Response" ADD CONSTRAINT "Response_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -333,7 +416,13 @@ ALTER TABLE "Simulado" ADD CONSTRAINT "Simulado_userId_fkey" FOREIGN KEY ("userI
 ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Diagnostico_Question" ADD CONSTRAINT "Diagnostico_Question_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Diagnostico_Question" ADD CONSTRAINT "Diagnostico_Question_diagnosticoId_fkey" FOREIGN KEY ("diagnosticoId") REFERENCES "Diagnostico"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_QuestionToSimulado" ADD CONSTRAINT "_QuestionToSimulado_A_fkey" FOREIGN KEY ("A") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;

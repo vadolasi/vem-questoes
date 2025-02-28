@@ -2,7 +2,7 @@ import { loadMercadoPago } from "@mercadopago/sdk-js"
 import { useEffect, useRef } from "react"
 
 export default () => {
-  const mp = useRef<any>()
+  const mp = useRef<any>(undefined)
 
   useEffect(() => {
     loadMercadoPago()

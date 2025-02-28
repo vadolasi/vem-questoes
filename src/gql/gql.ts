@@ -13,13 +13,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  mutation RefreshToken {\n    refreshToken\n  }\n": types.RefreshTokenDocument,
     "\n  query GetAreas {\n    areas {\n      id\n      name\n      count\n    }\n  }\n": types.GetAreasDocument,
     "\n  mutation CreateSimulado($name: String!, $areas: [AreaToSimuladoInput!]!) {\n    createSimulado(\n      name: $name\n      type: Custom\n      areas: $areas\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateSimuladoDocument,
     "\n  mutation CreateRandomSimulado($name: String!, $quantity: Float!) {\n    createSimulado(\n      name: $name\n      type: Random\n      quantity: $quantity\n    ) {\n      id\n      questions {\n        id\n      }\n    }\n  }\n": types.CreateRandomSimuladoDocument,
     "\n  query QuestionsFilters {\n    processosSeletivos {\n      id\n      name\n    }\n    anos {\n      id\n      ano\n    }\n    locais {\n      id\n      name\n    }\n    perfis {\n      id\n      name\n    }\n    areas {\n      id\n      name\n    }\n    subareas {\n      id\n      name\n    }\n    estados {\n      id\n      name\n    }\n    bancas {\n      id\n      name\n    }\n  }\n": types.QuestionsFiltersDocument,
     "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n": types.MeDocument,
-    "\n  mutation Logout {\n    logout\n  }\n": types.LogoutDocument,
     "\n  mutation ReadNotification($id: String!) {\n    readNotifications(notificationIds: [$id])\n  }\n": types.ReadNotificationDocument,
     "\n  mutation DeleteUser($id: String!) {\n    deleteUser(id: $id)\n  }\n": types.DeleteUserDocument,
     "\n  query GetAreas2 {\n    areas {\n      id\n      name\n    }\n  }\n": types.GetAreas2Document,
@@ -80,10 +78,6 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation RefreshToken {\n    refreshToken\n  }\n"): (typeof documents)["\n  mutation RefreshToken {\n    refreshToken\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function graphql(source: "\n  query GetAreas {\n    areas {\n      id\n      name\n      count\n    }\n  }\n"): (typeof documents)["\n  query GetAreas {\n    areas {\n      id\n      name\n      count\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -101,10 +95,6 @@ export function graphql(source: "\n  query QuestionsFilters {\n    processosSele
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      name\n      photoUrl\n    }\n    notifications {\n      id\n      title\n      body\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation Logout {\n    logout\n  }\n"): (typeof documents)["\n  mutation Logout {\n    logout\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

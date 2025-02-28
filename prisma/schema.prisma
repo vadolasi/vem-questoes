@@ -95,7 +95,7 @@ model Alternative {
   text       String
   letter     String
   correct    Boolean
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
   responses  Response[]
 }
@@ -104,21 +104,21 @@ model Question {
   id                 String           @id @default(cuid())
   enunciado          String
   alternatives       Alternative[]
-  processoSeletivo   ProcessoSeletivo @relation(fields: [processoSeletivoId], references: [id])
+  processoSeletivo   ProcessoSeletivo @relation(fields: [processoSeletivoId], references: [id], onDelete: Cascade)
   processoSeletivoId String
-  ano                Ano?             @relation(fields: [anoId], references: [id])
+  ano                Ano?             @relation(fields: [anoId], references: [id], onDelete: Cascade)
   anoId              String?
-  local              Local?           @relation(fields: [localId], references: [id])
+  local              Local?           @relation(fields: [localId], references: [id], onDelete: Cascade)
   localId            String?
-  perfil             Perfil?          @relation(fields: [perfilId], references: [id])
+  perfil             Perfil?          @relation(fields: [perfilId], references: [id], onDelete: Cascade)
   perfilId           String?
-  area               Area?            @relation(fields: [areaId], references: [id])
+  area               Area?            @relation(fields: [areaId], references: [id], onDelete: Cascade)
   areaId             String?
-  subarea            Subarea?         @relation(fields: [subareaId], references: [id])
+  subarea            Subarea?         @relation(fields: [subareaId], references: [id], onDelete: Cascade)
   subareaId          String?
-  estado             Estado?          @relation(fields: [estadoId], references: [id])
+  estado             Estado?          @relation(fields: [estadoId], references: [id], onDelete: Cascade)
   estadoId           String?
-  banca              Banca?           @relation(fields: [bancaId], references: [id])
+  banca              Banca?           @relation(fields: [bancaId], references: [id], onDelete: Cascade)
   bancaId            String?
   responses          Response[]
   comments           Comment[]
@@ -131,7 +131,7 @@ model Question {
 model Comment {
   id         String   @id @default(cuid())
   content    String
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
@@ -181,9 +181,9 @@ model Area {
 
 model Area_Subarea {
   id        String  @id @default(cuid())
-  area      Area    @relation(fields: [areaId], references: [id])
+  area      Area    @relation(fields: [areaId], references: [id], onDelete: Cascade)
   areaId    String
-  subarea   Subarea @relation(fields: [subareaId], references: [id])
+  subarea   Subarea @relation(fields: [subareaId], references: [id], onDelete: Cascade)
   subareaId String
 }
 
@@ -218,13 +218,13 @@ model RefreshToken {
 model Response {
   id            String      @id @default(cuid())
   date          DateTime    @default(now())
-  question      Question    @relation(fields: [questionId], references: [id])
+  question      Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId    String
-  alternative   Alternative @relation(fields: [alternativeId], references: [id])
+  alternative   Alternative @relation(fields: [alternativeId], references: [id], onDelete: Cascade)
   alternativeId String
-  simulado      Simulado?   @relation(fields: [simuladoId], references: [id])
+  simulado      Simulado?   @relation(fields: [simuladoId], references: [id], onDelete: Cascade)
   simuladoId    String?
-  notebook      Notebook?   @relation(fields: [notebookId], references: [id])
+  notebook      Notebook?   @relation(fields: [notebookId], references: [id], onDelete: Cascade)
   notebookId    String?
   correct       Boolean
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -253,7 +253,7 @@ model Ticket {
   user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   createdAt  DateTime     @default(now())
-  question   Question?    @relation(fields: [questionId], references: [id])
+  question   Question?    @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String?
 }
 
@@ -272,9 +272,9 @@ model Oferta {
 
 model Diagnostico_Question {
   id             String      @id @default(cuid())
-  question       Question    @relation(fields: [questionId], references: [id])
+  question       Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId     String
-  diagnostico    Diagnostico @relation(fields: [diagnosticoId], references: [id])
+  diagnostico    Diagnostico @relation(fields: [diagnosticoId], references: [id], onDelete: Cascade)
   diagnosticoId  String
 }
 

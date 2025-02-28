@@ -1,21 +1,7 @@
 /** @type {import("next").NextConfig} */
 
-const runtimeCaching = require("next-pwa/cache")
-const withPWA = require('next-pwa')({
-  dest: "public",
-	register: true,
-	skipWaiting: true,
-	runtimeCaching,
-	buildExcludes: [/middleware-manifest.json$/]
-})
-
-module.exports = withPWA({
+module.exports = {
   reactStrictMode: true,
-  webpack: (config) => {
-    config.experiments = { ...config.experiments, topLevelAwait: true }
-
-    return config
-  },
   images: {
     remotePatterns: [
       {
@@ -30,4 +16,4 @@ module.exports = withPWA({
   typescript: {
     ignoreBuildErrors: true
   }
-})
+}

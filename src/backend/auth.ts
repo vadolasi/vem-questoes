@@ -9,7 +9,7 @@ export const authChecker: AuthChecker<ContextType> = async (
   { root, args, context, info },
   roles
 ) =>{
-  const userId = context.getUserId()
+  const userId = await context.getUserId()
 
   if (!userId) {
     return false

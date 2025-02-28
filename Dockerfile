@@ -1,13 +1,13 @@
-FROM node:18
+FROM oven/bun
 
 WORKDIR /usr/src/app
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm i -g pnpm node-gyp sharp && pnpm i --ignore-scripts
+COPY package.json bun.lock ./
+RUN bun i
 COPY . .
-RUN pnpm exec prisma generate && pnpm build
+RUN bun run build
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
 
-CMD ["pnpm", "run", "start"]
+CMD ["bun", "run", "start"]
