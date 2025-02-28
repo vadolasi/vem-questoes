@@ -11,11 +11,11 @@ type Query {
   subareas: [Subarea!]!
   estados: [Estado!]!
   bancas: [Banca!]!
-  questions(page: Float = 1, itemsPerPage: Float = 10, text: String, processoSeletivoIds: [String!] = [], anoIds: [String!] = [], localIds: [String!] = [], perfilIds: [String!] = [], areaIds: [String!] = [], subareaIds: [String!] = [], estadoIds: [String!] = [], bancaIds: [String!] = [], apenasRespondidas: Boolean, apenasNaoRespondidas: Boolean, apenasRespondidasCertas: Boolean, apenasRespondidasErradas: Boolean): QuestionsResponse!
+  questions(page: Float = 1, itemsPerPage: Float = 10, text: String, processoSeletivoIds: [String!]! = [], anoIds: [String!]! = [], localIds: [String!]! = [], perfilIds: [String!]! = [], areaIds: [String!]! = [], subareaIds: [String!]! = [], estadoIds: [String!]! = [], bancaIds: [String!]! = [], apenasRespondidas: Boolean, apenasNaoRespondidas: Boolean, apenasRespondidasCertas: Boolean, apenasRespondidasErradas: Boolean): QuestionsResponse!
   question(id: String!): [Question!]!
   notebooks: [NotebookModel!]!
   notebook(notebookId: String!): NotebookModel!
-  simulados(itemsPerPage: Float = 10, page: Float = 1): SimuladosResponse!
+  simulados(itemsPerPage: Float! = 10, page: Float! = 1): SimuladosResponse!
   simulado(id: String!): Simulado!
   mostWrong: [MostWrong!]!
   relatorio(lte: LTE!): RelatorioResponse!
@@ -219,7 +219,7 @@ type Ticket {
   content: String!
   role: TicketType!
   name: User!
-  createdAt: DateTime!
+  createdAt: DateTimeISO!
   question: Question!
 }
 
@@ -231,9 +231,9 @@ enum TicketType {
 }
 
 """
-The javascript `Date` as string. Type represents date and time as the ISO Date string.
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
 """
-scalar DateTime
+scalar DateTimeISO
 
 type Mutation {
   deleteUser(id: String!): Boolean!

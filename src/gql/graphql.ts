@@ -12,8 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
+  DateTimeISO: any;
 };
 
 export type AddAnswerResponse = {
@@ -385,20 +385,20 @@ export type QueryQuestionArgs = {
 
 
 export type QueryQuestionsArgs = {
-  anoIds?: InputMaybe<Array<Scalars['String']>>;
+  anoIds?: Array<Scalars['String']>;
   apenasNaoRespondidas?: InputMaybe<Scalars['Boolean']>;
   apenasRespondidas?: InputMaybe<Scalars['Boolean']>;
   apenasRespondidasCertas?: InputMaybe<Scalars['Boolean']>;
   apenasRespondidasErradas?: InputMaybe<Scalars['Boolean']>;
-  areaIds?: InputMaybe<Array<Scalars['String']>>;
-  bancaIds?: InputMaybe<Array<Scalars['String']>>;
-  estadoIds?: InputMaybe<Array<Scalars['String']>>;
+  areaIds?: Array<Scalars['String']>;
+  bancaIds?: Array<Scalars['String']>;
+  estadoIds?: Array<Scalars['String']>;
   itemsPerPage?: InputMaybe<Scalars['Float']>;
-  localIds?: InputMaybe<Array<Scalars['String']>>;
+  localIds?: Array<Scalars['String']>;
   page?: InputMaybe<Scalars['Float']>;
-  perfilIds?: InputMaybe<Array<Scalars['String']>>;
-  processoSeletivoIds?: InputMaybe<Array<Scalars['String']>>;
-  subareaIds?: InputMaybe<Array<Scalars['String']>>;
+  perfilIds?: Array<Scalars['String']>;
+  processoSeletivoIds?: Array<Scalars['String']>;
+  subareaIds?: Array<Scalars['String']>;
   text?: InputMaybe<Scalars['String']>;
 };
 
@@ -419,8 +419,8 @@ export type QuerySimuladoArgs = {
 
 
 export type QuerySimuladosArgs = {
-  itemsPerPage?: InputMaybe<Scalars['Float']>;
-  page?: InputMaybe<Scalars['Float']>;
+  itemsPerPage?: Scalars['Float'];
+  page?: Scalars['Float'];
 };
 
 export type Question = {
@@ -504,7 +504,7 @@ export type Subarea = {
 export type Ticket = {
   __typename?: 'Ticket';
   content: Scalars['String'];
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTimeISO'];
   id: Scalars['ID'];
   name: User;
   question: Question;
