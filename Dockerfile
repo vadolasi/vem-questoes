@@ -10,6 +10,7 @@ COPY package.json bun.lock ./
 RUN bun i
 COPY . .
 RUN bun run build
+RUN bun prisma generate
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
