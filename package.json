@@ -8,7 +8,8 @@
     "start": "bun --bun next start",
     "lint": "bun --bun next lint",
     "initdb": "bun prisma db push && bun run scripts/extractor.ts",
-    "create-admin": "bun run scripts/createAdmin.ts"
+    "create-admin": "bun run scripts/createAdmin.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.758.0",
