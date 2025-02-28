@@ -43,4 +43,4 @@ COPY --from=prerelease /usr/src/app/next.config.js next.config.js
 
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "index.ts" ]
+ENTRYPOINT [ "bun", "run", "start" ]
